@@ -20,6 +20,9 @@ class SnapshotModule(object):
         self.module = module
         self.filepath = filepath
         self.imports = defaultdict(set)
+        self.visited_snapshots = set()
+        self.new_snapshots = set()
+        self.failed_snapshots = set()
         self.imports['snapshottest'].add('Snapshot')
 
     def load_snapshots(self):
@@ -29,6 +32,65 @@ class SnapshotModule(object):
             return source.snapshots
         except:
             return Snapshot()
+
+    def visit(self, snapshot_name):
+        self.visited_snapshots.add(snapshot_name)
+
+    def delete_unvisited(self):
+        for unvisited in self.unvisited_snapshots:
+            del self.snapshots[unvisited]
+
+    @property
+    def unvisited_snapshots(self):
+        return set(self.snapshots.keys()) - self.visited_snapshots
+
+    @classmethod
+    def total_unvisited_snapshots(cls):
+        unvisited_snapshots = 0
+        unvisited_modules = 0
+        for module in cls.get_modules():
+            l = len(module.unvisited_snapshots)
+            unvisited_snapshots += l
+            unvisited_modules += min(l, 1)
+
+        return unvisited_snapshots, unvisited_modules
+
+    @classmethod
+    def get_modules(cls):
+        return SnapshotModule._snapshot_modules.values()
+
+    @classmethod
+    def stats_for_module(cls, getter):
+        count_snapshots = 0
+        count_modules = 0
+        for module in SnapshotModule._snapshot_modules.values():
+            l = getter(module)
+            count_snapshots += l
+            count_modules += min(l, 1)
+
+        return count_snapshots, count_modules
+
+    @classmethod
+    def stats_unvisited_snapshots(cls):
+        return cls.stats_for_module(lambda module: len(module.unvisited_snapshots))
+
+    @classmethod
+    def stats_visited_snapshots(cls):
+        return cls.stats_for_module(lambda module: len(module.visited_snapshots))
+
+    @classmethod
+    def stats_new_snapshots(cls):
+        return cls.stats_for_module(lambda module: len(module.new_snapshots))
+
+    @classmethod
+    def stats_failed_snapshots(cls):
+        return cls.stats_for_module(lambda module: len(module.failed_snapshots))
+
+    @classmethod
+    def stats_successful_snapshots(cls):
+        stats_visited = cls.stats_visited_snapshots()
+        stats_failed = cls.stats_failed_snapshots()
+        return stats_visited[0] - stats_failed[0]
 
     @property
     def snapshots(self):
@@ -40,6 +102,12 @@ class SnapshotModule(object):
         return self.snapshots.get(key, None)
 
     def __setitem__(self, key, value):
+        if key not in self.snapshots:
+            # It's a new test
+            self.new_snapshots.add(key)
+        elif self.snapshots[key] != value:
+            # It's a failed test
+            self.failed_snapshots.add(key)
         self.snapshots[key] = value
 
     def save(self):
@@ -122,6 +190,9 @@ class SnapshotTest(object):
         self.save_changes()
         SnapshotTest._current_tester = None
 
+    def visit(self):
+        self.module.visit(self.test_name)
+
     def store(self, data):
         self.module[self.test_name] = data
         self.curr_snapshot += 1
@@ -132,6 +203,7 @@ class SnapshotTest(object):
         assert value == snapshot
 
     def assert_match(self, value):
+        self.visit()
         prev_snapshot = not self.update and self.module[self.test_name]
         if prev_snapshot:
             self.assert_equals(value, prev_snapshot)

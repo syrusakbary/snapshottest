@@ -29,6 +29,7 @@ setup(
     },
     install_requires=[
         'six>=1.10.0',
+        'hues',
     ],
     tests_require=tests_require,
     extras_require={
