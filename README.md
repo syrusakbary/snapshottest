@@ -2,9 +2,9 @@
 
 Snapshot testing is a way to test your APIs without writing actual test cases.
 
-Here's how it works: A snapshot is a single state of your API, saved in a file.
-You have a set of snapshots for your API endpoints.
-Once you add a new feature, you can generate new snapshots for the updated API.
+1. A snapshot is a single state of your API, saved in a file.
+2. You have a set of snapshots for your API endpoints.
+3. Once you add a new feature, you can generate new snapshots for the updated API.
 
 
 [![travis][travis-image]][travis-url]
@@ -87,5 +87,6 @@ Instead of rendering the graphical UI, which would require building the entire a
 [MIT License](https://github.com/syrusakbary/snapshottest/blob/master/LICENSE)
 
 [![coveralls][coveralls-image]][coveralls-url]
+
 [coveralls-image]: https://coveralls.io/repos/syrusakbary/snapshottest/badge.svg?branch=master&service=github
 [coveralls-url]: https://coveralls.io/github/syrusakbary/snapshottest?branch=master
