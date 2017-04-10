@@ -4,7 +4,7 @@ Snapshot testing is a way to test your APIs without writing actual test cases.
 
 Here's how it works: A snapshot is a single state of your API, saved in a file.
 You have a set of snapshots for your API endpoints.
-Once you add a new UI feature, you can generate new snapshots for the updated UI components.
+Once you add a new feature, you can generate new snapshots for the updated API.
 
 
 [![travis][travis-image]][travis-url]
