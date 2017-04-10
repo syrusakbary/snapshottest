@@ -8,7 +8,7 @@ with open('README.rst') as f:
 
 tests_require = [
     'six',
-    'pytest',
+    'pytest>=3.0',
     'pytest-cov'
     # 'nose',
 ]
@@ -21,12 +21,12 @@ setup(
     author='Syrus Akbary',
     author_email='me@syrusakbary.com',
     url='https://github.com/syrusakbary/snapshottest',
+    # custom PyPI classifier for pytest plugins
     entry_points = {
         'pytest11': [
             'snapshottest = snapshottest.pytest',
         ]
     },
-    # custom PyPI classifier for pytest plugins
     install_requires=[
         'six>=1.10.0',
     ],
