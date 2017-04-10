@@ -1,7 +1,7 @@
 from __future__ import absolute_import
 import pytest
 import traceback
-import hues
+from termcolor import colored
 
 from .module import SnapshotModule, SnapshotTest
 
@@ -51,31 +51,34 @@ class SnapshotSession(object):
         self.config = config
 
     def display(self, tr):
-        tr.write_line('Snapshot Summary')
+        tr.write_line('Snapshot Summary:')
 
         successful_snapshots = SnapshotModule.stats_successful_snapshots()
+        bold = ['bold']
         if successful_snapshots:
             tr.write_line((
-                hues.huestr('> {} snapshots passed').white.bold.colorized + '.'
+                colored('\t> {} snapshots passed', attrs=bold) + '.'
             ).format(successful_snapshots))
         new_snapshots = SnapshotModule.stats_new_snapshots()
         if new_snapshots[0]:
             tr.write_line((
-                hues.huestr('> {} snapshots written').green.bold.colorized + ' in {} test suites.'
+                colored('\t> {} snapshots written', 'green', attrs=bold) + ' in {} test suites.'
             ).format(*new_snapshots))
-        inspect_str = hues.huestr(
-            'Inspect your code or run with `pytest --snapshot-update` to update them.'
-        ).black.bold.colorized
+        inspect_str = colored(
+            'Inspect your code or run with `pytest --snapshot-update` to update them.',
+            'grey',
+            attrs=bold
+        )
         failed_snapshots = SnapshotModule.stats_failed_snapshots()
         if failed_snapshots[0]:
             tr.write_line((
-                hues.huestr('> {} snapshots failed').red.bold.colorized + ' in {} test suites. '
+                colored('\t> {} snapshots failed', 'red', attrs=bold) + ' in {} test suites. '
                 + inspect_str
             ).format(*failed_snapshots), red=True)
         unvisited_snapshots = SnapshotModule.stats_unvisited_snapshots()
         if unvisited_snapshots[0]:
             tr.write_line((
-                hues.huestr('> {} snapshots deprecated').yellow.bold.colorized + ' in {} test suites. '
+                colored('\t> {} snapshots deprecated', 'yellow', attrs=bold) + ' in {} test suites. '
                 + inspect_str
             ).format(*unvisited_snapshots))
 
@@ -87,11 +90,7 @@ def snapshot(request):
 
 
 def pytest_terminal_summary(terminalreporter):
-    try:
-        terminalreporter.config._snapshotsession.display(terminalreporter)
-    except Exception:
-        terminalreporter.config._snapshotsession.logger.error("\n%s" % traceback.format_exc())
-        raise
+    terminalreporter.config._snapshotsession.display(terminalreporter)
 
 
 def pytest_fixture_post_finalizer(fixturedef):

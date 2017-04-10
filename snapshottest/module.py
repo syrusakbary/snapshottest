@@ -105,10 +105,10 @@ class SnapshotModule(object):
         if key not in self.snapshots:
             # It's a new test
             self.new_snapshots.add(key)
-        elif self.snapshots[key] != value:
-            # It's a failed test
-            self.failed_snapshots.add(key)
         self.snapshots[key] = value
+
+    def mark_failed(self, key):
+        return self.failed_snapshots.add(key)
 
     def save(self):
         snapshot_dir = os.path.dirname(self.filepath)
@@ -193,20 +193,25 @@ class SnapshotTest(object):
     def visit(self):
         self.module.visit(self.test_name)
 
+    def fail(self):
+        self.module.mark_failed(self.test_name)
+
     def store(self, data):
         self.module[self.test_name] = data
         self.curr_snapshot += 1
 
     def assert_equals(self, value, snapshot):
-        # if value != snapshot:
-        #     logger.error('OH!')
         assert value == snapshot
 
     def assert_match(self, value):
         self.visit()
         prev_snapshot = not self.update and self.module[self.test_name]
         if prev_snapshot:
-            self.assert_equals(value, prev_snapshot)
+            try:
+                self.assert_equals(value, prev_snapshot)
+            except:
+                self.fail()
+                raise
 
         self.store(value)
 
