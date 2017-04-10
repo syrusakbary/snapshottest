@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 import pytest
-import traceback
+# import traceback
 from termcolor import colored
 
 from .module import SnapshotModule, SnapshotTest
