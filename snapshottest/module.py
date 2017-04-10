@@ -63,7 +63,7 @@ class SnapshotModule(object):
 
             imports = '\n'.join([
                 'from {} import {}'.format(module, ', '.join(module_imports))
-                for module, module_imports in self.imports.iteritems()
+                for module, module_imports in self.imports.items()
             ])
             snapshot_file.write('''# -*- coding: utf-8 -*-
 
