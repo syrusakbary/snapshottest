@@ -7,15 +7,19 @@ from .module import SnapshotModule, SnapshotTest
 
 class UnitTestSnapshotTest(SnapshotTest):
 
-    def __init__(self, test_class, test_id, test_filepath):
+    def __init__(self, test_class, test_id, test_filepath, assertEquals):
         self.test_class = test_class
         self.test_id = test_id
         self.test_filepath = test_filepath
+        self.assertEquals = assertEquals
         super(UnitTestSnapshotTest, self).__init__()
 
     @property
     def module(self):
         return SnapshotModule.get_module_for_testpath(self.test_filepath)
+
+    def assert_equals(self, value, snapshot):
+        self.assertEquals(value, snapshot)
 
     @property
     def test_name(self):
@@ -66,7 +70,8 @@ class TestCase(unittest.TestCase):
         self._snapshot = UnitTestSnapshotTest(
             test_class=self.__class__,
             test_id=self.id(),
-            test_filepath=self._snapshot_file
+            test_filepath=self._snapshot_file,
+            assertEquals=self.assertEquals
         )
         self._snapshot_tests.append(self._snapshot)
         SnapshotTest._current_tester = self._snapshot
