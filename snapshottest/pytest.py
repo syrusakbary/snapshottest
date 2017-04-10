@@ -4,6 +4,7 @@ import traceback
 from termcolor import colored
 
 from .module import SnapshotModule, SnapshotTest
+from .diff import PrettyDiff
 
 
 def pytest_addoption(parser):
@@ -84,6 +85,13 @@ class SnapshotSession(object):
                 colored('\t> {} snapshots deprecated', 'yellow', attrs=bold) + ' in {} test suites. '
                 + inspect_str
             ).format(*unvisited_snapshots))
+
+
+def pytest_assertrepr_compare(op, left, right):
+    if isinstance(left, PrettyDiff) and op == "==":
+        return [
+            'Snapshot comparison failed in `{}`'.format(left.snapshottest.test_name)
+        ] + left.get_diff(right)
 
 
 @pytest.fixture

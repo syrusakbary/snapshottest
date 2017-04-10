@@ -18,8 +18,11 @@ class Formatter(object):
         return self.format(value, self.indent)
 
     def format(self, value, indent):
+        from .diff import PrettyDiff
         if value is None:
             return 'None'
+        if isinstance(value, PrettyDiff):
+            return self.format(value.obj, indent)
         if isinstance(value, dict):
             return self.format_dict(value, indent)
         elif isinstance(value, tuple):
@@ -40,7 +43,8 @@ class Formatter(object):
         return repr(value)
 
     def format_object(self, value, indent):
-        self.imports['snapshottest'].add('GenericRepr')
+        if self.imports:
+            self.imports['snapshottest'].add('GenericRepr')
         return repr(GenericRepr(value))
 
     def format_dict(self, value, indent):
