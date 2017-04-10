@@ -56,34 +56,33 @@ class SnapshotSession(object):
         if not SnapshotModule.stats_visited_snapshots()[0]:
             return
 
-        tr.write_line('Snapshot Summary:')
+        tr.write_sep("=", "SnapshotTest summary")
 
         successful_snapshots = SnapshotModule.stats_successful_snapshots()
         bold = ['bold']
         if successful_snapshots:
             tr.write_line((
-                colored('\t> {} snapshots passed', attrs=bold) + '.'
+                colored(' > {} snapshots passed', attrs=bold) + '.'
             ).format(successful_snapshots))
         new_snapshots = SnapshotModule.stats_new_snapshots()
         if new_snapshots[0]:
             tr.write_line((
-                colored('\t> {} snapshots written', 'green', attrs=bold) + ' in {} test suites.'
+                colored(' > {} snapshots written', 'green', attrs=bold) + ' in {} test suites.'
             ).format(*new_snapshots))
         inspect_str = colored(
             'Inspect your code or run with `pytest --snapshot-update` to update them.',
-            'grey',
-            attrs=bold
+            attrs=['dark']
         )
         failed_snapshots = SnapshotModule.stats_failed_snapshots()
         if failed_snapshots[0]:
             tr.write_line((
-                colored('\t> {} snapshots failed', 'red', attrs=bold) + ' in {} test suites. '
+                colored(' > {} snapshots failed', 'red', attrs=bold) + ' in {} test suites. '
                 + inspect_str
             ).format(*failed_snapshots), red=True)
         unvisited_snapshots = SnapshotModule.stats_unvisited_snapshots()
         if unvisited_snapshots[0]:
             tr.write_line((
-                colored('\t> {} snapshots deprecated', 'yellow', attrs=bold) + ' in {} test suites. '
+                colored(' > {} snapshots deprecated', 'yellow', attrs=bold) + ' in {} test suites. '
                 + inspect_str
             ).format(*unvisited_snapshots))
 
