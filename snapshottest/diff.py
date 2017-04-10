@@ -7,9 +7,9 @@ from .formatter import Formatter
 def format_line(line):
     line = line.rstrip('\n')
     if line.startswith('-'):
-        return colored(line, 'red', attrs=['bold'])
-    elif line.startswith('+'):
         return colored(line, 'green', attrs=['bold'])
+    elif line.startswith('+'):
+        return colored(line, 'red', attrs=['bold'])
     elif line.startswith('?'):
         return (
             colored('') +
@@ -33,10 +33,10 @@ class PrettyDiff(object):
         return repr(self.obj)
 
     def get_diff(self, other):
-        text1 = self.pretty(self.obj).splitlines(1)
-        text2 = self.pretty(other).splitlines(1)
+        text1 = ['Received ', ''] + self.pretty(self.obj).splitlines(1)
+        text2 = ['Snapshot ', ''] + self.pretty(other).splitlines(1)
 
-        lines = list(self.differ.compare(text1, text2))
+        lines = list(self.differ.compare(text2, text1))
         return [
             format_line(line) for line in lines
         ]

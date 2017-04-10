@@ -62,12 +62,12 @@ class SnapshotSession(object):
         bold = ['bold']
         if successful_snapshots:
             tr.write_line((
-                colored(' > {} snapshots passed', attrs=bold) + '.'
+                colored('{} snapshots passed', attrs=bold) + '.'
             ).format(successful_snapshots))
         new_snapshots = SnapshotModule.stats_new_snapshots()
         if new_snapshots[0]:
             tr.write_line((
-                colored(' > {} snapshots written', 'green', attrs=bold) + ' in {} test suites.'
+                colored('{} snapshots written', 'green', attrs=bold) + ' in {} test suites.'
             ).format(*new_snapshots))
         inspect_str = colored(
             'Inspect your code or run with `pytest --snapshot-update` to update them.',
@@ -76,13 +76,13 @@ class SnapshotSession(object):
         failed_snapshots = SnapshotModule.stats_failed_snapshots()
         if failed_snapshots[0]:
             tr.write_line((
-                colored(' > {} snapshots failed', 'red', attrs=bold) + ' in {} test suites. '
+                colored('{} snapshots failed', 'red', attrs=bold) + ' in {} test suites. '
                 + inspect_str
             ).format(*failed_snapshots), red=True)
         unvisited_snapshots = SnapshotModule.stats_unvisited_snapshots()
         if unvisited_snapshots[0]:
             tr.write_line((
-                colored(' > {} snapshots deprecated', 'yellow', attrs=bold) + ' in {} test suites. '
+                colored('{} snapshots deprecated', 'yellow', attrs=bold) + ' in {} test suites. '
                 + inspect_str
             ).format(*unvisited_snapshots))
 
@@ -90,9 +90,15 @@ class SnapshotSession(object):
 def pytest_assertrepr_compare(op, left, right):
     if isinstance(left, PrettyDiff) and op == "==":
         return [
-            'Snapshot comparison failed in `{}`'.format(
+            'stored snapshot should match the received value',
+            '',
+            colored('> ') +
+            colored('Received value', 'red', attrs=['bold']) +
+            colored(' does not match ', attrs=['bold']) +
+            colored('stored snapshot `{}`'.format(
                 left.snapshottest.test_name,
-            ),
+            ), 'green', attrs=['bold']) +
+            colored('.', attrs=['bold']),
             colored('') + '> ' + os.path.relpath(left.snapshottest.module.filepath, os.getcwd()),
             '',
         ] + left.get_diff(right)
