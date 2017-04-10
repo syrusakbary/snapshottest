@@ -51,6 +51,9 @@ class SnapshotSession(object):
         self.config = config
 
     def display(self, tr):
+        if not SnapshotModule.stats_visited_snapshots()[0]:
+            return
+
         tr.write_line('Snapshot Summary:')
 
         successful_snapshots = SnapshotModule.stats_successful_snapshots()
@@ -90,14 +93,12 @@ def snapshot(request):
 
 
 def pytest_terminal_summary(terminalreporter):
-    terminalreporter.config._snapshotsession.display(terminalreporter)
-
-
-def pytest_fixture_post_finalizer(fixturedef):
-    if fixturedef._fixturemanager.config.option.snapshot_update:
+    if terminalreporter.config.option.snapshot_update:
         for module in SnapshotModule.get_modules():
             module.delete_unvisited()
             module.save()
+
+    terminalreporter.config._snapshotsession.display(terminalreporter)
 
 
 @pytest.mark.trylast  # force the other plugins to initialise, fixes issue with capture not being properly initialised

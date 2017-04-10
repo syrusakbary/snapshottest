@@ -14,9 +14,10 @@ logger = logging.getLogger(__name__)
 
 class SnapshotModule(object):
     _snapshot_modules = {}
-    _snapshots = None
 
     def __init__(self, module, filepath):
+        self._original_snapshot = None
+        self._snapshots = None
         self.module = module
         self.filepath = filepath
         self.imports = defaultdict(set)
@@ -93,9 +94,15 @@ class SnapshotModule(object):
         return stats_visited[0] - stats_failed[0]
 
     @property
+    def original_snapshot(self):
+        if not self._original_snapshot:
+            self._original_snapshot = self.load_snapshots()
+        return self._original_snapshot
+
+    @property
     def snapshots(self):
         if not self._snapshots:
-            self._snapshots = self.load_snapshots()
+            self._snapshots = Snapshot(self.original_snapshot)
         return self._snapshots
 
     def __getitem__(self, key):
@@ -111,6 +118,10 @@ class SnapshotModule(object):
         return self.failed_snapshots.add(key)
 
     def save(self):
+        if self.original_snapshot == self.snapshots:
+            # If there are no changes, we do nothing
+            return
+
         snapshot_dir = os.path.dirname(self.filepath)
 
         # Create the snapshot dir in case doesn't exist
