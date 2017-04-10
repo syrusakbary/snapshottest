@@ -6,8 +6,8 @@ cases.
 
 1. A snapshot is a single state of your API, saved in a file.
 2. You have a set of snapshots for your API endpoints.
-3. Once you add a new feature, you can generate new snapshots for the
-   updated API.
+3. Once you add a new feature, you can generate *automatically* new
+   snapshots for the updated API.
 
 |travis| |pypi|
 
@@ -31,6 +31,9 @@ Usage with unittest
             my_api_response = api.client.get('/me')
             self.assertMatchSnapshot(my_api_response)
 
+Check the `Unittest
+example <https://github.com/syrusakbary/snapshottest/tree/master/examples/unittest>`__.
+
 Usage with pytest
 -----------------
 
@@ -43,6 +46,9 @@ Usage with pytest
 
 If you want to update the snapshots automatically you can use the
 ``--snapshot-update`` config.
+
+Check the `Pytest
+example <https://github.com/syrusakbary/snapshottest/tree/master/examples/pytest>`__.
 
 Contributing
 ============
