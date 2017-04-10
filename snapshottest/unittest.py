@@ -1,0 +1,83 @@
+from __future__ import absolute_import
+import unittest
+import inspect
+
+from .module import SnapshotModule, SnapshotTest
+
+
+class UnitTestSnapshotTest(SnapshotTest):
+
+    def __init__(self, test_class, test_id, test_filepath):
+        self.test_class = test_class
+        self.test_id = test_id
+        self.test_filepath = test_filepath
+        super(UnitTestSnapshotTest, self).__init__()
+
+    @property
+    def module(self):
+        return SnapshotModule.get_module_for_testpath(self.test_filepath)
+
+    @property
+    def test_name(self):
+        class_name = self.test_class.__name__
+        test_name = self.test_id.split('.')[-1]
+        return '{}::{} {}'.format(
+            class_name,
+            test_name,
+            self.curr_snapshot
+        )
+
+
+# Inspired by https://gist.github.com/twolfson/13f5f5784f67fd49b245
+class TestCase(unittest.TestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        """On inherited classes, run our `setUp` method"""
+        cls._snapshot_tests = []
+        cls._snapshot_file = inspect.getfile(cls)
+
+        if cls is not TestCase and cls.setUp is not TestCase.setUp:
+            orig_setUp = cls.setUp
+            orig_tearDown = cls.tearDown
+
+            def setUpOverride(self, *args, **kwargs):
+                TestCase.setUp(self)
+                return orig_setUp(self, *args, **kwargs)
+
+            def tearDownOverride(self, *args, **kwargs):
+                TestCase.tearDown(self)
+                return orig_tearDown(self, *args, **kwargs)
+
+            cls.setUp = setUpOverride
+            cls.tearDown = tearDownOverride
+
+        super(TestCase, cls).setUpClass()
+
+    @classmethod
+    def tearDownClass(cls):
+        if cls._snapshot_tests:
+            module = SnapshotModule.get_module_for_testpath(cls._snapshot_file)
+            module.save()
+
+    def setUp(self):
+        """Do some custom setup"""
+        # print dir(self.__module__)
+        self._snapshot = UnitTestSnapshotTest(
+            test_class=self.__class__,
+            test_id=self.id(),
+            test_filepath=self._snapshot_file
+        )
+        self._snapshot_tests.append(self._snapshot)
+        SnapshotTest._current_tester = self._snapshot
+
+    def tearDown(self):
+        """Do some custom setup"""
+        # print dir(self.__module__)
+        SnapshotTest._current_tester = None
+        self._snapshot = None
+
+    def assert_match_snapshot(self, value):
+        self._snapshot.assert_match(value)
+
+    assertMatchSnapshot = assert_match_snapshot

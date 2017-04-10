@@ -1,0 +1,59 @@
+# -*- coding: utf-8 -*-
+
+from setuptools import setup, find_packages
+
+
+with open('README.rst') as f:
+    readme = f.read()
+
+tests_require = [
+    'six',
+    'pytest',
+    'pytest-cov'
+    # 'nose',
+]
+
+setup(
+    name='snapshottest',
+    version='0.1.0',
+    description='Snapshot Testing utils for Python',
+    long_description=readme,
+    author='Syrus Akbary',
+    author_email='me@syrusakbary.com',
+    url='https://github.com/syrusakbary/snapshottest',
+    entry_points = {
+        'pytest11': [
+            'snapshottest = snapshottest.pytest',
+        ]
+    },
+    # custom PyPI classifier for pytest plugins
+    install_requires=[
+        'six>=1.10.0',
+    ],
+    tests_require=tests_require,
+    extras_require={
+        'test': tests_require,
+        'pytest': [
+            'pytest',
+        ],
+        # 'nose': [
+        #     'nose',
+        # ],
+    },
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Libraries',
+        'Programming Language :: Python'
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Operating System :: OS Independent',
+        'Framework :: Pytest',
+    ],
+    license='MIT',
+    packages=find_packages(exclude=('tests',))
+)
