@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 import pytest
+import os
 # import traceback
 from termcolor import colored
 
@@ -90,7 +91,11 @@ class SnapshotSession(object):
 def pytest_assertrepr_compare(op, left, right):
     if isinstance(left, PrettyDiff) and op == "==":
         return [
-            'Snapshot comparison failed in `{}`'.format(left.snapshottest.test_name)
+            'Snapshot comparison failed in `{}`'.format(
+                left.snapshottest.test_name,
+            ),
+            colored('') + '> ' + os.path.relpath(left.snapshottest.module.filepath, os.getcwd()),
+            '',
         ] + left.get_diff(right)
 
 

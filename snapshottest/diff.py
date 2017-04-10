@@ -10,8 +10,13 @@ def format_line(line):
         return colored(line, 'red', attrs=['bold'])
     elif line.startswith('+'):
         return colored(line, 'green', attrs=['bold'])
+    elif line.startswith('?'):
+        return (
+            colored('') +
+            colored(line, 'yellow', attrs=['bold'])
+        )
 
-    return colored(line, 'grey')
+    return colored('') + colored(line, 'white', attrs=['dark'])
 
 
 class PrettyDiff(object):
