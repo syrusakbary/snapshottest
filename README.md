@@ -1,4 +1,10 @@
-# SnapshotTest
+# SnapshotTest [![travis][travis-image]][travis-url] [![pypi][pypi-image]][pypi-url]
+
+[travis-image]: https://img.shields.io/travis/syrusakbary/snapshottest.svg?style=flat
+[travis-url]: https://travis-ci.org/syrusakbary/snapshottest
+[pypi-image]: https://img.shields.io/pypi/v/snapshottest.svg?style=flat
+[pypi-url]: https://pypi.python.org/pypi/snapshottest
+
 
 Snapshot testing is a way to test your APIs without writing actual test cases.
 
@@ -7,16 +13,8 @@ Snapshot testing is a way to test your APIs without writing actual test cases.
 3. Once you add a new feature, you can generate *automatically* new snapshots for the updated API.
 
 
-[![travis][travis-image]][travis-url]
-[![pypi][pypi-image]][pypi-url]
 
-[travis-image]: https://img.shields.io/travis/syrusakbary/snapshottest.svg?style=flat
-[travis-url]: https://travis-ci.org/syrusakbary/snapshottest
-[pypi-image]: https://img.shields.io/pypi/v/snapshottest.svg?style=flat
-[pypi-url]: https://pypi.python.org/pypi/snapshottest
-
-[![asciicast](https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg.png)](https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg)
-
+<p align="center"><a href="https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg" target="_blank"><img src="https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg.png" width="400" height="280" /></a></p>
 
 ## Installation
 

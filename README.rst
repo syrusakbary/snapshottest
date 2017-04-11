@@ -1,5 +1,5 @@
-SnapshotTest
-============
+SnapshotTest |travis| |pypi|
+============================
 
 Snapshot testing is a way to test your APIs without writing actual test
 cases.
@@ -9,9 +9,13 @@ cases.
 3. Once you add a new feature, you can generate *automatically* new
    snapshots for the updated API.
 
-|travis| |pypi|
+.. raw:: html
 
-|asciicast|
+   <p align="center">
+
+.. raw:: html
+
+   </p>
 
 Installation
 ------------
@@ -116,7 +120,5 @@ License <https://github.com/syrusakbary/snapshottest/blob/master/LICENSE>`__
    :target: https://travis-ci.org/syrusakbary/snapshottest
 .. |pypi| image:: https://img.shields.io/pypi/v/snapshottest.svg?style=flat
    :target: https://pypi.python.org/pypi/snapshottest
-.. |asciicast| image:: https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg.png
-   :target: https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg
 .. |coveralls| image:: https://coveralls.io/repos/syrusakbary/snapshottest/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/syrusakbary/snapshottest?branch=master
