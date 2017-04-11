@@ -11,6 +11,8 @@ cases.
 
 |travis| |pypi|
 
+|asciicast|
+
 Installation
 ------------
 
@@ -114,5 +116,7 @@ License <https://github.com/syrusakbary/snapshottest/blob/master/LICENSE>`__
    :target: https://travis-ci.org/syrusakbary/snapshottest
 .. |pypi| image:: https://img.shields.io/pypi/v/snapshottest.svg?style=flat
    :target: https://pypi.python.org/pypi/snapshottest
+.. |asciicast| image:: https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg.png
+   :target: https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg
 .. |coveralls| image:: https://coveralls.io/repos/syrusakbary/snapshottest/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/syrusakbary/snapshottest?branch=master

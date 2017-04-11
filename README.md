@@ -15,6 +15,8 @@ Snapshot testing is a way to test your APIs without writing actual test cases.
 [pypi-image]: https://img.shields.io/pypi/v/snapshottest.svg?style=flat
 [pypi-url]: https://pypi.python.org/pypi/snapshottest
 
+[![asciicast](https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg.png)](https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg)
+
 
 ## Installation
 
