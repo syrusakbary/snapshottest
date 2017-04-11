@@ -15,7 +15,7 @@ tests_require = [
 
 setup(
     name='snapshottest',
-    version='0.3.0',
+    version='0.4.0',
     description='Snapshot Testing utils for Python',
     long_description=readme,
     author='Syrus Akbary',
