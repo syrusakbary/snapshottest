@@ -1,11 +1,9 @@
 from __future__ import absolute_import
 import pytest
-import os
-# import traceback
-from termcolor import colored
 
 from .module import SnapshotModule, SnapshotTest
 from .diff import PrettyDiff
+from .reporting import reporting_lines, diff_report
 
 
 def pytest_addoption(parser):
@@ -53,55 +51,18 @@ class SnapshotSession(object):
         self.config = config
 
     def display(self, tr):
-        if not SnapshotModule.stats_visited_snapshots()[0]:
+        if not SnapshotModule.has_snapshots():
             return
 
         tr.write_sep("=", "SnapshotTest summary")
 
-        successful_snapshots = SnapshotModule.stats_successful_snapshots()
-        bold = ['bold']
-        if successful_snapshots:
-            tr.write_line((
-                colored('{} snapshots passed', attrs=bold) + '.'
-            ).format(successful_snapshots))
-        new_snapshots = SnapshotModule.stats_new_snapshots()
-        if new_snapshots[0]:
-            tr.write_line((
-                colored('{} snapshots written', 'green', attrs=bold) + ' in {} test suites.'
-            ).format(*new_snapshots))
-        inspect_str = colored(
-            'Inspect your code or run with `pytest --snapshot-update` to update them.',
-            attrs=['dark']
-        )
-        failed_snapshots = SnapshotModule.stats_failed_snapshots()
-        if failed_snapshots[0]:
-            tr.write_line((
-                colored('{} snapshots failed', 'red', attrs=bold) + ' in {} test suites. '
-                + inspect_str
-            ).format(*failed_snapshots), red=True)
-        unvisited_snapshots = SnapshotModule.stats_unvisited_snapshots()
-        if unvisited_snapshots[0]:
-            tr.write_line((
-                colored('{} snapshots deprecated', 'yellow', attrs=bold) + ' in {} test suites. '
-                + inspect_str
-            ).format(*unvisited_snapshots))
+        for line in reporting_lines('pytest'):
+            tr.write_line(line)
 
 
 def pytest_assertrepr_compare(op, left, right):
     if isinstance(left, PrettyDiff) and op == "==":
-        return [
-            'stored snapshot should match the received value',
-            '',
-            colored('> ') +
-            colored('Received value', 'red', attrs=['bold']) +
-            colored(' does not match ', attrs=['bold']) +
-            colored('stored snapshot `{}`'.format(
-                left.snapshottest.test_name,
-            ), 'green', attrs=['bold']) +
-            colored('.', attrs=['bold']),
-            colored('') + '> ' + os.path.relpath(left.snapshottest.module.filepath, os.getcwd()),
-            '',
-        ] + left.get_diff(right)
+        return diff_report(left, right)
 
 
 @pytest.fixture

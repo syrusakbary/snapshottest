@@ -9,8 +9,8 @@ with open('README.rst') as f:
 tests_require = [
     'six',
     'pytest>=3.0',
-    'pytest-cov'
-    # 'nose',
+    'pytest-cov',
+    'nose',
 ]
 
 setup(
@@ -25,6 +25,9 @@ setup(
     entry_points = {
         'pytest11': [
             'snapshottest = snapshottest.pytest',
+        ],
+        'nose.plugins.0.10': [
+            'snapshottest = snapshottest.nose:SnapshotTestPlugin'
         ]
     },
     install_requires=[
@@ -37,9 +40,9 @@ setup(
         'pytest': [
             'pytest',
         ],
-        # 'nose': [
-        #     'nose',
-        # ],
+        'nose': [
+            'nose',
+        ],
     },
     classifiers=[
         'Development Status :: 3 - Alpha',

@@ -14,6 +14,8 @@ script:
 - py.test examples/pytest
 # Run Unittest Example
 - python examples/unittest/test_demo.py
+# Run nose
+- nosetests examples/unittest
 after_success:
 - coveralls
 matrix:

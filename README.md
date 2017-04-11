@@ -21,7 +21,7 @@ Snapshot testing is a way to test your APIs without writing actual test cases.
     $ pip install snapshottest
 
 
-## Usage with unittest
+## Usage with unittest/nose
 
 ```python
 from snapshottest import TestCase
@@ -34,7 +34,7 @@ class APITestCase(TestCase):
 ```
 
 Check the [Unittest example](https://github.com/syrusakbary/snapshottest/tree/master/examples/unittest).
-
+If you want to update the snapshots automatically you can use the `--snapshot-update` when running with nose.
 
 ## Usage with pytest
 

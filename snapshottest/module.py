@@ -94,6 +94,10 @@ class SnapshotModule(object):
         stats_failed = cls.stats_failed_snapshots()
         return stats_visited[0] - stats_failed[0]
 
+    @classmethod
+    def has_snapshots(cls):
+        return cls.stats_visited_snapshots()[0] > 0
+
     @property
     def original_snapshot(self):
         if not self._original_snapshot:
@@ -163,7 +167,7 @@ snapshots = Snapshot()
             dirname = os.path.dirname(test_filepath)
             snapshot_dir = os.path.join(dirname, "snapshots")
 
-            snapshot_basename = 'snap_{}'.format(os.path.basename(test_filepath))
+            snapshot_basename = 'snap_{}.py'.format(os.path.splitext(os.path.basename(test_filepath))[0])
             snapshot_filename = os.path.join(snapshot_dir, snapshot_basename)
             snapshot_module = '{}'.format(os.path.splitext(snapshot_basename)[0])
 

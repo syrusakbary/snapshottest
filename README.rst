@@ -18,8 +18,8 @@ Installation
 
     $ pip install snapshottest
 
-Usage with unittest
--------------------
+Usage with unittest/nose
+------------------------
 
 .. code:: python
 
@@ -33,6 +33,8 @@ Usage with unittest
 
 Check the `Unittest
 example <https://github.com/syrusakbary/snapshottest/tree/master/examples/unittest>`__.
+If you want to update the snapshots automatically you can use the
+``--snapshot-update`` when running with nose.
 
 Usage with pytest
 -----------------
