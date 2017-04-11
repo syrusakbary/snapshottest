@@ -33,8 +33,9 @@ class APITestCase(TestCase):
         self.assertMatchSnapshot(my_api_response)
 ```
 
+If you want to update the snapshots automatically you can use the `nosetests --snapshot-update`.
+
 Check the [Unittest example](https://github.com/syrusakbary/snapshottest/tree/master/examples/unittest).
-If you want to update the snapshots automatically you can use the `--snapshot-update` when running with nose.
 
 ## Usage with pytest
 
