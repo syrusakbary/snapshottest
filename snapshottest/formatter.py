@@ -3,6 +3,17 @@ import six
 from .generic_repr import GenericRepr
 
 
+def trepr(s):
+    text = '\n'.join([repr(line)[1:-1] for line in s.split('\n')])
+    quotes, dquotes = "'''", '"""'
+    if quotes in text:
+        if dquotes in text:
+            text = text.replace(quotes, "\\'\\'\\'")
+        else:
+            quotes = dquotes
+    return "%s%s%s" % (quotes, text, quotes)
+
+
 class Formatter(object):
     def __init__(self, imports=None):
         self.types = {}
@@ -37,6 +48,10 @@ class Formatter(object):
         return self.format_object(value, indent)
 
     def format_str(self, value, indent):
+        if '\n' in value:
+            # Is a multiline string, so we use '''{}''' for the repr
+            return trepr(value)
+
         return repr(str(value))
 
     def format_std_type(self, value, indent):
