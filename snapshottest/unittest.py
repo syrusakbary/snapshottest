@@ -59,16 +59,16 @@ def _create_unit_test_snap_shot_wrapper(TestCaseBaseClass):
             cls._snapshot_tests = []
             cls._snapshot_file = inspect.getfile(cls)
 
-            if cls is not TestCase and cls.setUp is not TestCase.setUp:
+            if cls is not _TestCase and cls.setUp is not _TestCase.setUp:
                 orig_setUp = cls.setUp
                 orig_tearDown = cls.tearDown
 
                 def setUpOverride(self, *args, **kwargs):
-                    TestCase.setUp(self)
+                    _TestCase.setUp(self)
                     return orig_setUp(self, *args, **kwargs)
 
                 def tearDownOverride(self, *args, **kwargs):
-                    TestCase.tearDown(self)
+                    _TestCase.tearDown(self)
                     return orig_tearDown(self, *args, **kwargs)
 
                 cls.setUp = setUpOverride
