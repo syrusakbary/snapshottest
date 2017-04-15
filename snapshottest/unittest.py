@@ -117,7 +117,6 @@ def _create_unit_test_snap_shot_wrapper(TestCaseBaseClass):
     return _TestCase
 
 
-
 TestCase = _create_unit_test_snap_shot_wrapper(unittest.TestCase)
 if django_test is None:
     DjangoTestCase = None
