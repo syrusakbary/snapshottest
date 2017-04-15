@@ -37,6 +37,21 @@ If you want to update the snapshots automatically you can use the `nosetests --s
 
 Check the [Unittest example](https://github.com/syrusakbary/snapshottest/tree/master/examples/unittest).
 
+## Usage with django
+
+```python
+from snapshottest import DjangoTestCase
+
+class APITestCase(DjangoTestCase):
+    def test_api_me(self):
+        """Testing the API for /me"""
+        my_api_response = api.client.get('/me')
+        self.assertMatchSnapshot(my_api_response)
+```
+
+Check the [DjangoTestCase example](https://github.com/syrusakbary/snapshottest/tree/master/examples/django_testcase).
+
+
 ## Usage with pytest
 
 ```python
