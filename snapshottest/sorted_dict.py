@@ -3,7 +3,6 @@ from collections import OrderedDict
 
 class SortedDict(OrderedDict):
     def __init__(self, **kwargs):
-        print("yeah!!!!! motha fucka")
         super(SortedDict, self).__init__()
 
         for key, value in sorted(kwargs.items()):
