@@ -1,5 +1,6 @@
 import six
 
+from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
 
 
@@ -63,6 +64,7 @@ class Formatter(object):
         return repr(GenericRepr(value))
 
     def format_dict(self, value, indent):
+        value = SortedDict(**value)
         items = [
             self.lfchar + self.htchar * (indent + 1) + self.format(key, indent) + ': ' +
             self.format(value[key], indent + 1)
