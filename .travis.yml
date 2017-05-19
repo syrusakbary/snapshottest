@@ -16,6 +16,10 @@ script:
 - python examples/unittest/test_demo.py
 # Run nose
 - nosetests examples/unittest
+# Run django. First time to save snapshot
+- cd examples/django_project && python manage.py test
+# Second time to test the update feature since the test is dynamic it should fail without the update flag
+- cd examples/django_project && python manage.py test --snapshot-update
 after_success:
 - coveralls
 matrix:
