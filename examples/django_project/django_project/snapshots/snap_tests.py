@@ -8,5 +8,5 @@ from snapshottest import Snapshot
 snapshots = Snapshot()
 
 snapshots['TestDemo::test_api_me 1'] = {
-    'url': '/2017-05-19T03:43:58.004064'
+    'url': '/2017-05-19T03:49:51.952032'
 }

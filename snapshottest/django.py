@@ -1,12 +1,14 @@
-from django.test.runner import DiscoverRunner
+from __future__ import absolute_import
 from django.test import TestCase as dTestCase
+from django.test.runner import DiscoverRunner
+
 from .unittest import TestCase as uTestCase
 
 
 class TestRunner(DiscoverRunner):
 
     def __init__(self, snapshot_update=False, **kwargs):
-        super().__init__(**kwargs)
+        super(TestRunner, self).__init__(**kwargs)
         TestCase.snapshot_should_update = snapshot_update
 
     @classmethod

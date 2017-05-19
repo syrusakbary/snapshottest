@@ -69,7 +69,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'django_project.wsgi.application'
 
-TEST_RUNNER = 'snapshottest.django.TestRunner'
+TEST_RUNNER = 'snapshottest.TestRunner'
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
