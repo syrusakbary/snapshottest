@@ -1,0 +1,11 @@
+<html>
+    <title>Lists</title>
+    <body>
+      <table id="id_list_table">
+        {% for list in lists %}
+        <tr><td>{{forloop.counter}}: {{ list.name }}</td></tr>
+        {% endfor %}
+      </table>:
+
+    </body>
+</html>
