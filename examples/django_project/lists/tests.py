@@ -7,5 +7,4 @@ class ListTest(TestCase):
     def test_uses_home_template(self):
         List.objects.create(name="test")
         response = self.client.get('/')
-        print("yeah!!!")
         self.assertMatchSnapshot(response.content.decode())
