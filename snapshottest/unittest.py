@@ -79,6 +79,7 @@ class TestCase(unittest.TestCase):
         if cls._snapshot_tests:
             module = SnapshotModule.get_module_for_testpath(cls._snapshot_file)
             module.save()
+        super(TestCase, cls).tearDownClass()
 
     def setUp(self):
         """Do some custom setup"""
