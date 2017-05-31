@@ -9,7 +9,6 @@ from .diff import PrettyDiff
 # from .error import SnapshotError
 
 
-logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
