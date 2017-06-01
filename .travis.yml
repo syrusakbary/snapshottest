@@ -16,6 +16,8 @@ script:
 - python examples/unittest/test_demo.py
 # Run nose
 - nosetests examples/unittest
+# Run Django Example
+- python examples/django_testcase/test_demo.py
 after_success:
 - coveralls
 matrix:

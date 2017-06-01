@@ -11,6 +11,7 @@ tests_require = [
     'pytest>=3.0',
     'pytest-cov',
     'nose',
+    'django',
 ]
 
 setup(
