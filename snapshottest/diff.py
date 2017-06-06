@@ -1,6 +1,7 @@
 from difflib import Differ
 from termcolor import colored
 
+from .sorted_dict import SortedDict
 from .formatter import Formatter
 
 
@@ -21,6 +22,8 @@ def format_line(line):
 
 class PrettyDiff(object):
     def __init__(self, obj, snapshottest):
+        if isinstance(obj, dict):
+            obj = SortedDict(**obj)
         self.obj = obj
         self.pretty = Formatter()
         self.differ = Differ()

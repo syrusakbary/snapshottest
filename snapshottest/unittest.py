@@ -42,7 +42,7 @@ class UnitTestSnapshotTest(SnapshotTest):
 # Inspired by https://gist.github.com/twolfson/13f5f5784f67fd49b245
 class TestCase(unittest.TestCase):
 
-    _snapshot_should_update = False
+    snapshot_should_update = False
 
     @classmethod
     def setUpClass(cls):
@@ -79,6 +79,7 @@ class TestCase(unittest.TestCase):
         if cls._snapshot_tests:
             module = SnapshotModule.get_module_for_testpath(cls._snapshot_file)
             module.save()
+        super(TestCase, cls).tearDownClass()
 
     def setUp(self):
         """Do some custom setup"""
@@ -88,7 +89,7 @@ class TestCase(unittest.TestCase):
             test_class=self.__class__,
             test_id=self.id(),
             test_filepath=self._snapshot_file,
-            should_update=self._snapshot_should_update,
+            should_update=self.snapshot_should_update,
             assertEqual=self.assertEqual
         )
         self._snapshot_tests.append(self._snapshot)

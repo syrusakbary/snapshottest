@@ -2,9 +2,9 @@ language: python
 sudo: false
 python:
 - 2.7
-- 3.3
 - 3.4
 - 3.5
+- 3.6
 cache: pip
 install:
 - pip install -e .[test]
@@ -16,6 +16,8 @@ script:
 - python examples/unittest/test_demo.py
 # Run nose
 - nosetests examples/unittest
+# Run django. since the test is dynamic it should fail without the update flag
+- cd examples/django_project && python manage.py test --snapshot-update
 after_success:
 - coveralls
 matrix:

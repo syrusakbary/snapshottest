@@ -50,6 +50,24 @@ If you want to update the snapshots automatically you can use the `--snapshot-up
 
 Check the [Pytest example](https://github.com/syrusakbary/snapshottest/tree/master/examples/pytest).
 
+## Usage with django
+Add to your settings:
+```python
+TEST_RUNNER = 'snapshottest.django.TestRunner'
+```
+To create your snapshottest:
+```python
+from snapshottest.django import TestCase
+
+class APITestCase(TestCase):
+    def test_api_me(self):
+        """Testing the API for /me"""
+        my_api_response = api.client.get('/me')
+        self.assertMatchSnapshot(my_api_response)
+```
+If you want to update the snapshots automatically you can use the `python manage.py test --snapshot-update`.
+Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/master/examples/django-project).
+
 # Contributing
 
 After cloning this repo, ensure dependencies are installed by running:
