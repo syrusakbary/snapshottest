@@ -79,7 +79,7 @@ pip install -e ".[test]"
 After developing, the full test suite can be evaluated by running:
 
 ```sh
-py.test tests --cov=snapshottest
+py.test
 ```
 
 

@@ -39,7 +39,9 @@ class PyTestSnapshotTest(SnapshotTest):
 
     @property
     def test_name(self):
-        return '{} {}'.format(
+        cls_name = getattr(self.request.node.cls, '__name__', '')
+        return '{}{} {}'.format(
+            '{}.'.format(cls_name) if cls_name else '',
             self.request.node.name,
             self.curr_snapshot
         )
