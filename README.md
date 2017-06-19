@@ -66,7 +66,7 @@ class APITestCase(TestCase):
         self.assertMatchSnapshot(my_api_response)
 ```
 If you want to update the snapshots automatically you can use the `python manage.py test --snapshot-update`.
-Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/master/examples/django-project).
+Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/master/examples/django_project).
 
 # Contributing
 
