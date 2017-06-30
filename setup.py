@@ -2,17 +2,10 @@
 
 from setuptools import setup, find_packages
 
-
 with open('README.rst') as f:
     readme = f.read()
 
-tests_require = [
-    'six',
-    'pytest>=3.0',
-    'pytest-cov',
-    'nose',
-    'django>=1.10.6'
-]
+tests_require = ['six', 'pytest>=3.0', 'pytest-cov', 'nose', 'django>=1.10.6']
 
 setup(
     name='snapshottest',
@@ -23,19 +16,14 @@ setup(
     author_email='me@syrusakbary.com',
     url='https://github.com/syrusakbary/snapshottest',
     # custom PyPI classifier for pytest plugins
-    entry_points = {
+    entry_points={
         'pytest11': [
             'snapshottest = snapshottest.pytest',
         ],
-        'nose.plugins.0.10': [
-            'snapshottest = snapshottest.nose:SnapshotTestPlugin'
-        ]
+        'nose.plugins.0.10':
+        ['snapshottest = snapshottest.nose:SnapshotTestPlugin']
     },
-    install_requires=[
-        'six>=1.10.0',
-        'termcolor',
-        'django>=1.10.6'
-    ],
+    install_requires=['six>=1.10.0', 'termcolor'],
     tests_require=tests_require,
     extras_require={
         'test': tests_require,
@@ -61,5 +49,4 @@ setup(
         'Framework :: Pytest',
     ],
     license='MIT',
-    packages=find_packages(exclude=('tests',))
-)
+    packages=find_packages(exclude=('tests', )))
