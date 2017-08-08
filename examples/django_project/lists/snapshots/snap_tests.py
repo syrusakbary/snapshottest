@@ -17,4 +17,5 @@ snapshots['ListTest::test_uses_home_template 1'] = '''<html>
       </table>:
 
     </body>
-</html>'''
+</html>
+'''
