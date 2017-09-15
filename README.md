@@ -31,6 +31,10 @@ class APITestCase(TestCase):
         """Testing the API for /me"""
         my_api_response = api.client.get('/me')
         self.assertMatchSnapshot(my_api_response)
+
+        # Set custom snapshot name: `gpg_response`
+        my_gpg_response = api.client.get('/me?gpg_key')
+        self.assertMatchSnapshot(my_gpg_response, 'gpg_response')
 ```
 
 If you want to update the snapshots automatically you can use the `nosetests --snapshot-update`.
@@ -44,6 +48,10 @@ def test_mything(snapshot):
     """Testing the API for /me"""
     my_api_response = api.client.get('/me')
     snapshot.assert_match(my_api_response)
+
+    # Set custom snapshot name: `gpg_response`
+    my_gpg_response = api.client.get('/me?gpg_key')
+    snapshot.assert_match(my_gpg_response, 'gpg_response')
 ```
 
 If you want to update the snapshots automatically you can use the `--snapshot-update` config.

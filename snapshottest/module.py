@@ -180,7 +180,8 @@ class SnapshotTest(object):
     update = False
 
     def __init__(self):
-        self.curr_snapshot = 1
+        self.curr_snapshot = ''
+        self.snapshot_counter = 1
 
     @property
     def module(self):
@@ -210,12 +211,12 @@ class SnapshotTest(object):
 
     def store(self, data):
         self.module[self.test_name] = data
-        self.curr_snapshot += 1
 
     def assert_equals(self, value, snapshot):
         assert value == snapshot
 
-    def assert_match(self, value):
+    def assert_match(self, value, name=''):
+        self.curr_snapshot = name or self.snapshot_counter
         self.visit()
         prev_snapshot = not self.update and self.module[self.test_name]
         if prev_snapshot:
@@ -229,13 +230,15 @@ class SnapshotTest(object):
                 raise
 
         self.store(value)
+        if not name:
+            self.snapshot_counter += 1
 
     def save_changes(self):
         self.module.save()
 
 
-def assert_match_snapshot(value):
+def assert_match_snapshot(value, name=''):
     if not SnapshotTest._current_tester:
         raise Exception("You need to use assert_match_snapshot in the SnapshotTest context.")
 
-    SnapshotTest._current_tester.assert_match(value)
+    SnapshotTest._current_tester.assert_match(value, name)
