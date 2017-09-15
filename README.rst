@@ -37,6 +37,10 @@ Usage with unittest/nose
             my_api_response = api.client.get('/me')
             self.assertMatchSnapshot(my_api_response)
 
+            # Set custom snapshot name: `gpg_response`
+            my_gpg_response = api.client.get('/me?gpg_key')
+            self.assertMatchSnapshot(my_gpg_response, 'gpg_response')
+
 If you want to update the snapshots automatically you can use the
 ``nosetests --snapshot-update``.
 
@@ -53,11 +57,40 @@ Usage with pytest
         my_api_response = api.client.get('/me')
         snapshot.assert_match(my_api_response)
 
+        # Set custom snapshot name: `gpg_response`
+        my_gpg_response = api.client.get('/me?gpg_key')
+        snapshot.assert_match(my_gpg_response, 'gpg_response')
+
 If you want to update the snapshots automatically you can use the
 ``--snapshot-update`` config.
 
 Check the `Pytest
 example <https://github.com/syrusakbary/snapshottest/tree/master/examples/pytest>`__.
+
+Usage with django
+-----------------
+
+Add to your settings:
+
+.. code:: python
+
+    TEST_RUNNER = 'snapshottest.django.TestRunner'
+
+To create your snapshottest:
+
+.. code:: python
+
+    from snapshottest.django import TestCase
+
+    class APITestCase(TestCase):
+        def test_api_me(self):
+            """Testing the API for /me"""
+            my_api_response = api.client.get('/me')
+            self.assertMatchSnapshot(my_api_response)
+
+If you want to update the snapshots automatically you can use the
+``python manage.py test --snapshot-update``. Check the `Django
+example <https://github.com/syrusakbary/snapshottest/tree/master/examples/django_project>`__.
 
 Contributing
 ============
@@ -72,7 +105,7 @@ After developing, the full test suite can be evaluated by running:
 
 .. code:: sh
 
-    py.test tests --cov=snapshottest
+    py.test
 
 Notes
 =====
