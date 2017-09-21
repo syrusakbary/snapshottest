@@ -42,7 +42,7 @@ class SnapshotTestPlugin(Plugin):
 
     def wantClass(self, cls):
         if issubclass(cls, TestCase):
-            cls._snapshot_should_update = self.snapshot_update
+            cls.snapshot_should_update = self.snapshot_update
 
     def afterContext(self):
         if self.snapshot_update:
