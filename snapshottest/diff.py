@@ -22,12 +22,12 @@ def format_line(line):
 
 class PrettyDiff(object):
     def __init__(self, obj, snapshottest):
-        if isinstance(obj, dict):
-            obj = SortedDict(**obj)
-        self.obj = obj
         self.pretty = Formatter()
         self.differ = Differ()
         self.snapshottest = snapshottest
+        if isinstance(obj, dict):
+            obj = SortedDict(**obj)
+        self.obj = self.pretty(obj)
 
     def __eq__(self, other):
         return isinstance(other, PrettyDiff) and self.obj == other.obj
