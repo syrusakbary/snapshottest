@@ -4,7 +4,7 @@ class GenericRepr(object):
 
     def __repr__(self):
         representation = repr(self.obj)
-        if "'{}'".format(self.obj) == representation:
+        if "'{}'".format(self.obj) == representation or '"{}"'.format(self.obj) == representation:
             representation = self.obj
         # We remove the hex id, if found
         representation = representation.replace(hex(id(self.obj)), "0x100000000")
