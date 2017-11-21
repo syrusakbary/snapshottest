@@ -1,5 +1,5 @@
 import six
-
+import datetime
 from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
 
@@ -18,7 +18,7 @@ def trepr(s):
 class Formatter(object):
     def __init__(self, imports=None):
         self.types = {}
-        self.htchar = ' '*4
+        self.htchar = ' ' * 4
         self.lfchar = '\n'
         self.indent = 0
         self.imports = imports
@@ -45,6 +45,8 @@ class Formatter(object):
             return self.format_str(value, indent)
         elif isinstance(value, (int, float, complex, bool, bytes, set, frozenset, GenericRepr)):
             return self.format_std_type(value, indent)
+        elif isinstance(value, datetime.datetime):
+            return self.format_str(str(value), indent)
 
         return self.format_object(value, indent)
 
@@ -53,7 +55,7 @@ class Formatter(object):
             # Is a multiline string, so we use '''{}''' for the repr
             return trepr(value)
 
-        return repr(str(value))
+        return repr(value)
 
     def format_std_type(self, value, indent):
         return repr(value)

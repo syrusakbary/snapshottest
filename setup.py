@@ -9,7 +9,7 @@ tests_require = ['six', 'pytest>=3.0', 'pytest-cov', 'nose', 'django>=1.10.6']
 
 setup(
     name='snapshottest',
-    version='0.5.0',
+    version='0.5.1',
     description='Snapshot Testing utils for Python',
     long_description=readme,
     author='Syrus Akbary',

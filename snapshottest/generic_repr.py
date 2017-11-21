@@ -8,6 +8,7 @@ class GenericRepr(object):
             representation = self.obj
         # We remove the hex id, if found
         representation = representation.replace(hex(id(self.obj)), "0x100000000")
+
         return 'GenericRepr("{}")'.format(representation)
 
     def __eq__(self, other):
