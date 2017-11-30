@@ -24,7 +24,7 @@ class SnapshotModule(object):
         self.visited_snapshots = set()
         self.new_snapshots = set()
         self.failed_snapshots = set()
-        self.imports['snapshottest'].add('Snapshot')
+        self.imports['snapshottest.snapshot'].add('Snapshot')
 
     def load_snapshots(self):
         try:
