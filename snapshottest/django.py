@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from django.test import TestCase as dTestCase
+from django.test import SimpleTestCase as dSimpleTestCase
 from django.test.runner import DiscoverRunner
 
 from snapshottest.reporting import reporting_lines
@@ -13,7 +14,7 @@ class TestRunner(DiscoverRunner):
 
     def __init__(self, snapshot_update=False, **kwargs):
         super(TestRunner, self).__init__(**kwargs)
-        TestCase.snapshot_should_update = snapshot_update
+        uTestCase.snapshot_should_update = snapshot_update
 
     @classmethod
     def add_arguments(cls, parser):
@@ -42,4 +43,7 @@ class TestRunner(DiscoverRunner):
 
 
 class TestCase(uTestCase, dTestCase):
+    pass
+
+class SimpleTestCase(uTestCase, dSimpleTestCase):
     pass
