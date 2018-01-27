@@ -1,3 +1,4 @@
+import codecs
 import os
 import imp
 from collections import defaultdict
@@ -139,7 +140,7 @@ class SnapshotModule(object):
 
         pretty = Formatter(self.imports)
 
-        with open(self.filepath, 'w', encoding="utf-8") as snapshot_file:
+        with codecs.open(self.filepath, 'w', encoding="utf-8") as snapshot_file:
             snapshots_declarations = []
             for key, value in self.snapshots.items():
                 snapshots_declarations.append('''snapshots['{}'] = {}'''.format(key, pretty(value)))
