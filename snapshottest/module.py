@@ -139,7 +139,7 @@ class SnapshotModule(object):
 
         pretty = Formatter(self.imports)
 
-        with open(self.filepath, 'w') as snapshot_file:
+        with open(self.filepath, 'w', encoding="utf-8") as snapshot_file:
             snapshots_declarations = []
             for key, value in self.snapshots.items():
                 snapshots_declarations.append('''snapshots['{}'] = {}'''.format(key, pretty(value)))
