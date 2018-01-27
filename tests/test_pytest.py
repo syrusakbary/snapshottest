@@ -46,3 +46,14 @@ def test_pytest_snapshottest_property_test_name(pytest_snapshot_test):
         pytest_snapshot_test.assert_match('counter')
         assert pytest_snapshot_test.test_name == \
             'test_pytest_snapshottest_property_test_name 2'
+
+
+def test_pytest_snapshottest_ignore_fields(pytest_snapshot_test):
+    ignore_fields_test = {
+        'url': 'example',
+        'date': '12-12-2017'
+    }
+
+    pytest_snapshot_test.assert_match(ignore_fields_test, 'ignore_fields_test', ignore_fields=['date'])
+    ignore_fields_test.pop('date', None)
+    assert pytest_snapshot_test.module[pytest_snapshot_test.test_name] == ignore_fields_test
