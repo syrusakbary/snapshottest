@@ -215,11 +215,13 @@ class SnapshotTest(object):
     def assert_equals(self, value, snapshot):
         assert value == snapshot
 
-    def assert_match(self, value, name=''):
+    def assert_match(self, value, name='', ignore_fields=None):
+        self.remove_fields_from_dict(value, ignore_fields)
         self.curr_snapshot = name or self.snapshot_counter
         self.visit()
         prev_snapshot = not self.update and self.module[self.test_name]
         if prev_snapshot:
+            self.remove_fields_from_dict(prev_snapshot, ignore_fields)
             try:
                 self.assert_equals(
                     PrettyDiff(value, self),
@@ -236,9 +238,17 @@ class SnapshotTest(object):
     def save_changes(self):
         self.module.save()
 
+    @classmethod
+    def remove_fields_from_dict(cls, dictionary, remove_fields=None):
+        if remove_fields is None:
+            remove_fields = []
+        for field in remove_fields:
+            if field in dictionary:
+                del dictionary[field]
 
-def assert_match_snapshot(value, name=''):
+
+def assert_match_snapshot(value, name='', ignore_fields=None):
     if not SnapshotTest._current_tester:
         raise Exception("You need to use assert_match_snapshot in the SnapshotTest context.")
 
-    SnapshotTest._current_tester.assert_match(value, name)
+    SnapshotTest._current_tester.assert_match(value, name, ignore_fields)
