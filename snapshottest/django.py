@@ -13,7 +13,7 @@ class TestRunner(DiscoverRunner):
 
     def __init__(self, snapshot_update=False, **kwargs):
         super(TestRunner, self).__init__(**kwargs)
-        TestCase.snapshot_should_update = snapshot_update
+        uTestCase.snapshot_should_update = snapshot_update
 
     @classmethod
     def add_arguments(cls, parser):
