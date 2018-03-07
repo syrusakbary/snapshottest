@@ -149,7 +149,7 @@ class SnapshotModule(object):
                 'from {} import {}'.format(module, ', '.join(module_imports))
                 for module, module_imports in self.imports.items()
             ])
-            snapshot_file.write('''# -*- coding: utf-8 -*-
+            snapshot_file.write(u'''# -*- coding: utf-8 -*-
 # snapshottest: v1 - https://goo.gl/zC4yUc
 from __future__ import unicode_literals
 
