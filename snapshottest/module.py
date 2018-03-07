@@ -1,4 +1,5 @@
 import os
+from io import open
 import imp
 from collections import defaultdict
 import logging
