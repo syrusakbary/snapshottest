@@ -1,4 +1,5 @@
 import os
+from io import open
 import imp
 from collections import defaultdict
 import logging
@@ -139,7 +140,7 @@ class SnapshotModule(object):
 
         pretty = Formatter(self.imports)
 
-        with open(self.filepath, 'w') as snapshot_file:
+        with open(self.filepath, 'w', encoding='utf-8') as snapshot_file:
             snapshots_declarations = []
             for key, value in self.snapshots.items():
                 snapshots_declarations.append('''snapshots['{}'] = {}'''.format(key, pretty(value)))
@@ -148,7 +149,7 @@ class SnapshotModule(object):
                 'from {} import {}'.format(module, ', '.join(module_imports))
                 for module, module_imports in self.imports.items()
             ])
-            snapshot_file.write('''# -*- coding: utf-8 -*-
+            snapshot_file.write(u'''# -*- coding: utf-8 -*-
 # snapshottest: v1 - https://goo.gl/zC4yUc
 from __future__ import unicode_literals
 
