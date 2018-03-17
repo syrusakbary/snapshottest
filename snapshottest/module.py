@@ -216,12 +216,12 @@ class SnapshotTest(object):
         assert value == snapshot
 
     def assert_match(self, value, name='', ignore_fields=None):
-        self.remove_fields_from_dict(value, ignore_fields)
+        self.remove_fields(value, ignore_fields)
         self.curr_snapshot = name or self.snapshot_counter
         self.visit()
         prev_snapshot = not self.update and self.module[self.test_name]
         if prev_snapshot:
-            self.remove_fields_from_dict(prev_snapshot, ignore_fields)
+            self.remove_fields(prev_snapshot, ignore_fields)
             try:
                 self.assert_equals(
                     PrettyDiff(value, self),
@@ -239,12 +239,16 @@ class SnapshotTest(object):
         self.module.save()
 
     @classmethod
-    def remove_fields_from_dict(cls, dictionary, remove_fields=None):
-        if remove_fields is None:
-            remove_fields = []
-        for field in remove_fields:
-            if field in dictionary:
-                del dictionary[field]
+    def remove_fields(cls, input, remove_fields_list=None):
+        if remove_fields_list is None:
+            remove_fields_list = []
+        gen = (field for field in remove_fields_list if field in input)
+        for field in gen:
+            del input[field]
+        if isinstance(input, dict):
+            gen = (value for value in input.values() if isinstance(value, dict))
+            for value in gen:
+                cls.remove_fields(value, remove_fields_list)
 
 
 def assert_match_snapshot(value, name='', ignore_fields=None):
