@@ -1,4 +1,5 @@
 import codecs
+import errno
 import os
 import imp
 from collections import defaultdict
@@ -30,10 +31,15 @@ class SnapshotModule(object):
     def load_snapshots(self):
         try:
             source = imp.load_source(self.module, self.filepath)
+        # except FileNotFoundError:  # Python 3
+        except (IOError, OSError) as err:
+            if err.errno == errno.ENOENT:
+                return Snapshot()
+            else:
+                raise
+        else:
             assert isinstance(source.snapshots, Snapshot)
             return source.snapshots
-        except BaseException:
-            return Snapshot()
 
     def visit(self, snapshot_name):
         self.visited_snapshots.add(snapshot_name)
