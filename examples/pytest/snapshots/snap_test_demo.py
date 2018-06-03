@@ -10,3 +10,5 @@ snapshots = Snapshot()
 snapshots['test_me_endpoint 1'] = {
     'url': '/me'
 }
+
+snapshots['test_unicode 1'] = u'p\xe9p\xe8re'

@@ -5,7 +5,7 @@ from .generic_repr import GenericRepr
 
 
 def trepr(s):
-    text = '\n'.join([repr(line)[1:-1] for line in s.split('\n')])
+    text = '\n'.join([repr(line).lstrip('u')[1:-1] for line in s.split('\n')])
     quotes, dquotes = "'''", '"""'
     if quotes in text:
         if dquotes in text:
@@ -53,7 +53,9 @@ class Formatter(object):
             # Is a multiline string, so we use '''{}''' for the repr
             return trepr(value)
 
-        return repr(str(value))
+        # Snapshots are saved with `from __future__ import unicode_literals`,
+        # so the `u'...'` repr is unnecessary, even on Python 2
+        return repr(value).lstrip('u')
 
     def format_std_type(self, value, indent):
         return repr(value)
