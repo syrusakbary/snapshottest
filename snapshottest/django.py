@@ -51,5 +51,6 @@ class TestRunner(DiscoverRunner):
 class TestCase(uTestCase, dTestCase):
     pass
 
+
 class SimpleTestCase(uTestCase, dSimpleTestCase):
     pass
