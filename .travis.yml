@@ -16,8 +16,8 @@ script:
 - python examples/unittest/test_demo.py
 # Run nose
 - nosetests examples/unittest
-# Run django. since the test is dynamic it should fail without the update flag
-- cd examples/django_project && python manage.py test --snapshot-update
+# Run Django Example
+- cd examples/django_project && python manage.py test
 after_success:
 - coveralls
 matrix:
