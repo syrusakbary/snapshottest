@@ -7,7 +7,6 @@ import logging
 
 from .snapshot import Snapshot
 from .formatter import Formatter
-from .diff import PrettyDiff
 from .error import SnapshotNotFound
 
 
@@ -237,11 +236,8 @@ class SnapshotTest(object):
                 self.store(value)  # first time this test has been seen
             else:
                 try:
-                    self.assert_equals(
-                        PrettyDiff(value, self),
-                        PrettyDiff(prev_snapshot, self)
-                    )
-                except BaseException:
+                    self.assert_equals(value, prev_snapshot)
+                except AssertionError:
                     self.fail()
                     raise
 
