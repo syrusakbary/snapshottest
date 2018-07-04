@@ -220,6 +220,8 @@ class SnapshotTest(object):
 
     def store(self, data):
         self.module[self.test_name] = data
+        formatter = Formatter.get_formatter(data)
+        formatter.store(self, data)
 
     def assert_equals(self, value, snapshot):
         assert value == snapshot
