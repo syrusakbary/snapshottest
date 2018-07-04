@@ -13,7 +13,7 @@ class BaseFormatter(object):
     def get_imports(self):
         return ()
 
-    def assert_equals(self, test, test_value, snapshot_value):
+    def assert_value_matches_snapshot(self, test, test_value, snapshot_value):
         test.assert_equals(test_value, snapshot_value)
 
     def store(self, test, value):
@@ -82,14 +82,14 @@ class GenericFormatter(BaseFormatter):
     def can_format(self, value):
         return True
     
-    def format(self, value):
-        return repr(GenericRepr(value))
+    def format(self, value, indent, formatter):
+        return repr(GenericRepr.from_value(value))
     
     def get_imports(self):
         return [('snapshottest', 'GenericRepr')]
 
-    def assert_equals(self, test, test_value, snapshot_value):
-        test.assert_equals(GenericRepr(test_value), snapshot_value)
+    def assert_value_matches_snapshot(self, test, test_value, snapshot_value):
+        test.assert_equals(GenericRepr.from_value(test_value), snapshot_value)
 
 def default_formatters():
     return [

@@ -1,14 +1,16 @@
 class GenericRepr(object):
-    def __init__(self, obj):
-        self.obj = obj
+    def __init__(self, representation):
+        self.representation = representation
 
     def __repr__(self):
-        representation = repr(self.obj)
-        if "'{}'".format(self.obj) == representation or '"{}"'.format(self.obj) == representation:
-            representation = self.obj
-        # We remove the hex id, if found
-        representation = representation.replace(hex(id(self.obj)), "0x100000000")
-        return 'GenericRepr("{}")'.format(representation)
+        return 'GenericRepr({})'.format(repr(self.representation))
 
     def __eq__(self, other):
-        return isinstance(other, GenericRepr) and repr(self) == repr(other)
+        return isinstance(other, GenericRepr) and self.representation == other.representation
+
+    @staticmethod
+    def from_value(value):
+        representation = repr(value)
+        # Remove the hex id, if found.
+        representation = representation.replace(hex(id(value)), "0x100000000")
+        return GenericRepr(representation)

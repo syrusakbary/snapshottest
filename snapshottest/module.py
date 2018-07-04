@@ -223,6 +223,10 @@ class SnapshotTest(object):
         formatter = Formatter.get_formatter(data)
         formatter.store(self, data)
 
+    def assert_value_matches_snapshot(self, test_value, snapshot_value):
+        formatter = Formatter.get_formatter(test_value)
+        formatter.assert_value_matches_snapshot(self, test_value, snapshot_value)
+
     def assert_equals(self, value, snapshot):
         assert value == snapshot
 
@@ -238,7 +242,7 @@ class SnapshotTest(object):
                 self.store(value)  # first time this test has been seen
             else:
                 try:
-                    self.assert_equals(value, prev_snapshot)
+                    self.assert_value_matches_snapshot(value, prev_snapshot)
                 except AssertionError:
                     self.fail()
                     raise
