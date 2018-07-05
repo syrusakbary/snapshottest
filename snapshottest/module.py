@@ -130,21 +130,23 @@ class SnapshotModule(object):
     def mark_failed(self, key):
         return self.failed_snapshots.add(key)
 
+    @property
+    def snapshot_dir(self):
+        return os.path.dirname(self.filepath)
+
     def save(self):
         if self.original_snapshot == self.snapshots:
             # If there are no changes, we do nothing
             return
 
-        snapshot_dir = os.path.dirname(self.filepath)
-
         # Create the snapshot dir in case doesn't exist
         try:
-            os.makedirs(snapshot_dir, 0o0700)
+            os.makedirs(self.snapshot_dir, 0o0700)
         except (IOError, OSError):
             pass
 
         # Create __init__.py in case doesn't exist
-        open(os.path.join(snapshot_dir, '__init__.py'), 'a').close()
+        open(os.path.join(self.snapshot_dir, '__init__.py'), 'a').close()
 
         pretty = Formatter(self.imports)
 
@@ -186,7 +188,6 @@ snapshots = Snapshot()
 
 class SnapshotTest(object):
     _current_tester = None
-    update = False
 
     def __init__(self):
         self.curr_snapshot = ''
@@ -219,9 +220,9 @@ class SnapshotTest(object):
         self.module.mark_failed(self.test_name)
 
     def store(self, data):
-        self.module[self.test_name] = data
         formatter = Formatter.get_formatter(data)
-        formatter.store(self, data)
+        data = formatter.store(self, data)
+        self.module[self.test_name] = data
 
     def assert_value_matches_snapshot(self, test_value, snapshot_value):
         formatter = Formatter.get_formatter(test_value)

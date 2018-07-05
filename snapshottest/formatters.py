@@ -17,7 +17,7 @@ class BaseFormatter(object):
         test.assert_equals(test_value, snapshot_value)
 
     def store(self, test, value):
-        pass
+        return value
 
 class TypeFormatter(BaseFormatter):
     def __init__(self, types, format_func):
