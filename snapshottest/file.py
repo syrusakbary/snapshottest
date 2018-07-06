@@ -25,10 +25,16 @@ class FileSnapshotFormatter(BaseFormatter):
         return isinstance(value, FileSnapshot)
 
     def store(self, test, value):
+        """
+        Copy the file from the test location to the snapshot location.
+        If the original test file has an extension, the snapshot file will use the same extension.
+        """
+
         file_snapshot_dir = self.get_file_snapshot_dir(test)
         if not os.path.exists(file_snapshot_dir):
             os.makedirs(file_snapshot_dir, 0o0700)
-        snapshot_file = os.path.join(file_snapshot_dir, test.test_name)
+        extension = os.path.splitext(value.path)[1]
+        snapshot_file = os.path.join(file_snapshot_dir, test.test_name) + extension
         shutil.copy(value.path, snapshot_file)
         relative_snapshot_filename = os.path.relpath(snapshot_file, test.module.snapshot_dir)
         return FileSnapshot(relative_snapshot_filename)
