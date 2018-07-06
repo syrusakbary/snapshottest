@@ -156,8 +156,8 @@ class SnapshotModule(object):
                 snapshots_declarations.append('''snapshots['{}'] = {}'''.format(key, pretty(value)))
 
             imports = '\n'.join([
-                'from {} import {}'.format(module, ', '.join(module_imports))
-                for module, module_imports in self.imports.items()
+                'from {} import {}'.format(module, ', '.join(sorted(module_imports)))
+                for module, module_imports in sorted(self.imports.items())
             ])
             snapshot_file.write('''# -*- coding: utf-8 -*-
 # snapshottest: v1 - https://goo.gl/zC4yUc
