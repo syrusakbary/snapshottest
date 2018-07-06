@@ -82,14 +82,20 @@ class GenericFormatter(BaseFormatter):
     def can_format(self, value):
         return True
     
+    def store(self, formatter, value):
+        return GenericRepr.from_value(value)
+
     def format(self, value, indent, formatter):
-        return repr(GenericRepr.from_value(value))
+        # `value` will always be a GenericRepr object because that's what `store` returns.
+        return repr(value)
     
     def get_imports(self):
         return [('snapshottest', 'GenericRepr')]
 
     def assert_value_matches_snapshot(self, test, test_value, snapshot_value):
-        test.assert_equals(GenericRepr.from_value(test_value), snapshot_value)
+        test_value = GenericRepr.from_value(test_value)
+        # Assert equality between the representations to provide a nice textual diff.
+        test.assert_equals(test_value.representation, snapshot_value.representation)
 
 def default_formatters():
     return [
