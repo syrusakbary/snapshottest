@@ -19,12 +19,14 @@ def test_unicode(snapshot):
     expect = u'pépère'
     snapshot.assert_match(expect)
 
+
 class SomeObject(object):
     def __init__(self, value):
         self.value = value
 
     def __repr__(self):
-        return f'SomeObject({repr(self.value)})'
+        return 'SomeObject({})'.format(repr(self.value))
+
 
 def test_object(snapshot):
     """
@@ -34,6 +36,7 @@ def test_object(snapshot):
     test_value = SomeObject(3)
     snapshot.assert_match(test_value)
 
+
 def test_file(snapshot, tmpdir):
     """
     Test a file snapshot. The file contents will be saved in a sub-folder of the snapshots folder. Useful for large
@@ -42,6 +45,7 @@ def test_file(snapshot, tmpdir):
     temp_file = tmpdir.join('example.txt')
     temp_file.write('Hello, world!')
     snapshot.assert_match(FileSnapshot(str(temp_file)))
+
 
 def test_multiple_files(snapshot, tmpdir):
     """

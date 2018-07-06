@@ -1,5 +1,6 @@
 from .formatters import default_formatters
 
+
 class Formatter(object):
     formatters = default_formatters()
 
@@ -23,7 +24,7 @@ class Formatter(object):
         for formatter in Formatter.formatters:
             if formatter.can_format(value):
                 return formatter
-        
+
         # This should never happen as GenericFormatter is registered by default.
         raise RuntimeError("No formatter found for value")
 

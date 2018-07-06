@@ -5,6 +5,7 @@ import filecmp
 from .formatter import Formatter
 from .formatters import BaseFormatter
 
+
 class FileSnapshot(object):
     def __init__(self, path):
         """
@@ -15,10 +16,11 @@ class FileSnapshot(object):
         self.path = path
 
     def __repr__(self):
-        return f'FileSnapshot({repr(self.path)})'
+        return 'FileSnapshot({})'.format(repr(self.path))
 
     def __eq__(self, other):
         return self.path == other.path
+
 
 class FileSnapshotFormatter(BaseFormatter):
     def can_format(self, value):
@@ -60,5 +62,6 @@ class FileSnapshotFormatter(BaseFormatter):
             snapshots/snap_<snapshot_module_name>.py
         """
         return os.path.join(test.module.snapshot_dir, test.module.module)
+
 
 Formatter.register_formatter(FileSnapshotFormatter())

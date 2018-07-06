@@ -3,13 +3,14 @@ import six
 from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
 
+
 class BaseFormatter(object):
     def can_format(self, value):
         raise NotImplementedError()
-    
+
     def format(self, value, indent, formatter):
         raise NotImplementedError()
-    
+
     def get_imports(self):
         return ()
 
@@ -18,6 +19,7 @@ class BaseFormatter(object):
 
     def store(self, test, value):
         return value
+
 
 class TypeFormatter(BaseFormatter):
     def __init__(self, types, format_func):
@@ -30,6 +32,7 @@ class TypeFormatter(BaseFormatter):
     def format(self, value, indent, formatter):
         return self.format_func(value, indent, formatter)
 
+
 def trepr(s):
     text = '\n'.join([repr(line).lstrip('u')[1:-1] for line in s.split('\n')])
     quotes, dquotes = "'''", '"""'
@@ -40,8 +43,10 @@ def trepr(s):
             quotes = dquotes
     return "%s%s%s" % (quotes, text, quotes)
 
+
 def format_none(value, indent, formatter):
     return 'None'
+
 
 def format_str(value, indent, formatter):
     if '\n' in value:
@@ -52,8 +57,10 @@ def format_str(value, indent, formatter):
     # so the `u'...'` repr is unnecessary, even on Python 2
     return repr(value).lstrip('u')
 
+
 def format_std_type(value, indent, formatter):
     return repr(value)
+
 
 def format_dict(value, indent, formatter):
     value = SortedDict(**value)
@@ -64,12 +71,14 @@ def format_dict(value, indent, formatter):
     ]
     return '{%s}' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
 
+
 def format_list(value, indent, formatter):
     items = [
         formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(item, indent + 1)
         for item in value
     ]
     return '[%s]' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
+
 
 def format_tuple(value, indent, formatter):
     items = [
@@ -78,17 +87,18 @@ def format_tuple(value, indent, formatter):
     ]
     return '(%s)' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
 
+
 class GenericFormatter(BaseFormatter):
     def can_format(self, value):
         return True
-    
+
     def store(self, formatter, value):
         return GenericRepr.from_value(value)
 
     def format(self, value, indent, formatter):
         # `value` will always be a GenericRepr object because that's what `store` returns.
         return repr(value)
-    
+
     def get_imports(self):
         return [('snapshottest', 'GenericRepr')]
 
@@ -96,6 +106,7 @@ class GenericFormatter(BaseFormatter):
         test_value = GenericRepr.from_value(test_value)
         # Assert equality between the representations to provide a nice textual diff.
         test.assert_equals(test_value.representation, snapshot_value.representation)
+
 
 def default_formatters():
     return [
