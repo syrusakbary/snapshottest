@@ -8,7 +8,7 @@ import logging
 from .snapshot import Snapshot
 from .formatter import Formatter
 from .diff import PrettyDiff
-# from .error import SnapshotError
+from .error import SnapshotNotFound
 
 
 logger = logging.getLogger(__name__)
@@ -116,8 +116,11 @@ class SnapshotModule(object):
             self._snapshots = Snapshot(self.original_snapshot)
         return self._snapshots
 
-    def __getitem__(self, key):
-        return self.snapshots.get(key, None)
+    def __getitem__(self, test_name):
+        try:
+            return self.snapshots[test_name]
+        except KeyError:
+            raise SnapshotNotFound(self, test_name)
 
     def __setitem__(self, key, value):
         if key not in self.snapshots:
@@ -225,18 +228,23 @@ class SnapshotTest(object):
     def assert_match(self, value, name=''):
         self.curr_snapshot = name or self.snapshot_counter
         self.visit()
-        prev_snapshot = not self.update and self.module[self.test_name]
-        if prev_snapshot:
+        if self.update:
+            self.store(value)
+        else:
             try:
-                self.assert_equals(
-                    PrettyDiff(value, self),
-                    PrettyDiff(prev_snapshot, self)
-                )
-            except BaseException:
-                self.fail()
-                raise
+                prev_snapshot = self.module[self.test_name]
+            except SnapshotNotFound:
+                self.store(value)  # first time this test has been seen
+            else:
+                try:
+                    self.assert_equals(
+                        PrettyDiff(value, self),
+                        PrettyDiff(prev_snapshot, self)
+                    )
+                except BaseException:
+                    self.fail()
+                    raise
 
-        self.store(value)
         if not name:
             self.snapshot_counter += 1
 
