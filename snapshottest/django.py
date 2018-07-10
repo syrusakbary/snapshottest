@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from django.test import TestCase as dTestCase
+from django.test import SimpleTestCase as dSimpleTestCase
 from django.test.runner import DiscoverRunner
 
 from snapshottest.reporting import reporting_lines
@@ -48,4 +49,8 @@ class TestRunner(DiscoverRunner):
 
 
 class TestCase(uTestCase, dTestCase):
+    pass
+
+
+class SimpleTestCase(uTestCase, dSimpleTestCase):
     pass

@@ -7,7 +7,6 @@ import logging
 
 from .snapshot import Snapshot
 from .formatter import Formatter
-from .diff import PrettyDiff
 from .error import SnapshotNotFound
 
 
@@ -131,21 +130,23 @@ class SnapshotModule(object):
     def mark_failed(self, key):
         return self.failed_snapshots.add(key)
 
+    @property
+    def snapshot_dir(self):
+        return os.path.dirname(self.filepath)
+
     def save(self):
         if self.original_snapshot == self.snapshots:
             # If there are no changes, we do nothing
             return
 
-        snapshot_dir = os.path.dirname(self.filepath)
-
         # Create the snapshot dir in case doesn't exist
         try:
-            os.makedirs(snapshot_dir, 0o0700)
+            os.makedirs(self.snapshot_dir, 0o0700)
         except (IOError, OSError):
             pass
 
         # Create __init__.py in case doesn't exist
-        open(os.path.join(snapshot_dir, '__init__.py'), 'a').close()
+        open(os.path.join(self.snapshot_dir, '__init__.py'), 'a').close()
 
         pretty = Formatter(self.imports)
 
@@ -155,8 +156,8 @@ class SnapshotModule(object):
                 snapshots_declarations.append('''snapshots['{}'] = {}'''.format(key, pretty(value)))
 
             imports = '\n'.join([
-                'from {} import {}'.format(module, ', '.join(module_imports))
-                for module, module_imports in self.imports.items()
+                'from {} import {}'.format(module, ', '.join(sorted(module_imports)))
+                for module, module_imports in sorted(self.imports.items())
             ])
             snapshot_file.write('''# -*- coding: utf-8 -*-
 # snapshottest: v1 - https://goo.gl/zC4yUc
@@ -187,7 +188,6 @@ snapshots = Snapshot()
 
 class SnapshotTest(object):
     _current_tester = None
-    update = False
 
     def __init__(self):
         self.curr_snapshot = ''
@@ -220,7 +220,13 @@ class SnapshotTest(object):
         self.module.mark_failed(self.test_name)
 
     def store(self, data):
+        formatter = Formatter.get_formatter(data)
+        data = formatter.store(self, data)
         self.module[self.test_name] = data
+
+    def assert_value_matches_snapshot(self, test_value, snapshot_value):
+        formatter = Formatter.get_formatter(test_value)
+        formatter.assert_value_matches_snapshot(self, test_value, snapshot_value)
 
     def assert_equals(self, value, snapshot):
         assert value == snapshot
@@ -237,11 +243,8 @@ class SnapshotTest(object):
                 self.store(value)  # first time this test has been seen
             else:
                 try:
-                    self.assert_equals(
-                        PrettyDiff(value, self),
-                        PrettyDiff(prev_snapshot, self)
-                    )
-                except BaseException:
+                    self.assert_value_matches_snapshot(value, prev_snapshot)
+                except AssertionError:
                     self.fail()
                     raise
 

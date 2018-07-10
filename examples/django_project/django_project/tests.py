@@ -1,7 +1,6 @@
 import unittest
-from datetime import datetime
 
-from snapshottest.django import TestCase
+from snapshottest.django import SimpleTestCase
 
 
 def api_client_get(url):
@@ -10,13 +9,10 @@ def api_client_get(url):
     }
 
 
-class TestDemo(TestCase):
+class TestDemo(SimpleTestCase):
 
     def test_api_me(self):
-        # This tests should fail unless the snapshot-update command line
-        # option is specified. Run  `python manage.py test --snapshot-update`.
-        now = datetime.now().isoformat()
-        my_api_response = api_client_get('/' + now)
+        my_api_response = api_client_get('/me')
         self.assertMatchSnapshot(my_api_response)
 
 
