@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 
 import pytest
 import six
+from datetime import date
+from collections import defaultdict
 
 from snapshottest.formatter import Formatter
 
@@ -20,9 +22,11 @@ from snapshottest.formatter import Formatter
     ("one\ntwo\n", "'''one\ntwo\n'''"),
     ("three\n'''quotes", "\"\"\"three\n'''quotes\"\"\""),
     ("so many\"\"\"\n'''quotes", "'''so many\"\"\"\n\\'\\'\\'quotes'''"),
+    # Generic representations
+    (date(2018, 1, 1), "GenericRepr('datetime.date(2018, 1, 1)')"),
 ])
 def test_text_formatting(text_value, expected):
-    formatter = Formatter()
+    formatter = Formatter(defaultdict(set))
     formatted = formatter(text_value)
     assert formatted == expected
 
@@ -48,6 +52,6 @@ def test_text_formatting(text_value, expected):
 ])
 def test_non_ascii_text_formatting(text_value, expected_py3, expected_py2):
     expected = expected_py2 if six.PY2 else expected_py3
-    formatter = Formatter()
+    formatter = Formatter(defaultdict(set))
     formatted = formatter(text_value)
     assert formatted == expected
