@@ -97,7 +97,7 @@ class GenericFormatter(BaseFormatter):
 
     def format(self, value, indent, formatter):
         # `value` will always be a GenericRepr object because that's what `store` returns.
-        return repr(value)
+        return 'GenericRepr(%s)' % format_str(repr(value), indent, formatter)
 
     def get_imports(self):
         return [('snapshottest', 'GenericRepr')]

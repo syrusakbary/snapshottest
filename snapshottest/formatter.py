@@ -4,7 +4,7 @@ from .formatters import default_formatters
 class Formatter(object):
     formatters = default_formatters()
 
-    def __init__(self, imports=None):
+    def __init__(self, imports):
         self.htchar = ' '*4
         self.lfchar = '\n'
         self.indent = 0
