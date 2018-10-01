@@ -40,12 +40,14 @@ class TestRunner(DiscoverRunner):
         return result
 
     def print_report(self):
-        print("\n" + self.separator1)
-        print('SnapshotTest summary')
-        print(self.separator2)
-        for line in reporting_lines('python manage.py test'):
-            print(line)
-        print(self.separator1)
+        lines = list(reporting_lines('python manage.py test'))
+        if lines:
+            print("\n" + self.separator1)
+            print('SnapshotTest summary')
+            print(self.separator2)
+            for line in lines:
+                print(line)
+            print(self.separator1)
 
 
 class TestCase(uTestCase, dTestCase):
