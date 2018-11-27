@@ -151,9 +151,10 @@ class SnapshotModule(object):
         pretty = Formatter(self.imports)
 
         with codecs.open(self.filepath, 'w', encoding="utf-8") as snapshot_file:
-            snapshots_declarations = []
-            for key, value in self.snapshots.items():
-                snapshots_declarations.append('''snapshots['{}'] = {}'''.format(key, pretty(value)))
+            snapshots_declarations = [
+                """snapshots['{}'] = {}""".format(key, pretty(self.snapshots[key]))
+                for key in sorted(self.snapshots.keys())
+            ]
 
             imports = '\n'.join([
                 'from {} import {}'.format(module, ', '.join(sorted(module_imports)))
