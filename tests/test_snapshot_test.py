@@ -67,6 +67,7 @@ SNAPSHOTABLE_VALUES = [
     ["a", "b", "c"],  # list
     {"a", "b", "c"},  # set
     ("a", "b", "c"),  # tuple
+    ("a",),
 
     # Falsy values:
     None,
