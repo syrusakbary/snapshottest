@@ -41,6 +41,10 @@ Usage with unittest/nose
             my_gpg_response = api.client.get('/me?gpg_key')
             self.assertMatchSnapshot(my_gpg_response, 'gpg_response')
 
+            # Set ignore fields (e.g. 'created_at' : '12-12-2017')
+            ignore_date_response = {'created_at' : '01-01-2018', 'url': '/me'}
+            self.assertMatchSnapshot(ignore_date_response, ignore_fields=['created_at'])
+
 If you want to update the snapshots automatically you can use the
 ``nosetests --snapshot-update``.
 
@@ -60,6 +64,10 @@ Usage with pytest
         # Set custom snapshot name: `gpg_response`
         my_gpg_response = api.client.get('/me?gpg_key')
         snapshot.assert_match(my_gpg_response, 'gpg_response')
+
+        # Set ignore fields (e.g. 'created_at' : '12-12-2017')
+        ignore_date_response = {'created_at' : '01-01-2018', 'url': '/me'}
+        snapshot.assert_match(ignore_date_response, ignore_fields=['created_at'])
 
 If you want to update the snapshots automatically you can use the
 ``--snapshot-update`` config.
