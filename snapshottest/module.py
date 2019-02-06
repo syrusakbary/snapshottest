@@ -231,7 +231,8 @@ class SnapshotTest(object):
     def assert_equals(self, value, snapshot):
         assert value == snapshot
 
-    def assert_match(self, value, name=''):
+    def assert_match(self, value, name='', ignore_fields=None):
+        self.remove_fields(value, ignore_fields)
         self.curr_snapshot = name or self.snapshot_counter
         self.visit()
         if self.update:
@@ -243,6 +244,7 @@ class SnapshotTest(object):
                 self.store(value)  # first time this test has been seen
             else:
                 try:
+                    self.remove_fields(prev_snapshot, ignore_fields)
                     self.assert_value_matches_snapshot(value, prev_snapshot)
                 except AssertionError:
                     self.fail()
@@ -254,9 +256,21 @@ class SnapshotTest(object):
     def save_changes(self):
         self.module.save()
 
+    @classmethod
+    def remove_fields(cls, input, remove_fields_list=None):
+        if remove_fields_list is None:
+            remove_fields_list = []
+        gen = (field for field in remove_fields_list if field in input)
+        for field in gen:
+            del input[field]
+        if isinstance(input, dict):
+            gen = (value for value in input.values() if isinstance(value, dict))
+            for value in gen:
+                cls.remove_fields(value, remove_fields_list)
 
-def assert_match_snapshot(value, name=''):
+
+def assert_match_snapshot(value, name='', ignore_fields=None):
     if not SnapshotTest._current_tester:
         raise Exception("You need to use assert_match_snapshot in the SnapshotTest context.")
 
-    SnapshotTest._current_tester.assert_match(value, name)
+    SnapshotTest._current_tester.assert_match(value, name, ignore_fields)
