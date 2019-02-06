@@ -15,7 +15,7 @@ tests_require = [
 
 setup(
     name='snapshottest',
-    version='0.5.0+matangover.1',  # PEP 440 "local version identifier"
+    version='0.5.0+say.1',  # PEP 440 "local version identifier"
     description='Snapshot Testing utils for Python',
     long_description=readme,
     author='Syrus Akbary',
