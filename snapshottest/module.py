@@ -232,7 +232,7 @@ class SnapshotTest(object):
         assert value == snapshot
 
     def assert_match(self, value, name='', ignore_fields=None):
-        self.remove_fields(value, ignore_fields)
+        value_copy = self.remove_fields(value, ignore_fields)
         self.curr_snapshot = name or self.snapshot_counter
         self.visit()
         if self.update:
@@ -244,8 +244,8 @@ class SnapshotTest(object):
                 self.store(value)  # first time this test has been seen
             else:
                 try:
-                    self.remove_fields(prev_snapshot, ignore_fields)
-                    self.assert_value_matches_snapshot(value, prev_snapshot)
+                    prev_snapshot_copy = self.remove_fields(prev_snapshot, ignore_fields)
+                    self.assert_value_matches_snapshot(value_copy, prev_snapshot_copy)
                 except AssertionError:
                     self.fail()
                     raise
@@ -262,17 +262,17 @@ class SnapshotTest(object):
             remove_fields_list = []
 
         if isinstance(input, list):
-            for el in input:
-                cls.remove_fields(el, remove_fields_list)
+            return [cls.remove_fields(el, remove_fields_list) for el in input]
 
         if isinstance(input, dict):
-            gen = (field for field in remove_fields_list if field in input)
-            for field in gen:
-                del input[field]
+            result = {
+                key: cls.remove_fields(value, remove_fields_list)
+                for key, value in input.items()
+                if key not in remove_fields_list
+            }
+            return result
 
-            gen = (value for key, value in input.items() if isinstance(value, (list, dict)))
-            for value in gen:
-                cls.remove_fields(value, remove_fields_list)
+        return input
 
 
 def assert_match_snapshot(value, name='', ignore_fields=None):

@@ -149,6 +149,6 @@ def test_snapshot_remove_fields():
         }
     }
 
-    SnapshotTest.remove_fields(response, remove_fields_list=['date', 'id'])
+    response = SnapshotTest.remove_fields(response, remove_fields_list=['date', 'id'])
 
     assert expected == response
