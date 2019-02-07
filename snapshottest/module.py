@@ -260,11 +260,17 @@ class SnapshotTest(object):
     def remove_fields(cls, input, remove_fields_list=None):
         if remove_fields_list is None:
             remove_fields_list = []
-        gen = (field for field in remove_fields_list if field in input)
-        for field in gen:
-            del input[field]
+
+        if isinstance(input, list):
+            for el in input:
+                cls.remove_fields(el, remove_fields_list)
+
         if isinstance(input, dict):
-            gen = (value for value in input.values() if isinstance(value, dict))
+            gen = (field for field in remove_fields_list if field in input)
+            for field in gen:
+                del input[field]
+
+            gen = (value for key, value in input.items() if isinstance(value, (list, dict)))
             for value in gen:
                 cls.remove_fields(value, remove_fields_list)
 
