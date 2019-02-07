@@ -110,3 +110,45 @@ def test_snapshot_does_not_match_other_values(snapshot_test, value, other_value)
     with pytest.raises(AssertionError):
         snapshot_test.assert_match(other_value)
     assert_snapshot_test_failed(snapshot_test)
+
+
+def test_snapshot_remove_fields():
+    response = {
+        'url': 'example',
+        'date': '12-12-2017',
+        'test': {'date': '11-12-2017'},
+        'results': [
+            {'id': 1},
+            {'id': 2},
+        ],
+        'nesting': {
+            'another_one': {
+                'u smaht': {
+                    'dj khaled': {
+                        'id': 123,
+                        'ft. drake': {
+                            'date': "12-12-2019"
+                        }
+                    }
+                }
+            }
+        }
+    }
+    expected = {
+        'url': 'example',
+        'test': {},
+        'results': [{}, {}],
+        'nesting': {
+            'another_one': {
+                'u smaht': {
+                    'dj khaled': {
+                        'ft. drake': {}
+                    }
+                }
+            }
+        }
+    }
+
+    SnapshotTest.remove_fields(response, remove_fields_list=['date', 'id'])
+
+    assert expected == response
