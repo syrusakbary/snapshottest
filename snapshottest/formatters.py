@@ -85,6 +85,8 @@ def format_tuple(value, indent, formatter):
         formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(item, indent + 1)
         for item in value
     ]
+    if len(items) == 1:
+        return '(%s,)' % (items[0] + formatter.lfchar + formatter.htchar * indent)
     return '(%s)' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
 
 
