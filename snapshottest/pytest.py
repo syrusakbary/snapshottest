@@ -9,17 +9,16 @@ from .reporting import reporting_lines, diff_report
 def pytest_addoption(parser):
     group = parser.getgroup('snapshottest')
     group.addoption(
-        '--snapshot-update',
-        action='store_true',
-        default=False,
-        dest='snapshot_update',
-        help='Update the snapshots.'
-    )
-    group.addoption(
         '--snapshot-verbose',
         action='store_true',
         default=False,
         help='Dump diagnostic and progress information.'
+    )
+    group.addoption(
+        '--snapshot-record-mode',
+        default='once',
+        choices=['none', 'once', 'new_interactions', 'all'],
+        help='Snapshot record mode.'
     )
 
 
@@ -35,7 +34,12 @@ class PyTestSnapshotTest(SnapshotTest):
 
     @property
     def update(self):
-        return self.request.config.option.snapshot_update
+        raise RuntimeError('Update option must not be used anymore')
+
+    @property
+    def record_mode(self):
+        return self.request.config.option.snapshot_record_mode
+
 
     @property
     def test_name(self):
