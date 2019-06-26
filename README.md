@@ -1,7 +1,7 @@
 # SnapshotTest [![travis][travis-image]][travis-url] [![pypi][pypi-image]][pypi-url]
 
-[travis-image]: https://img.shields.io/travis/syrusakbary/snapshottest.svg?style=flat
-[travis-url]: https://travis-ci.org/syrusakbary/snapshottest
+[travis-image]: https://travis-ci.com/yourbuddyconner/snapshottest.svg?style=flat
+[travis-url]: https://travis-ci.org/yourbuddyconner/snapshottest
 [pypi-image]: https://img.shields.io/pypi/v/snapshottest.svg?style=flat
 [pypi-url]: https://pypi.python.org/pypi/snapshottest
 
