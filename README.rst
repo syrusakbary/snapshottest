@@ -1,5 +1,7 @@
-SnapshotTest |travis| |pypi|
+PySnap |travis| |pypi|
 ============================
+
+**Note:** This project is just a fork of the package `snapshottest` which lives [here](https://github.com/syrusakbary/snapshottest). It had been mostly abandoned, so I kicked the wheels and got it back in working order. Contributions are welcome! 
 
 Snapshot testing is a way to test your APIs without writing actual test
 cases.
@@ -22,14 +24,14 @@ Installation
 
 ::
 
-    $ pip install snapshottest
+    $ pip install pysnap
 
 Usage with unittest/nose
 ------------------------
 
 .. code:: python
 
-    from snapshottest import TestCase
+    from pysnap import TestCase
 
     class APITestCase(TestCase):
         def test_api_me(self):
@@ -45,7 +47,7 @@ If you want to update the snapshots automatically you can use the
 ``nosetests --snapshot-update``.
 
 Check the `Unittest
-example <https://github.com/syrusakbary/snapshottest/tree/master/examples/unittest>`__.
+example <https://github.com/syrusakbary/yourbuddyconner/pysnap/tree/master/examples/unittest>`__.
 
 Usage with pytest
 -----------------
@@ -65,7 +67,7 @@ If you want to update the snapshots automatically you can use the
 ``--snapshot-update`` config.
 
 Check the `Pytest
-example <https://github.com/syrusakbary/snapshottest/tree/master/examples/pytest>`__.
+example <https://github.com/yourbuddyconner/pysnap/tree/master/examples/pytest>`__.
 
 Usage with django
 -----------------
@@ -74,13 +76,13 @@ Add to your settings:
 
 .. code:: python
 
-    TEST_RUNNER = 'snapshottest.django.TestRunner'
+    TEST_RUNNER = 'pysnap.django.TestRunner'
 
-To create your snapshottest:
+To create your pysnap:
 
 .. code:: python
 
-    from snapshottest.django import TestCase
+    from pysnap.django import TestCase
 
     class APITestCase(TestCase):
         def test_api_me(self):
@@ -90,7 +92,7 @@ To create your snapshottest:
 
 If you want to update the snapshots automatically you can use the
 ``python manage.py test --snapshot-update``. Check the `Django
-example <https://github.com/syrusakbary/snapshottest/tree/master/examples/django_project>`__.
+example <https://github.com/yourbuddyconner/pysnap/tree/master/examples/django_project>`__.
 
 Contributing
 ============
@@ -134,7 +136,7 @@ alongside the test. The test will fail if the two images do not match:
 either the change is unexpected, or the screenshot needs to be updated
 to the new version of the UI component.
 
-Snapshot Testing with SnapshotTest
+Snapshot Testing with PySnap
 ----------------------------------
 
 A similar approach can be taken when it comes to testing your APIs.
@@ -146,13 +148,11 @@ License
 -------
 
 `MIT
-License <https://github.com/syrusakbary/snapshottest/blob/master/LICENSE>`__
+License <https://github.com/yourbuddyconner/pysnap/blob/master/LICENSE>`__
 
 |coveralls|
 
-.. |travis| image:: https://img.shields.io/travis/syrusakbary/snapshottest.svg?style=flat
-   :target: https://travis-ci.org/syrusakbary/snapshottest
-.. |pypi| image:: https://img.shields.io/pypi/v/snapshottest.svg?style=flat
-   :target: https://pypi.python.org/pypi/snapshottest
-.. |coveralls| image:: https://coveralls.io/repos/syrusakbary/snapshottest/badge.svg?branch=master&service=github
-   :target: https://coveralls.io/github/syrusakbary/snapshottest?branch=master
+.. |travis| image:: https://img.shields.io/travis/yourbuddyconner/pysnap.svg?style=flat
+   :target: https://travis-ci.com/yourbuddyconner/pysnap
+.. |pypi| image:: https://img.shields.io/pypi/v/pysnap.svg?style=flat
+   :target: https://pypi.python.org/pypi/pysnap

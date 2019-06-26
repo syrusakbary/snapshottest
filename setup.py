@@ -5,16 +5,16 @@ from setuptools import setup, find_packages
 with open('README.rst') as f:
     readme = f.read()
 
-tests_require = ['six', 'pytest>=3.1.0', 'pytest-cov', 'nose', 'django>=1.10.6']
+tests_require = ['six', 'pytest>=3.6.0', 'pytest-cov', 'nose', 'django>=1.11.21']
 
 setup(
-    name='snapshottest',
-    version='0.5.0+matangover.1',  # PEP 440 "local version identifier"
+    name='pysnap',
+    version='1.0',  # PEP 440 "local version identifier"
     description='Snapshot Testing utils for Python',
     long_description=readme,
-    author='Syrus Akbary',
-    author_email='me@syrusakbary.com',
-    url='https://github.com/syrusakbary/snapshottest',
+    author='Conner Swann',
+    author_email='me@connerswann.me',
+    url='https://github.com/yourbuddyconner/pysnap',
     # custom PyPI classifier for pytest plugins
     entry_points={
         'pytest11': [
