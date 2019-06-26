@@ -1,10 +1,12 @@
-# SnapshotTest [![travis][travis-image]][travis-url] [![pypi][pypi-image]][pypi-url]
+# PySnap [![travis][travis-image]][travis-url] [![pypi][pypi-image]][pypi-url]
 
-[travis-image]: https://travis-ci.com/yourbuddyconner/snapshottest.svg?style=flat
-[travis-url]: https://travis-ci.org/yourbuddyconner/snapshottest
-[pypi-image]: https://img.shields.io/pypi/v/snapshottest.svg?style=flat
-[pypi-url]: https://pypi.python.org/pypi/snapshottest
+[travis-image]: https://travis-ci.com/yourbuddyconner/pysnap.svg?style=flat
+[travis-url]: https://travis-ci.org/yourbuddyconner/pysnap
+[pypi-image]: https://img.shields.io/pypi/v/pysnap.svg?style=flat
+[pypi-url]: https://pypi.python.org/pypi/pysnap
 
+
+**Note:** This project is just a fork of the package `snapshottest` which lives [here](https://github.com/syrusakbary/snapshottest). It had been mostly abandoned, so I kicked the wheels and got it back in working order. Contributions are welcome! 
 
 Snapshot testing is a way to test your APIs without writing actual test cases.
 
@@ -18,13 +20,13 @@ Snapshot testing is a way to test your APIs without writing actual test cases.
 
 ## Installation
 
-    $ pip install snapshottest
+    $ pip install pysnap
 
 
 ## Usage with unittest/nose
 
 ```python
-from snapshottest import TestCase
+from pysnap import TestCase
 
 class APITestCase(TestCase):
     def test_api_me(self):
@@ -39,7 +41,7 @@ class APITestCase(TestCase):
 
 If you want to update the snapshots automatically you can use the `nosetests --snapshot-update`.
 
-Check the [Unittest example](https://github.com/syrusakbary/snapshottest/tree/master/examples/unittest).
+Check the [Unittest example](https://github.com/yourbuddyconner/pysnap/tree/master/examples/unittest).
 
 ## Usage with pytest
 
@@ -56,16 +58,16 @@ def test_mything(snapshot):
 
 If you want to update the snapshots automatically you can use the `--snapshot-update` config.
 
-Check the [Pytest example](https://github.com/syrusakbary/snapshottest/tree/master/examples/pytest).
+Check the [Pytest example](https://github.com/yourbuddyconner/pysnap/tree/master/examples/pytest).
 
 ## Usage with django
 Add to your settings:
 ```python
-TEST_RUNNER = 'snapshottest.django.TestRunner'
+TEST_RUNNER = 'pysnap.django.TestRunner'
 ```
-To create your snapshottest:
+To create your snapshot test:
 ```python
-from snapshottest.django import TestCase
+from pysnap.django import TestCase
 
 class APITestCase(TestCase):
     def test_api_me(self):
@@ -74,7 +76,7 @@ class APITestCase(TestCase):
         self.assertMatchSnapshot(my_api_response)
 ```
 If you want to update the snapshots automatically you can use the `python manage.py test --snapshot-update`.
-Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/master/examples/django_project).
+Check the [Django example](https://github.com/yourbuddyconner/pysnap/tree/master/examples/django_project).
 
 # Contributing
 
@@ -107,7 +109,7 @@ However engineers frequently spend more time writing a test than the component i
 A typical snapshot test case for a mobile app renders a UI component, takes a screenshot, then compares it to a reference image stored alongside the test. The test will fail if the two images do not match: either the change is unexpected, or the screenshot needs to be updated to the new version of the UI component.
 
 
-## Snapshot Testing with SnapshotTest
+## Snapshot Testing with PySnap
 
 A similar approach can be taken when it comes to testing your APIs.
 Instead of rendering the graphical UI, which would require building the entire app, you can use a test renderer to quickly generate a serializable value for your API response.
@@ -115,9 +117,4 @@ Instead of rendering the graphical UI, which would require building the entire a
 
 ## License
 
-[MIT License](https://github.com/syrusakbary/snapshottest/blob/master/LICENSE)
-
-[![coveralls][coveralls-image]][coveralls-url]
-
-[coveralls-image]: https://coveralls.io/repos/syrusakbary/snapshottest/badge.svg?branch=master&service=github
-[coveralls-url]: https://coveralls.io/github/syrusakbary/snapshottest?branch=master
+[MIT License](https://github.com/yourbuddyconner/pysnap/blob/master/LICENSE)
