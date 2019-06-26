@@ -9,7 +9,7 @@ tests_require = ['six', 'pytest>=3.6.0', 'pytest-cov', 'nose', 'django>=1.11.21'
 
 setup(
     name='pysnap',
-    version='1.0',  # PEP 440 "local version identifier"
+    version='1.0.1',  # PEP 440 "local version identifier"
     description='Snapshot Testing utils for Python',
     long_description=readme,
     author='Conner Swann',
