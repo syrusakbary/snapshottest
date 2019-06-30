@@ -14,10 +14,13 @@ class BaseFormatter(object):
     def get_imports(self):
         return ()
 
-    def assert_value_matches_snapshot(self, test, test_value, snapshot_value):
-        test.assert_equals(test_value, snapshot_value)
+    def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
+        test.assert_equals(formatter.normalize(test_value), snapshot_value)
 
     def store(self, test, value):
+        return value
+
+    def normalize(self, value, formatter):
         return value
 
 
@@ -31,6 +34,12 @@ class TypeFormatter(BaseFormatter):
 
     def format(self, value, indent, formatter):
         return self.format_func(value, indent, formatter)
+
+
+class CollectionFormatter(TypeFormatter):
+    def normalize(self, value, formatter):
+        iterator = iter(value.items()) if isinstance(value, dict) else iter(value)
+        return value.__class__(formatter.normalize(item) for item in iterator)
 
 
 def trepr(s):
@@ -100,7 +109,10 @@ class GenericFormatter(BaseFormatter):
     def can_format(self, value):
         return True
 
-    def store(self, formatter, value):
+    def store(self, test, value):
+        return GenericRepr.from_value(value)
+    
+    def normalize(self, value, formatter):
         return GenericRepr.from_value(value)
 
     def format(self, value, indent, formatter):
@@ -111,7 +123,7 @@ class GenericFormatter(BaseFormatter):
     def get_imports(self):
         return [('snapshottest', 'GenericRepr')]
 
-    def assert_value_matches_snapshot(self, test, test_value, snapshot_value):
+    def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
         test_value = GenericRepr.from_value(test_value)
         # Assert equality between the representations to provide a nice textual diff.
         test.assert_equals(test_value.representation, snapshot_value.representation)
@@ -120,12 +132,12 @@ class GenericFormatter(BaseFormatter):
 def default_formatters():
     return [
         TypeFormatter(type(None), format_none),
-        TypeFormatter(dict, format_dict),
-        TypeFormatter(tuple, format_tuple),
-        TypeFormatter(list, format_list),
-        TypeFormatter(set, format_set),
-        TypeFormatter(frozenset, format_frozenset),
+        CollectionFormatter(dict, format_dict),
+        CollectionFormatter(tuple, format_tuple),
+        CollectionFormatter(list, format_list),
+        CollectionFormatter(set, format_set),
+        CollectionFormatter(frozenset, format_frozenset),
         TypeFormatter(six.string_types, format_str),
-        TypeFormatter((int, float, complex, bool, bytes, set, frozenset), format_std_type),
+        TypeFormatter((int, float, complex, bool, bytes), format_std_type),
         GenericFormatter()
     ]

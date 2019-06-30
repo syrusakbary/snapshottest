@@ -19,6 +19,10 @@ class Formatter(object):
             self.imports[module].add(import_name)
         return formatter.format(value, indent, self)
 
+    def normalize(self, value):
+        formatter = self.get_formatter(value)
+        return formatter.normalize(value, self)
+
     @staticmethod
     def get_formatter(value):
         for formatter in Formatter.formatters:

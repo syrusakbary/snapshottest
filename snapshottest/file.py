@@ -47,7 +47,7 @@ class FileSnapshotFormatter(BaseFormatter):
     def format(self, value, indent, formatter):
         return repr(value)
 
-    def assert_value_matches_snapshot(self, test, test_value, snapshot_value):
+    def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
         snapshot_path = os.path.join(test.module.snapshot_dir, snapshot_value.path)
         files_identical = filecmp.cmp(test_value.path, snapshot_path, shallow=False)
         assert files_identical, "Stored file differs from test file"
