@@ -1,4 +1,5 @@
 import six
+from collections import defaultdict
 
 from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
@@ -40,6 +41,13 @@ class CollectionFormatter(TypeFormatter):
     def normalize(self, value, formatter):
         iterator = iter(value.items()) if isinstance(value, dict) else iter(value)
         return value.__class__(formatter.normalize(item) for item in iterator)
+
+
+class DefaultDictFormatter(TypeFormatter):
+    def normalize(self, value, formatter):
+        return defaultdict(
+            value.default_factory, (formatter.normalize(item) for item in value.items())
+        )
 
 
 def trepr(s):
@@ -132,6 +140,7 @@ class GenericFormatter(BaseFormatter):
 def default_formatters():
     return [
         TypeFormatter(type(None), format_none),
+        DefaultDictFormatter(defaultdict, format_dict),
         CollectionFormatter(dict, format_dict),
         CollectionFormatter(tuple, format_tuple),
         CollectionFormatter(list, format_list),
