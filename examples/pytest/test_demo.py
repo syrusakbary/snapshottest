@@ -67,16 +67,15 @@ class ObjectWithBadRepr(object):
 
 def test_nested_objects(snapshot):
     obj = ObjectWithBadRepr()
-    
+
     dict_ = {'key': obj}
     list_ = [obj]
     tuple_ = (obj,)
     set_ = set((obj,))
     frozenset_ = frozenset((obj,))
-    
+
     snapshot.assert_match(dict_)
     snapshot.assert_match(list_)
     snapshot.assert_match(tuple_)
     snapshot.assert_match(set_)
     snapshot.assert_match(frozenset_)
-    

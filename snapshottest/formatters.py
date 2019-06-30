@@ -111,7 +111,7 @@ class GenericFormatter(BaseFormatter):
 
     def store(self, test, value):
         return GenericRepr.from_value(value)
-    
+
     def normalize(self, value, formatter):
         return GenericRepr.from_value(value)
 
