@@ -73,21 +73,27 @@ def format_dict(value, indent, formatter):
 
 
 def format_list(value, indent, formatter):
+    return '[%s]' % format_iterable(value, indent, formatter)
+
+
+def format_iterable(value, indent, formatter):
     items = [
         formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(item, indent + 1)
         for item in value
     ]
-    return '[%s]' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
+    return ','.join(items) + formatter.lfchar + formatter.htchar * indent
 
 
 def format_tuple(value, indent, formatter):
-    items = [
-        formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(item, indent + 1)
-        for item in value
-    ]
-    if len(items) == 1:
-        return '(%s,)' % (items[0] + formatter.lfchar + formatter.htchar * indent)
-    return '(%s)' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
+    return '(%s%s' % (format_iterable(value, indent, formatter), ',)' if len(value) == 1 else ")")
+
+
+def format_set(value, indent, formatter):
+    return 'set([%s])' % format_iterable(value, indent, formatter)
+
+
+def format_frozenset(value, indent, formatter):
+    return 'frozenset([%s])' % format_iterable(value, indent, formatter)
 
 
 class GenericFormatter(BaseFormatter):
@@ -117,6 +123,8 @@ def default_formatters():
         TypeFormatter(dict, format_dict),
         TypeFormatter(tuple, format_tuple),
         TypeFormatter(list, format_list),
+        TypeFormatter(set, format_set),
+        TypeFormatter(frozenset, format_frozenset),
         TypeFormatter(six.string_types, format_str),
         TypeFormatter((int, float, complex, bool, bytes, set, frozenset), format_std_type),
         GenericFormatter()

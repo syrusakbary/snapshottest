@@ -7,6 +7,9 @@ class GenericRepr(object):
 
     def __eq__(self, other):
         return isinstance(other, GenericRepr) and self.representation == other.representation
+    
+    def __hash__(self):
+        return hash(self.representation)
 
     @staticmethod
     def from_value(value):
