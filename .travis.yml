@@ -6,23 +6,12 @@ python:
 - 3.5
 - 3.6
 cache: pip
-install:
-- pip install -e .[test]
-script:
-- py.test --cov=snapshottest tests examples/pytest
-# Run Pytest Example
-- py.test examples/pytest
-# Run Unittest Example
-- python examples/unittest/test_demo.py
-# Run nose
-- nosetests examples/unittest
-# Run Django Example
-- cd examples/django_project && python manage.py test
+install: make install
+script: make test
 after_success:
 - coveralls
 matrix:
   fast_finish: true
   include:
   - python: '2.7'
-    install: pip install flake8
-    script: flake8
+    script: make lint
