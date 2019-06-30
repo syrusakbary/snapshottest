@@ -35,14 +35,14 @@ class TestPyTestSnapShotTest:
 
 
 def test_pytest_snapshottest_property_test_name(pytest_snapshot_test):
-        pytest_snapshot_test.assert_match('counter')
-        assert pytest_snapshot_test.test_name == \
-            'test_pytest_snapshottest_property_test_name 1'
+    pytest_snapshot_test.assert_match('counter')
+    assert pytest_snapshot_test.test_name == \
+        'test_pytest_snapshottest_property_test_name 1'
 
-        pytest_snapshot_test.assert_match('named', 'named_test')
-        assert pytest_snapshot_test.test_name == \
-            'test_pytest_snapshottest_property_test_name named_test'
+    pytest_snapshot_test.assert_match('named', 'named_test')
+    assert pytest_snapshot_test.test_name == \
+        'test_pytest_snapshottest_property_test_name named_test'
 
-        pytest_snapshot_test.assert_match('counter')
-        assert pytest_snapshot_test.test_name == \
-            'test_pytest_snapshottest_property_test_name 2'
+    pytest_snapshot_test.assert_match('counter')
+    assert pytest_snapshot_test.test_name == \
+        'test_pytest_snapshottest_property_test_name 2'
