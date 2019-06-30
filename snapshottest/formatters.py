@@ -73,10 +73,10 @@ def format_dict(value, indent, formatter):
 
 
 def format_list(value, indent, formatter):
-    return '[%s]' % format_iterable(value, indent, formatter)
+    return '[%s]' % format_sequence(value, indent, formatter)
 
 
-def format_iterable(value, indent, formatter):
+def format_sequence(value, indent, formatter):
     items = [
         formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(item, indent + 1)
         for item in value
@@ -85,15 +85,15 @@ def format_iterable(value, indent, formatter):
 
 
 def format_tuple(value, indent, formatter):
-    return '(%s%s' % (format_iterable(value, indent, formatter), ',)' if len(value) == 1 else ")")
+    return '(%s%s' % (format_sequence(value, indent, formatter), ',)' if len(value) == 1 else ")")
 
 
 def format_set(value, indent, formatter):
-    return 'set([%s])' % format_iterable(value, indent, formatter)
+    return 'set([%s])' % format_sequence(value, indent, formatter)
 
 
 def format_frozenset(value, indent, formatter):
-    return 'frozenset([%s])' % format_iterable(value, indent, formatter)
+    return 'frozenset([%s])' % format_sequence(value, indent, formatter)
 
 
 class GenericFormatter(BaseFormatter):
