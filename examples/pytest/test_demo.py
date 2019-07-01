@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from collections import defaultdict
+
 from snapshottest.file import FileSnapshot
 
 
@@ -58,3 +60,26 @@ def test_multiple_files(snapshot, tmpdir):
     temp_file1 = tmpdir.join('example2.txt')
     temp_file1.write('Hello, world 2!')
     snapshot.assert_match(FileSnapshot(str(temp_file1)))
+
+
+class ObjectWithBadRepr(object):
+    def __repr__(self):
+        return "#"
+
+
+def test_nested_objects(snapshot):
+    obj = ObjectWithBadRepr()
+
+    dict_ = {'key': obj}
+    defaultdict_ = defaultdict(list, [('key', [obj])])
+    list_ = [obj]
+    tuple_ = (obj,)
+    set_ = set((obj,))
+    frozenset_ = frozenset((obj,))
+
+    snapshot.assert_match(dict_, 'dict')
+    snapshot.assert_match(defaultdict_, 'defaultdict')
+    snapshot.assert_match(list_, 'list')
+    snapshot.assert_match(tuple_, 'tuple')
+    snapshot.assert_match(set_, 'set')
+    snapshot.assert_match(frozenset_, 'frozenset')

@@ -1,4 +1,5 @@
 import six
+from collections import defaultdict
 
 from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
@@ -14,10 +15,13 @@ class BaseFormatter(object):
     def get_imports(self):
         return ()
 
-    def assert_value_matches_snapshot(self, test, test_value, snapshot_value):
-        test.assert_equals(test_value, snapshot_value)
+    def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
+        test.assert_equals(formatter.normalize(test_value), snapshot_value)
 
     def store(self, test, value):
+        return value
+
+    def normalize(self, value, formatter):
         return value
 
 
@@ -31,6 +35,19 @@ class TypeFormatter(BaseFormatter):
 
     def format(self, value, indent, formatter):
         return self.format_func(value, indent, formatter)
+
+
+class CollectionFormatter(TypeFormatter):
+    def normalize(self, value, formatter):
+        iterator = iter(value.items()) if isinstance(value, dict) else iter(value)
+        return value.__class__(formatter.normalize(item) for item in iterator)
+
+
+class DefaultDictFormatter(TypeFormatter):
+    def normalize(self, value, formatter):
+        return defaultdict(
+            value.default_factory, (formatter.normalize(item) for item in value.items())
+        )
 
 
 def trepr(s):
@@ -73,36 +90,48 @@ def format_dict(value, indent, formatter):
 
 
 def format_list(value, indent, formatter):
+    return '[%s]' % format_sequence(value, indent, formatter)
+
+
+def format_sequence(value, indent, formatter):
     items = [
         formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(item, indent + 1)
         for item in value
     ]
-    return '[%s]' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
+    return ','.join(items) + formatter.lfchar + formatter.htchar * indent
 
 
 def format_tuple(value, indent, formatter):
-    items = [
-        formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(item, indent + 1)
-        for item in value
-    ]
-    return '(%s)' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
+    return '(%s%s' % (format_sequence(value, indent, formatter), ',)' if len(value) == 1 else ")")
+
+
+def format_set(value, indent, formatter):
+    return 'set([%s])' % format_sequence(value, indent, formatter)
+
+
+def format_frozenset(value, indent, formatter):
+    return 'frozenset([%s])' % format_sequence(value, indent, formatter)
 
 
 class GenericFormatter(BaseFormatter):
     def can_format(self, value):
         return True
 
-    def store(self, formatter, value):
+    def store(self, test, value):
+        return GenericRepr.from_value(value)
+
+    def normalize(self, value, formatter):
         return GenericRepr.from_value(value)
 
     def format(self, value, indent, formatter):
-        # `value` will always be a GenericRepr object because that's what `store` returns.
+        if not isinstance(value, GenericRepr):
+            value = GenericRepr.from_value(value)
         return repr(value)
 
     def get_imports(self):
         return [('snapshottest', 'GenericRepr')]
 
-    def assert_value_matches_snapshot(self, test, test_value, snapshot_value):
+    def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
         test_value = GenericRepr.from_value(test_value)
         # Assert equality between the representations to provide a nice textual diff.
         test.assert_equals(test_value.representation, snapshot_value.representation)
@@ -111,10 +140,13 @@ class GenericFormatter(BaseFormatter):
 def default_formatters():
     return [
         TypeFormatter(type(None), format_none),
-        TypeFormatter(dict, format_dict),
-        TypeFormatter(tuple, format_tuple),
-        TypeFormatter(list, format_list),
+        DefaultDictFormatter(defaultdict, format_dict),
+        CollectionFormatter(dict, format_dict),
+        CollectionFormatter(tuple, format_tuple),
+        CollectionFormatter(list, format_list),
+        CollectionFormatter(set, format_set),
+        CollectionFormatter(frozenset, format_frozenset),
         TypeFormatter(six.string_types, format_str),
-        TypeFormatter((int, float, complex, bool, bytes, set, frozenset), format_std_type),
+        TypeFormatter((int, float, complex, bool, bytes), format_std_type),
         GenericFormatter()
     ]
