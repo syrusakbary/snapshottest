@@ -12,10 +12,6 @@ Snapshot testing is a way to test your APIs without writing actual test cases.
 2. You have a set of snapshots for your API endpoints.
 3. Once you add a new feature, you can generate *automatically* new snapshots for the updated API.
 
-
-
-<p align="center"><a href="https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg" target="_blank"><img src="https://asciinema.org/a/5l6neenlh22xw7him5upj3sbg.png" width="400" height="280" /></a></p>
-
 ## Installation
 
     $ pip install snapshottest
@@ -78,22 +74,31 @@ Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/mast
 
 # Contributing
 
-After cloning this repo, ensure dependencies are installed by running:
+After cloning this repo and configuring a virtualenv for snapshottest (optional, but highly recommended), ensure dependencies are installed by running:
 
 ```sh
-pip install -e ".[test]"
+make install
 ```
 
 After developing, the full test suite can be evaluated by running:
 
 ```sh
-py.test
+make lint
+# and
+make test
 ```
 
+If you change this `README.md`, remember to update its `README.rst` counterpart (used by PyPI), which can be done by running:
+
+```
+make README.rst
+```
+
+For this last step you'll need to have `pandoc` installed in your machine.
 
 # Notes
 
-This package is heavily insipired in [jest snapshot testing](https://facebook.github.io/jest/docs/snapshot-testing.html).
+This package is heavily inspired in [jest snapshot testing](https://facebook.github.io/jest/docs/snapshot-testing.html).
 
 # Reasons for use this package
 
