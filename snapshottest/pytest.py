@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 import pytest
+import re
 
 from .module import SnapshotModule, SnapshotTest
 from .diff import PrettyDiff
@@ -40,9 +41,10 @@ class PyTestSnapshotTest(SnapshotTest):
     @property
     def test_name(self):
         cls_name = getattr(self.request.node.cls, '__name__', '')
+        flattened_node_name = re.sub(r"\s+", " ", self.request.node.name.replace(r"\n", " "))
         return '{}{} {}'.format(
             '{}.'.format(cls_name) if cls_name else '',
-            self.request.node.name,
+            flattened_node_name,
             self.curr_snapshot
         )
 
