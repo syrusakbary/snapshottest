@@ -23,5 +23,8 @@ test:
 lint:
 	flake8
 
+publish:
+	python setup.py sdist upload
+
 %.rst: %.md
 	pandoc $^ --from markdown --to rst -s -o $@
