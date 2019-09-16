@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from collections import defaultdict
+import datetime
 
 from snapshottest.file import FileSnapshot
 
@@ -47,6 +48,31 @@ def test_file(snapshot, tmpdir):
     temp_file = tmpdir.join('example.txt')
     temp_file.write('Hello, world!')
     snapshot.assert_match(FileSnapshot(str(temp_file)))
+
+
+def test_custom_file_comparison(snapshot, tmpdir):
+    """
+    Test a file snapshot with a custom comparison function.
+    """
+    # file contains meta-data (creation date) and actual data. We only want to check
+    # that the data is the same
+    temp_file = tmpdir.join('example.txt')
+    text = '\n'.join([
+        str(datetime.datetime.now()),
+        'Hello, world!'
+    ])
+    temp_file.write(text)
+
+    def compare_last_line(path1, path2):
+        with open(path1) as f:
+            line1 = f.readlines()[-1]
+        with open(path2) as f:
+            line2 = f.readlines()[-1]
+
+        return line1 == line2
+
+    fileSnap = FileSnapshot(str(temp_file))
+    snapshot.assert_match(fileSnap)
 
 
 def test_multiple_files(snapshot, tmpdir):

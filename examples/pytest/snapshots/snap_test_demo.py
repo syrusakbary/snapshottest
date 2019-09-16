@@ -47,3 +47,5 @@ snapshots['test_nested_objects set'] = set([
 snapshots['test_nested_objects frozenset'] = frozenset([
     GenericRepr('#')
 ])
+
+snapshots['test_custom_file_comparison 1'] = FileSnapshot('snap_test_demo/test_custom_file_comparison 1.txt')
