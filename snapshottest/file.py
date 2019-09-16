@@ -13,6 +13,13 @@ class FileSnapshot(object):
         Create a file snapshot pointing to the specified `path`. In a snapshot, `path` is considered to be relative to
         the test module's "snapshots" folder. (This is done to prevent ugly path manipulations inside the snapshot
         file.)
+
+        `comparison` can be used to provide a custom comparison function that tests that two files are identical.
+        The function signature should match the default implementation:
+
+            def compare_files_default(new_file_path: str, snapshot_file_path: str) -> bool:
+                return filecmp.cmp(new_file_path, snapshot_file_path, shallow=False)
+
         """
         self.path = path
         if comparison is None:
