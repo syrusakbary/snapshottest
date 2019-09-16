@@ -71,7 +71,7 @@ def test_custom_file_comparison(snapshot, tmpdir):
 
         return line1 == line2
 
-    fileSnap = FileSnapshot(str(temp_file))
+    fileSnap = FileSnapshot(str(temp_file), comparison=compare_last_line)
     snapshot.assert_match(fileSnap)
 
 

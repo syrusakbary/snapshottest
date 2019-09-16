@@ -1,19 +1,23 @@
 import os
 import shutil
 import filecmp
+import functools
 
 from .formatter import Formatter
 from .formatters import BaseFormatter
 
 
 class FileSnapshot(object):
-    def __init__(self, path):
+    def __init__(self, path, comparison=None):
         """
         Create a file snapshot pointing to the specified `path`. In a snapshot, `path` is considered to be relative to
         the test module's "snapshots" folder. (This is done to prevent ugly path manipulations inside the snapshot
         file.)
         """
         self.path = path
+        if comparison is None:
+            comparison = functools.partial(filecmp.cmp, shallow=False)
+        self.comparison = comparison
 
     def __repr__(self):
         return 'FileSnapshot({})'.format(repr(self.path))
@@ -49,7 +53,8 @@ class FileSnapshotFormatter(BaseFormatter):
 
     def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
         snapshot_path = os.path.join(test.module.snapshot_dir, snapshot_value.path)
-        files_identical = filecmp.cmp(test_value.path, snapshot_path, shallow=False)
+        comparison_function = test_value.comparison
+        files_identical = comparison_function(test_value.path, snapshot_path)
         assert files_identical, "Stored file differs from test file"
 
     @staticmethod
