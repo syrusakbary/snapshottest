@@ -1,5 +1,7 @@
 from __future__ import unicode_literals
 
+import time
+
 import pytest
 
 from snapshottest.module import SnapshotModule, SnapshotTest
@@ -111,3 +113,66 @@ def test_snapshot_does_not_match_other_values(snapshot_test, value, other_value)
     with pytest.raises(AssertionError):
         snapshot_test.assert_match(other_value)
     assert_snapshot_test_failed(snapshot_test)
+
+
+SNAPSHOTABLE_DATA_FACTORIES = {
+    "dict": lambda: {"time": time.time(), "this key": "must match"},
+    "nested dict": lambda: {"nested": {"time": time.time(), "this key": "must match"}},
+    "dict in list": lambda: [{"time": time.time(), "this key": "must match"}],
+    "dict in tuple": lambda: ({"time": time.time(), "this key": "must match"},),
+    "dict in list in dict": lambda: {"list": [{"time": time.time(), "this key": "must match"}]},
+    "dict in tuple in dict": lambda: {"tuple": ({"time": time.time(), "this key": "must match"},)}
+}
+
+
+@pytest.mark.parametrize(
+    "data_factory",
+    [
+        pytest.param(data_factory)
+        for data_factory in SNAPSHOTABLE_DATA_FACTORIES.values()
+    ], ids=list(SNAPSHOTABLE_DATA_FACTORIES.keys())
+)
+def test_snapshot_assert_match__matches_with_diffing_ignore_keys(
+    snapshot_test, data_factory
+):
+    data = data_factory()
+    # first run stores the value as the snapshot
+    snapshot_test.assert_match(data)
+
+    # Assert with ignored keys should succeed
+    data = data_factory()
+    snapshot_test.reinitialize()
+    snapshot_test.assert_match(data, ignore_keys=("time",))
+    assert_snapshot_test_succeeded(snapshot_test)
+
+    # Assert without ignored key should raise
+    data = data_factory()
+    snapshot_test.reinitialize()
+    with pytest.raises(AssertionError):
+        snapshot_test.assert_match(data)
+
+
+@pytest.mark.parametrize(
+    "existing_snapshot, new_snapshot",
+    [
+        pytest.param(
+            {"time": time.time(), "some_key": "some_value"},
+            {"some_key": "some_value"},
+            id="new_snapshot_missing_key",
+        ),
+        pytest.param(
+            {"some_key": "some_value"},
+            {"time": time.time(), "some_key": "some_value"},
+            id="new_snapshot_extra_key",
+        ),
+    ],
+)
+def test_snapshot_assert_match_does_not_match_if_ignore_keys_not_present(
+    snapshot_test, existing_snapshot, new_snapshot
+):
+    # first run stores the value as the snapshot
+    snapshot_test.assert_match(existing_snapshot)
+
+    snapshot_test.reinitialize()
+    with pytest.raises(AssertionError):
+        snapshot_test.assert_match(new_snapshot, ignore_keys=("time",))

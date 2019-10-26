@@ -47,3 +47,12 @@ snapshots['test_nested_objects set'] = set([
 snapshots['test_nested_objects frozenset'] = frozenset([
     GenericRepr('#')
 ])
+
+snapshots['test_snapshot_can_ignore_keys 1'] = {
+    'id': GenericRepr("UUID('fac2b49e-0ec1-407b-a840-3fbb0a522eb9')"),
+    'nested': {
+        'id': GenericRepr("UUID('1649c442-1fad-4b6d-9b14-5cf4ee9c929c')"),
+        'some_nested_key': 'some_nested_value'
+    },
+    'some_key': 'some_value'
+}

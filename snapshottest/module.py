@@ -192,6 +192,7 @@ class SnapshotTest(object):
     def __init__(self):
         self.curr_snapshot = ''
         self.snapshot_counter = 1
+        self.ignore_keys = None
 
     @property
     def module(self):
@@ -225,14 +226,18 @@ class SnapshotTest(object):
         self.module[self.test_name] = data
 
     def assert_value_matches_snapshot(self, test_value, snapshot_value):
+        if self.ignore_keys is not None:
+            self.clear_ignore_keys(test_value)
+            self.clear_ignore_keys(snapshot_value)
         formatter = Formatter.get_formatter(test_value)
         formatter.assert_value_matches_snapshot(self, test_value, snapshot_value, Formatter())
 
     def assert_equals(self, value, snapshot):
         assert value == snapshot
 
-    def assert_match(self, value, name=''):
+    def assert_match(self, value, name='', ignore_keys=None):
         self.curr_snapshot = name or self.snapshot_counter
+        self.ignore_keys = ignore_keys
         self.visit()
         if self.update:
             self.store(value)
@@ -253,6 +258,23 @@ class SnapshotTest(object):
 
     def save_changes(self):
         self.module.save()
+
+    def clear_ignore_keys(self, data):
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if key in self.ignore_keys:
+                    data[key] = None
+                else:
+                    data[key] = self.clear_ignore_keys(value)
+            return data
+        elif isinstance(data, list):
+            for index, value in enumerate(data):
+                data[index] = self.clear_ignore_keys(value)
+            return data
+        elif isinstance(data, tuple):
+            return tuple(self.clear_ignore_keys(value) for value in data)
+
+        return data
 
 
 def assert_match_snapshot(value, name=''):

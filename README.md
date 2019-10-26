@@ -72,6 +72,15 @@ class APITestCase(TestCase):
 If you want to update the snapshots automatically you can use the `python manage.py test --snapshot-update`.
 Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/master/examples/django_project).
 
+### Ignoring dict keys
+A common usecase for snapshot testing is to freeze an API by ensuring that it doesn't get changed unexpectedly.
+Some data such as timestamps, UUIDs or similar random data will make your snapshots fail every time unless you mock these fields. 
+
+While mocking is a perfectly fine solution it might still not be the most time efficient and practical one. 
+Therefore `assert_match()` may take a keyword argument `ignore_keys`. 
+The values of any ignored key (on any nesting level) will not be compared with the snapshots value (but the key must still be present).
+
+
 # Contributing
 
 After cloning this repo and configuring a virtualenv for snapshottest (optional, but highly recommended), ensure dependencies are installed by running:
