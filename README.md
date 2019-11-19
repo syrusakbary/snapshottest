@@ -72,6 +72,21 @@ class APITestCase(TestCase):
 If you want to update the snapshots automatically you can use the `python manage.py test --snapshot-update`.
 Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/master/examples/django_project).
 
+
+## Custom formatters
+
+To register a custom formatter `my_format_function` for a type `MyType` you can do:
+
+```python
+from snapshottest.formatter import Formatter
+from snapshottest.formatters import TypeFormatter
+Formatter.register_formatter(TypeFormatter((MyType), my_format_function))
+```
+
+More complex custom formatters can be added in a similar way by creating a class
+which derives from `BaseFormatter` and registering it with
+`Formatter.register_formatter`.
+
 # Contributing
 
 After cloning this repo and configuring a virtualenv for snapshottest (optional, but highly recommended), ensure dependencies are installed by running:

@@ -5,6 +5,7 @@ import pytest
 import six
 
 from snapshottest.formatter import Formatter
+from snapshottest.formatters import TypeFormatter
 
 
 @pytest.mark.parametrize("text_value, expected", [
@@ -51,3 +52,15 @@ def test_non_ascii_text_formatting(text_value, expected_py3, expected_py2):
     formatter = Formatter()
     formatted = formatter(text_value)
     assert formatted == expected
+
+
+def test_custom_formatter():
+    class Foo:
+        pass
+
+    Formatter.register_formatter(
+        TypeFormatter((Foo), lambda _1, _2, _3: "this is a foo")
+    )
+
+    formatter = Formatter()
+    assert formatter(Foo()) == "this is a foo"
