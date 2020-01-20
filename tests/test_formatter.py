@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import pytest
 import six
+from math import isnan
 
 from snapshottest.formatter import Formatter
 
@@ -51,3 +52,32 @@ def test_non_ascii_text_formatting(text_value, expected_py3, expected_py2):
     formatter = Formatter()
     formatted = formatter(text_value)
     assert formatted == expected
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        0,
+        12.7,
+        True,
+        False,
+        None,
+        float("-inf"),
+        float("inf"),
+        float("nan"),
+    ],
+)
+def test_basic_formatting_parsing(value):
+    formatter = Formatter()
+    formatted = formatter(value)
+    parsed = eval(formatted)
+    assert_value_and_type_equal(parsed, value)
+
+
+def assert_value_and_type_equal(value, expected):
+    # NaN doesn't compare well to itself
+    if type(expected) == float and isnan(expected):
+        assert isnan(value)
+    else:
+        assert value == expected
+        assert type(value) == type(expected)
