@@ -1,5 +1,6 @@
 import six
 from collections import defaultdict
+from math import isnan
 
 from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
@@ -75,6 +76,12 @@ def format_str(value, indent, formatter):
     return repr(value).lstrip('u')
 
 
+def format_float(value, indent, formatter):
+    if value == float('inf') or value == float('-inf') or isnan(value):
+        return 'float("%s")' % repr(value)
+    return repr(value)
+
+
 def format_std_type(value, indent, formatter):
     return repr(value)
 
@@ -147,6 +154,7 @@ def default_formatters():
         CollectionFormatter(set, format_set),
         CollectionFormatter(frozenset, format_frozenset),
         TypeFormatter(six.string_types, format_str),
-        TypeFormatter((int, float, complex, bool, bytes), format_std_type),
+        TypeFormatter((float,), format_float),
+        TypeFormatter((int, complex, bool, bytes), format_std_type),
         GenericFormatter()
     ]
