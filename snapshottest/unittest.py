@@ -13,16 +13,11 @@ class UnitTestSnapshotTest(SnapshotTest):
         self.test_id = test_id
         self.test_filepath = test_filepath
         self.assertEqual = assertEqual
-        self.should_update = should_update
-        super(UnitTestSnapshotTest, self).__init__()
+        super(UnitTestSnapshotTest, self).__init__(should_update)
 
     @property
     def module(self):
         return SnapshotModule.get_module_for_testpath(self.test_filepath)
-
-    @property
-    def update(self):
-        return self.should_update
 
     def assert_equals(self, value, snapshot):
         self.assertEqual(value, snapshot)

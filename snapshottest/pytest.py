@@ -27,15 +27,11 @@ def pytest_addoption(parser):
 class PyTestSnapshotTest(SnapshotTest):
     def __init__(self, request=None):
         self.request = request
-        super(PyTestSnapshotTest, self).__init__()
+        super(PyTestSnapshotTest, self).__init__(request.config.option.snapshot_update)
 
     @property
     def module(self):
         return SnapshotModule.get_module_for_testpath(self.request.node.fspath.strpath)
-
-    @property
-    def update(self):
-        return self.request.config.option.snapshot_update
 
     @property
     def test_name(self):
