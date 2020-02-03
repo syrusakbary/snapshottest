@@ -72,6 +72,11 @@ class APITestCase(TestCase):
 If you want to update the snapshots automatically you can use the `python manage.py test --snapshot-update`.
 Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/master/examples/django_project).
 
+## Disabling terminal colors
+
+Set the environment variable `ANSI_COLORS_DISABLED`.
+
+
 # Contributing
 
 After cloning this repo and configuring a virtualenv for snapshottest (optional, but highly recommended), ensure dependencies are installed by running:
