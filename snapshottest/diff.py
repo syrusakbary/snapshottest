@@ -25,7 +25,7 @@ class PrettyDiff(object):
         self.pretty = Formatter()
         self.snapshottest = snapshottest
         if isinstance(obj, dict):
-            obj = SortedDict(**obj)
+            obj = SortedDict(obj)
         self.obj = self.pretty(obj)
 
     def __eq__(self, other):
