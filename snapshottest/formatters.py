@@ -40,7 +40,9 @@ class TypeFormatter(BaseFormatter):
 class CollectionFormatter(TypeFormatter):
     def normalize(self, value, formatter):
         iterator = iter(value.items()) if isinstance(value, dict) else iter(value)
-        return value.__class__(formatter.normalize(item) for item in iterator)
+        # Normally we shouldn't need to turn this into a list, but some iterable
+        # constructors need a list not an iterator (e.g. unittest.mock.call).
+        return value.__class__([formatter.normalize(item) for item in iterator])
 
 
 class DefaultDictFormatter(TypeFormatter):
