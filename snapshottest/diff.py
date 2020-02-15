@@ -1,5 +1,5 @@
+from difflib import Differ
 from termcolor import colored
-from fastdiff import compare
 
 from .sorted_dict import SortedDict
 from .formatter import Formatter
@@ -23,6 +23,7 @@ def format_line(line):
 class PrettyDiff(object):
     def __init__(self, obj, snapshottest):
         self.pretty = Formatter()
+        self.differ = Differ()
         self.snapshottest = snapshottest
         if isinstance(obj, dict):
             obj = SortedDict(**obj)
@@ -35,10 +36,10 @@ class PrettyDiff(object):
         return repr(self.obj)
 
     def get_diff(self, other):
-        text1 = 'Received \n\n' + self.pretty(self.obj)
-        text2 = 'Snapshot \n\n' + self.pretty(other)
+        text1 = ['Received ', ''] + self.pretty(self.obj).splitlines(1)
+        text2 = ['Snapshot ', ''] + self.pretty(other).splitlines(1)
 
-        lines = list(compare(text2, text1))
+        lines = list(self.differ.compare(text2, text1))
         return [
             format_line(line) for line in lines
         ]

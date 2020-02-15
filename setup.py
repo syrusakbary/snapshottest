@@ -23,7 +23,7 @@ setup(
         'nose.plugins.0.10':
         ['snapshottest = snapshottest.nose:SnapshotTestPlugin']
     },
-    install_requires=['six>=1.10.0', 'termcolor', 'fastdiff>=0.1.4<1'],
+    install_requires=['six>=1.10.0', 'termcolor'],
     tests_require=tests_require,
     extras_require={
         'test': tests_require,
