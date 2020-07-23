@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 with open('README.rst') as f:
     readme = f.read()
 
-tests_require = ['six', 'pytest>=3.1.0', 'pytest-cov', 'nose', 'django>=1.10.6']
+tests_require = ['six', 'pytest>=4.6', 'pytest-cov', 'nose', 'django>=1.10.6']
 
 setup(
     name='snapshottest',
@@ -23,7 +23,7 @@ setup(
         'nose.plugins.0.10':
         ['snapshottest = snapshottest.nose:SnapshotTestPlugin']
     },
-    install_requires=['six>=1.10.0', 'termcolor', 'fastdiff>=0.1.4<1'],
+    install_requires=['six>=1.10.0', 'termcolor', 'fastdiff>=0.1.4,<1'],
     tests_require=tests_require,
     extras_require={
         'test': tests_require,
