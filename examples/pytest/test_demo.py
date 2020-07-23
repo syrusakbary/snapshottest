@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import uuid
 from collections import defaultdict
 
 from snapshottest.file import FileSnapshot
@@ -83,3 +84,18 @@ def test_nested_objects(snapshot):
     snapshot.assert_match(tuple_, 'tuple')
     snapshot.assert_match(set_, 'set')
     snapshot.assert_match(frozenset_, 'frozenset')
+
+
+def test_snapshot_can_ignore_keys(snapshot):
+    snapshot.assert_match(
+        {
+            "id": uuid.uuid4(),
+            "some_key": "some_value",
+            "nested":
+                {
+                    "id": uuid.uuid4(),
+                    "some_nested_key": "some_nested_value"
+                }
+        },
+        ignore_keys=("id",)
+    )
