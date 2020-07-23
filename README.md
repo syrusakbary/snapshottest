@@ -74,7 +74,9 @@ Check the [Django example](https://github.com/syrusakbary/snapshottest/tree/mast
 
 ## Disabling terminal colors
 
-Set the environment variable `ANSI_COLORS_DISABLED`.
+Set the environment variable `ANSI_COLORS_DISABLED` (to any value), e.g. 
+
+    ANSI_COLORS_DISABLED=1 pytest
 
 
 # Contributing
