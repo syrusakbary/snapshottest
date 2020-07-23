@@ -100,7 +100,7 @@ For this last step you'll need to have `pandoc` installed in your machine.
 
 This package is heavily inspired in [jest snapshot testing](https://facebook.github.io/jest/docs/snapshot-testing.html).
 
-# Reasons for use this package
+# Reasons to use this package
 
 > Most of this content is taken from the [Jest snapshot blogpost](https://facebook.github.io/jest/blog/2016/07/27/jest-14.html).
 
