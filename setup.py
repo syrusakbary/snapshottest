@@ -2,7 +2,7 @@
 
 from setuptools import setup, find_packages
 
-with open('README.rst') as f:
+with open('README.md') as f:
     readme = f.read()
 
 tests_require = ['six', 'pytest>=4.6', 'pytest-cov', 'nose', 'django>=1.10.6']
@@ -12,6 +12,7 @@ setup(
     version='0.5.1',  # PEP 440 "local version identifier"
     description='Snapshot Testing utils for Python',
     long_description=readme,
+    long_description_content_type="text/markdown",
     author='Syrus Akbary',
     author_email='me@syrusakbary.com',
     url='https://github.com/syrusakbary/snapshottest',

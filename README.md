@@ -95,14 +95,6 @@ make lint
 make test
 ```
 
-If you change this `README.md`, remember to update its `README.rst` counterpart (used by PyPI), which can be done by running:
-
-```
-make README.rst
-```
-
-For this last step you'll need to have `pandoc` installed in your machine.
-
 # Notes
 
 This package is heavily inspired in [jest snapshot testing](https://facebook.github.io/jest/docs/snapshot-testing.html).
