@@ -6,6 +6,9 @@ import six
 
 from snapshottest.formatter import Formatter
 
+if not six.PY2:
+    import unittest.mock
+
 
 @pytest.mark.parametrize("text_value, expected", [
     # basics
@@ -51,3 +54,14 @@ def test_non_ascii_text_formatting(text_value, expected_py3, expected_py2):
     formatter = Formatter()
     formatted = formatter(text_value)
     assert formatted == expected
+
+
+if not six.PY2:
+    # https://github.com/syrusakbary/snapshottest/issues/115
+    def test_can_normalize_unittest_mock_call_object():
+        formatter = Formatter()
+        print(formatter.normalize(unittest.mock.call(1, 2, 3)))
+
+    def test_can_normalize_iterator_objects():
+        formatter = Formatter()
+        print(formatter.normalize(x for x in range(3)))
