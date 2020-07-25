@@ -57,6 +57,7 @@ def test_non_ascii_text_formatting(text_value, expected_py3, expected_py2):
 
 
 if not six.PY2:
+    # See issue #115
     def test_can_normalize_unittest_mock_call_object():
         formatter = Formatter()
         print(formatter.normalize(unittest.mock.call(1, 2, 3)))
