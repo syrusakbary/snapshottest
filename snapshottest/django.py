@@ -31,7 +31,7 @@ class TestRunnerMixin(object):
                 **kwargs
         )
         self.print_report()
-        if uTestCase.snapshot_should_update:
+        if TestCase.snapshot_should_update:
             for module in SnapshotModule.get_modules():
                 module.delete_unvisited()
                 module.save()
