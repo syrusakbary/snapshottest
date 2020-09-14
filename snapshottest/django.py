@@ -8,14 +8,13 @@ from .unittest import TestCase as uTestCase
 from .module import SnapshotModule
 
 
-class TestRunner(DiscoverRunner):
-
+class TestRunnerMixin(object):
     separator1 = "=" * 70
     separator2 = "-" * 70
 
     def __init__(self, snapshot_update=False, **kwargs):
         super(TestRunner, self).__init__(**kwargs)
-        uTestCase.snapshot_should_update = snapshot_update
+        self.snapshot_should_update = snapshot_update
 
     @classmethod
     def add_arguments(cls, parser):
@@ -32,7 +31,7 @@ class TestRunner(DiscoverRunner):
                 **kwargs
         )
         self.print_report()
-        if TestCase.snapshot_should_update:
+        if self.snapshot_should_update:
             for module in SnapshotModule.get_modules():
                 module.delete_unvisited()
                 module.save()
@@ -48,6 +47,10 @@ class TestRunner(DiscoverRunner):
             for line in lines:
                 print(line)
             print(self.separator1)
+
+
+class TestRunner(TestRunnerMixin, DiscoverRunner):
+    pass
 
 
 class TestCase(uTestCase, dTestCase):
