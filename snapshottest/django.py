@@ -14,7 +14,7 @@ class TestRunnerMixin(object):
 
     def __init__(self, snapshot_update=False, **kwargs):
         super(TestRunnerMixin, self).__init__(**kwargs)
-        self.snapshot_should_update = snapshot_update
+        uTestCase.snapshot_should_update = snapshot_update
 
     @classmethod
     def add_arguments(cls, parser):
@@ -31,7 +31,7 @@ class TestRunnerMixin(object):
                 **kwargs
         )
         self.print_report()
-        if self.snapshot_should_update:
+        if uTestCase.snapshot_should_update:
             for module in SnapshotModule.get_modules():
                 module.delete_unvisited()
                 module.save()
