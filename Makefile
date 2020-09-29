@@ -3,7 +3,6 @@ all: install test
 .PHONY: install
 install:
 	pip install -e ".[test]"
-	pip install flake8 black==20.8b1
 
 .PHONY: test
 test:
