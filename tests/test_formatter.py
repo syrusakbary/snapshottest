@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import pytest
 import six
+from math import isnan
 
 from snapshottest.formatter import Formatter
 
@@ -65,3 +66,32 @@ if not six.PY2:
     def test_can_normalize_iterator_objects():
         formatter = Formatter()
         print(formatter.normalize(x for x in range(3)))
+
+
+@pytest.mark.parametrize(
+    "value",
+    [
+        0,
+        12.7,
+        True,
+        False,
+        None,
+        float("-inf"),
+        float("inf"),
+    ],
+)
+def test_basic_formatting_parsing(value):
+    formatter = Formatter()
+    formatted = formatter(value)
+    parsed = eval(formatted)
+    assert parsed == value
+    assert type(parsed) == type(value)
+
+
+def test_formatting_parsing_nan():
+    value = float("nan")
+
+    formatter = Formatter()
+    formatted = formatter(value)
+    parsed = eval(formatted)
+    assert isnan(parsed)
