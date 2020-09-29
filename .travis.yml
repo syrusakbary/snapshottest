@@ -15,5 +15,8 @@ after_success:
 matrix:
   fast_finish: true
   include:
-  - python: '2.7'
+  - python: '3.8'
     script: make lint
+  include:
+  - python: '3.8'
+    script: make format
