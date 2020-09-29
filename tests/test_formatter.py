@@ -75,7 +75,16 @@ if not six.PY2:
 
 
 @pytest.mark.parametrize(
-    "value", [0, 12.7, True, False, None, float("-inf"), float("inf"),],
+    "value",
+    [
+        0,
+        12.7,
+        True,
+        False,
+        None,
+        float("-inf"),
+        float("inf"),
+    ],
 )
 def test_basic_formatting_parsing(value):
     formatter = Formatter()

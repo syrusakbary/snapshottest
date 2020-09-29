@@ -46,7 +46,9 @@ def diff_report(left, right):
         + colored("Received value", "red", attrs=["bold"])
         + colored(" does not match ", attrs=["bold"])
         + colored(
-            "stored snapshot `{}`".format(left.snapshottest.test_name,),
+            "stored snapshot `{}`".format(
+                left.snapshottest.test_name,
+            ),
             "green",
             attrs=["bold"],
         )

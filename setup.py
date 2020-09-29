@@ -18,12 +18,22 @@ setup(
     url="https://github.com/syrusakbary/snapshottest",
     # custom PyPI classifier for pytest plugins
     entry_points={
-        "pytest11": ["snapshottest = snapshottest.pytest",],
+        "pytest11": [
+            "snapshottest = snapshottest.pytest",
+        ],
         "nose.plugins.0.10": ["snapshottest = snapshottest.nose:SnapshotTestPlugin"],
     },
     install_requires=["six>=1.10.0", "termcolor", "fastdiff>=0.1.4,<1"],
     tests_require=tests_require,
-    extras_require={"test": tests_require, "pytest": ["pytest",], "nose": ["nose",],},
+    extras_require={
+        "test": tests_require,
+        "pytest": [
+            "pytest",
+        ],
+        "nose": [
+            "nose",
+        ],
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Framework :: Pytest",
