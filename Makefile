@@ -30,5 +30,4 @@ clean:
 .PHONY: publish
 publish: clean
 	python3 setup.py sdist bdist_wheel
-	python2 setup.py bdist_wheel
 	twine upload dist/*
