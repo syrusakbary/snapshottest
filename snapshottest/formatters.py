@@ -1,5 +1,4 @@
 import math
-import six
 from collections import defaultdict
 
 from .sorted_dict import SortedDict
@@ -168,7 +167,7 @@ def default_formatters():
         CollectionFormatter(list, format_list),
         CollectionFormatter(set, format_set),
         CollectionFormatter(frozenset, format_frozenset),
-        TypeFormatter(six.string_types, format_str),
+        TypeFormatter((str,), format_str),
         TypeFormatter((float,), format_float),
         TypeFormatter((int, complex, bool, bytes), format_std_type),
         GenericFormatter(),
