@@ -56,6 +56,7 @@ def test_non_ascii_text_formatting(text_value, expected_py3, expected_py2):
     formatted = formatter(text_value)
     assert formatted == expected
 
+
 if not six.PY2:
     # https://github.com/syrusakbary/snapshottest/issues/115
     def test_can_normalize_unittest_mock_call_object():
@@ -65,6 +66,7 @@ if not six.PY2:
     def test_can_normalize_iterator_objects():
         formatter = Formatter()
         print(formatter.normalize(x for x in range(3)))
+
 
 @pytest.mark.parametrize(
     "value",
@@ -84,6 +86,7 @@ def test_basic_formatting_parsing(value):
     parsed = eval(formatted)
     assert parsed == value
     assert type(parsed) == type(value)
+
 
 def test_formatting_parsing_nan():
     value = float("nan")
