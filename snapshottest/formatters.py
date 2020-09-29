@@ -83,7 +83,7 @@ def format_std_type(value, indent, formatter):
 
 
 def format_dict(value, indent, formatter):
-    value = SortedDict(**value)
+    value = SortedDict(value)
     items = [
         formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(key, indent) + ': ' +
         formatter.format(value[key], indent + 1)
