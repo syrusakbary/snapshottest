@@ -2,7 +2,6 @@ from collections import OrderedDict
 
 
 class SortedDict(OrderedDict):
-
     def __init__(self, values):
         super(SortedDict, self).__init__()
 

@@ -6,18 +6,15 @@ from .formatter import Formatter
 
 
 def format_line(line):
-    line = line.rstrip('\n')
-    if line.startswith('-'):
-        return colored(line, 'green', attrs=['bold'])
-    elif line.startswith('+'):
-        return colored(line, 'red', attrs=['bold'])
-    elif line.startswith('?'):
-        return (
-            colored('') +
-            colored(line, 'yellow', attrs=['bold'])
-        )
+    line = line.rstrip("\n")
+    if line.startswith("-"):
+        return colored(line, "green", attrs=["bold"])
+    elif line.startswith("+"):
+        return colored(line, "red", attrs=["bold"])
+    elif line.startswith("?"):
+        return colored("") + colored(line, "yellow", attrs=["bold"])
 
-    return colored('') + colored(line, 'white', attrs=['dark'])
+    return colored("") + colored(line, "white", attrs=["dark"])
 
 
 class PrettyDiff(object):
@@ -35,10 +32,8 @@ class PrettyDiff(object):
         return repr(self.obj)
 
     def get_diff(self, other):
-        text1 = 'Received \n\n' + self.pretty(self.obj)
-        text2 = 'Snapshot \n\n' + self.pretty(other)
+        text1 = "Received \n\n" + self.pretty(self.obj)
+        text2 = "Snapshot \n\n" + self.pretty(other)
 
         lines = list(compare(text2, text1))
-        return [
-            format_line(line) for line in lines
-        ]
+        return [format_line(line) for line in lines]

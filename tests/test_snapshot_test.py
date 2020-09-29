@@ -11,9 +11,10 @@ class GenericSnapshotTest(SnapshotTest):
 
     def __init__(self, snapshot_module, update=False, current_test_id=None):
         self._generic_options = {
-            'snapshot_module': snapshot_module,
-            'update': update,
-            'current_test_id': current_test_id or "test_mocked"}
+            "snapshot_module": snapshot_module,
+            "update": update,
+            "current_test_id": current_test_id or "test_mocked",
+        }
         super(GenericSnapshotTest, self).__init__()
 
     @property
@@ -27,8 +28,8 @@ class GenericSnapshotTest(SnapshotTest):
     @property
     def test_name(self):
         return "{} {}".format(
-            self._generic_options["current_test_id"],
-            self.curr_snapshot)
+            self._generic_options["current_test_id"], self.curr_snapshot
+        )
 
     def reinitialize(self):
         """Reset internal state, as though starting a new test run"""
@@ -68,8 +69,7 @@ SNAPSHOTABLE_VALUES = [
     ["a", "b", "c"],  # list
     {"a", "b", "c"},  # set
     ("a", "b", "c"),  # tuple
-    ("a",),           # tuple only have one element
-
+    ("a",),  # tuple only have one element
     # Falsy values:
     None,
     False,
@@ -81,7 +81,6 @@ SNAPSHOTABLE_VALUES = [
     tuple(),
     0,
     0.0,
-
     # dict subclasses:
     # (Make sure snapshots don't just coerce to dict for comparison.)
     OrderedDict([("a", 1), ("b", 2), ("c", 3)]),  # same items as earlier dict
@@ -101,12 +100,19 @@ def test_snapshot_matches_itself(snapshot_test, value):
     assert_snapshot_test_succeeded(snapshot_test)
 
 
-@pytest.mark.parametrize("value, other_value", [
-    pytest.param(value, other_value,
-                 id="snapshot {!r} shouldn't match {!r}".format(value, other_value))
-    for value in SNAPSHOTABLE_VALUES
-    for other_value in SNAPSHOTABLE_VALUES if other_value != value
-])
+@pytest.mark.parametrize(
+    "value, other_value",
+    [
+        pytest.param(
+            value,
+            other_value,
+            id="snapshot {!r} shouldn't match {!r}".format(value, other_value),
+        )
+        for value in SNAPSHOTABLE_VALUES
+        for other_value in SNAPSHOTABLE_VALUES
+        if other_value != value
+    ],
+)
 def test_snapshot_does_not_match_other_values(snapshot_test, value, other_value):
     # first run stores the value as the snapshot
     snapshot_test.assert_match(value)

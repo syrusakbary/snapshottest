@@ -8,24 +8,23 @@ from .reporting import reporting_lines, diff_report
 
 
 def pytest_addoption(parser):
-    group = parser.getgroup('snapshottest')
+    group = parser.getgroup("snapshottest")
     group.addoption(
-        '--snapshot-update',
-        action='store_true',
+        "--snapshot-update",
+        action="store_true",
         default=False,
-        dest='snapshot_update',
-        help='Update the snapshots.'
+        dest="snapshot_update",
+        help="Update the snapshots.",
     )
     group.addoption(
-        '--snapshot-verbose',
-        action='store_true',
+        "--snapshot-verbose",
+        action="store_true",
         default=False,
-        help='Dump diagnostic and progress information.'
+        help="Dump diagnostic and progress information.",
     )
 
 
 class PyTestSnapshotTest(SnapshotTest):
-
     def __init__(self, request=None):
         self.request = request
         super(PyTestSnapshotTest, self).__init__()
@@ -40,12 +39,14 @@ class PyTestSnapshotTest(SnapshotTest):
 
     @property
     def test_name(self):
-        cls_name = getattr(self.request.node.cls, '__name__', '')
-        flattened_node_name = re.sub(r"\s+", " ", self.request.node.name.replace(r"\n", " "))
-        return '{}{} {}'.format(
-            '{}.'.format(cls_name) if cls_name else '',
+        cls_name = getattr(self.request.node.cls, "__name__", "")
+        flattened_node_name = re.sub(
+            r"\s+", " ", self.request.node.name.replace(r"\n", " ")
+        )
+        return "{}{} {}".format(
+            "{}.".format(cls_name) if cls_name else "",
             flattened_node_name,
-            self.curr_snapshot
+            self.curr_snapshot,
         )
 
 
@@ -60,7 +61,7 @@ class SnapshotSession(object):
 
         tr.write_sep("=", "SnapshotTest summary")
 
-        for line in reporting_lines('pytest'):
+        for line in reporting_lines("pytest"):
             tr.write_line(line)
 
 

@@ -16,7 +16,7 @@ class FileSnapshot(object):
         self.path = path
 
     def __repr__(self):
-        return 'FileSnapshot({})'.format(repr(self.path))
+        return "FileSnapshot({})".format(repr(self.path))
 
     def __eq__(self, other):
         return self.path == other.path
@@ -38,16 +38,20 @@ class FileSnapshotFormatter(BaseFormatter):
         extension = os.path.splitext(value.path)[1]
         snapshot_file = os.path.join(file_snapshot_dir, test.test_name) + extension
         shutil.copy(value.path, snapshot_file)
-        relative_snapshot_filename = os.path.relpath(snapshot_file, test.module.snapshot_dir)
+        relative_snapshot_filename = os.path.relpath(
+            snapshot_file, test.module.snapshot_dir
+        )
         return FileSnapshot(relative_snapshot_filename)
 
     def get_imports(self):
-        return (('snapshottest.file', 'FileSnapshot'),)
+        return (("snapshottest.file", "FileSnapshot"),)
 
     def format(self, value, indent, formatter):
         return repr(value)
 
-    def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
+    def assert_value_matches_snapshot(
+        self, test, test_value, snapshot_value, formatter
+    ):
         snapshot_path = os.path.join(test.module.snapshot_dir, snapshot_value.path)
         files_identical = filecmp.cmp(test_value.path, snapshot_path, shallow=False)
         assert files_identical, "Stored file differs from test file"

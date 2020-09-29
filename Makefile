@@ -3,7 +3,6 @@ all: install test
 .PHONY: install
 install:
 	pip install -e ".[test]"
-	pip install flake8
 
 .PHONY: test
 test:
@@ -22,6 +21,14 @@ test:
 .PHONY: lint
 lint:
 	flake8
+
+.PHONY: format
+format:
+	black --check setup.py snapshottest tests examples --exclude 'snapshots\/snap_.*.py$$'
+
+.PHONY: format-fix
+format-fix:
+	black setup.py snapshottest tests examples --exclude 'snapshots\/snap_.*.py$$'
 
 .PHONY: clean
 clean:
