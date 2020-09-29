@@ -64,20 +64,19 @@ def test_non_ascii_text_formatting(text_value, expected_py3, expected_py2):
         None,
         float("-inf"),
         float("inf"),
-        float("nan"),
     ],
 )
 def test_basic_formatting_parsing(value):
     formatter = Formatter()
     formatted = formatter(value)
     parsed = eval(formatted)
-    assert_value_and_type_equal(parsed, value)
+    assert parsed == value
+    assert type(parsed) == type(value)
 
+def test_formatting_parsing_nan():
+    value = float("nan")
 
-def assert_value_and_type_equal(value, expected):
-    # NaN doesn't compare well to itself
-    if type(expected) == float and isnan(expected):
-        assert isnan(value)
-    else:
-        assert value == expected
-        assert type(value) == type(expected)
+    formatter = Formatter()
+    formatted = formatter(value)
+    parsed = eval(formatted)
+    assert isnan(parsed)

@@ -1,6 +1,6 @@
+import math
 import six
 from collections import defaultdict
-from math import isnan
 
 from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
@@ -77,7 +77,7 @@ def format_str(value, indent, formatter):
 
 
 def format_float(value, indent, formatter):
-    if value == float('inf') or value == float('-inf') or isnan(value):
+    if math.isinf(value) or math.isnan(value):
         return 'float("%s")' % repr(value)
     return repr(value)
 
