@@ -16,7 +16,9 @@ class BaseFormatter(object):
     def get_imports(self):
         return ()
 
-    def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
+    def assert_value_matches_snapshot(
+        self, test, test_value, snapshot_value, formatter
+    ):
         test.assert_equals(formatter.normalize(test_value), snapshot_value)
 
     def store(self, test, value):
@@ -55,7 +57,7 @@ class DefaultDictFormatter(TypeFormatter):
 
 
 def trepr(s):
-    text = '\n'.join([repr(line).lstrip('u')[1:-1] for line in s.split('\n')])
+    text = "\n".join([repr(line).lstrip("u")[1:-1] for line in s.split("\n")])
     quotes, dquotes = "'''", '"""'
     if quotes in text:
         if dquotes in text:
@@ -66,17 +68,17 @@ def trepr(s):
 
 
 def format_none(value, indent, formatter):
-    return 'None'
+    return "None"
 
 
 def format_str(value, indent, formatter):
-    if '\n' in value:
+    if "\n" in value:
         # Is a multiline string, so we use '''{}''' for the repr
         return trepr(value)
 
     # Snapshots are saved with `from __future__ import unicode_literals`,
     # so the `u'...'` repr is unnecessary, even on Python 2
-    return repr(value).lstrip('u')
+    return repr(value).lstrip("u")
 
 
 def format_float(value, indent, formatter):
@@ -92,35 +94,43 @@ def format_std_type(value, indent, formatter):
 def format_dict(value, indent, formatter):
     value = SortedDict(value)
     items = [
-        formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(key, indent) + ': ' +
-        formatter.format(value[key], indent + 1)
+        formatter.lfchar
+        + formatter.htchar * (indent + 1)
+        + formatter.format(key, indent)
+        + ": "
+        + formatter.format(value[key], indent + 1)
         for key in value
     ]
-    return '{%s}' % (','.join(items) + formatter.lfchar + formatter.htchar * indent)
+    return "{%s}" % (",".join(items) + formatter.lfchar + formatter.htchar * indent)
 
 
 def format_list(value, indent, formatter):
-    return '[%s]' % format_sequence(value, indent, formatter)
+    return "[%s]" % format_sequence(value, indent, formatter)
 
 
 def format_sequence(value, indent, formatter):
     items = [
-        formatter.lfchar + formatter.htchar * (indent + 1) + formatter.format(item, indent + 1)
+        formatter.lfchar
+        + formatter.htchar * (indent + 1)
+        + formatter.format(item, indent + 1)
         for item in value
     ]
-    return ','.join(items) + formatter.lfchar + formatter.htchar * indent
+    return ",".join(items) + formatter.lfchar + formatter.htchar * indent
 
 
 def format_tuple(value, indent, formatter):
-    return '(%s%s' % (format_sequence(value, indent, formatter), ',)' if len(value) == 1 else ")")
+    return "(%s%s" % (
+        format_sequence(value, indent, formatter),
+        ",)" if len(value) == 1 else ")",
+    )
 
 
 def format_set(value, indent, formatter):
-    return 'set([%s])' % format_sequence(value, indent, formatter)
+    return "set([%s])" % format_sequence(value, indent, formatter)
 
 
 def format_frozenset(value, indent, formatter):
-    return 'frozenset([%s])' % format_sequence(value, indent, formatter)
+    return "frozenset([%s])" % format_sequence(value, indent, formatter)
 
 
 class GenericFormatter(BaseFormatter):
@@ -139,9 +149,11 @@ class GenericFormatter(BaseFormatter):
         return repr(value)
 
     def get_imports(self):
-        return [('snapshottest', 'GenericRepr')]
+        return [("snapshottest", "GenericRepr")]
 
-    def assert_value_matches_snapshot(self, test, test_value, snapshot_value, formatter):
+    def assert_value_matches_snapshot(
+        self, test, test_value, snapshot_value, formatter
+    ):
         test_value = GenericRepr.from_value(test_value)
         # Assert equality between the representations to provide a nice textual diff.
         test.assert_equals(test_value.representation, snapshot_value.representation)
@@ -159,5 +171,5 @@ def default_formatters():
         TypeFormatter(six.string_types, format_str),
         TypeFormatter((float,), format_float),
         TypeFormatter((int, complex, bool, bytes), format_std_type),
-        GenericFormatter()
+        GenericFormatter(),
     ]

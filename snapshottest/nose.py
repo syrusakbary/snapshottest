@@ -8,11 +8,11 @@ from .module import SnapshotModule
 from .reporting import reporting_lines
 from .unittest import TestCase
 
-log = logging.getLogger('nose.plugins.snapshottest')
+log = logging.getLogger("nose.plugins.snapshottest")
 
 
 class SnapshotTestPlugin(Plugin):
-    name = 'snapshottest'
+    name = "snapshottest"
     enabled = True
 
     separator1 = "=" * 70
@@ -21,18 +21,18 @@ class SnapshotTestPlugin(Plugin):
     def options(self, parser, env=os.environ):
         super(SnapshotTestPlugin, self).options(parser, env=env)
         parser.add_option(
-            '--snapshot-update',
-            action='store_true',
+            "--snapshot-update",
+            action="store_true",
             default=False,
-            dest='snapshot_update',
-            help='Update the snapshots.'
+            dest="snapshot_update",
+            help="Update the snapshots.",
         )
         parser.add_option(
-            '--snapshot-disable',
-            action='store_true',
-            dest='snapshot_disable',
+            "--snapshot-disable",
+            action="store_true",
+            dest="snapshot_disable",
             default=False,
-            help="Disable special SnapshotTest"
+            help="Disable special SnapshotTest",
         )
 
     def configure(self, options, conf):
@@ -55,8 +55,8 @@ class SnapshotTestPlugin(Plugin):
             return
 
         stream.writeln(self.separator1)
-        stream.writeln('SnapshotTest summary')
+        stream.writeln("SnapshotTest summary")
         stream.writeln(self.separator2)
-        for line in reporting_lines('nosetests'):
+        for line in reporting_lines("nosetests"):
             stream.writeln(line)
         stream.writeln(self.separator1)

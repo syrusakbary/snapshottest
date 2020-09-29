@@ -7,35 +7,37 @@ import pytest
 from snapshottest.sorted_dict import SortedDict
 
 
-@pytest.mark.parametrize("key, value", [
-    ('key1', 'value'),
-    ('key2', 42),
-    ('key3', ['value']),
-    ('key4', [['value']]),
-    ('key5', {'key': 'value'}),
-    ('key6', [{'key': 'value'}]),
-    ('key7', {'key': ['value']}),
-    ('key8', [{'key': ['value']}]),
-])
+@pytest.mark.parametrize(
+    "key, value",
+    [
+        ("key1", "value"),
+        ("key2", 42),
+        ("key3", ["value"]),
+        ("key4", [["value"]]),
+        ("key5", {"key": "value"}),
+        ("key6", [{"key": "value"}]),
+        ("key7", {"key": ["value"]}),
+        ("key8", [{"key": ["value"]}]),
+    ],
+)
 def test_sorted_dict(key, value):
     dic = dict([(key, value)])
     assert SortedDict(dic)[key] == value
 
 
 def test_sorted_dict_string_key():
-    value = ('key', 'value')
+    value = ("key", "value")
     dic = dict([value])
     assert SortedDict(dic)[value[0]] == value[1]
 
 
 def test_sorted_dict_int_key():
-    value = (0, 'value')
+    value = (0, "value")
     dic = dict([value])
     assert SortedDict(dic)[value[0]] == value[1]
 
 
 def test_sorted_dict_intenum():
-
     class Fruit(enum.IntEnum):
         APPLE = 1
         ORANGE = 2
@@ -49,7 +51,6 @@ def test_sorted_dict_intenum():
 
 
 def test_sorted_dict_enum():
-
     class Fruit(enum.Enum):
         APPLE = 1
         ORANGE = 2
@@ -63,7 +64,6 @@ def test_sorted_dict_enum():
 
 
 def test_sorted_dict_enum_value():
-
     class Fruit(enum.Enum):
         APPLE = 1
         ORANGE = 2
@@ -74,7 +74,6 @@ def test_sorted_dict_enum_value():
 
 
 def test_sorted_dict_enum_key():
-
     class Fruit(enum.Enum):
         APPLE = 1
         ORANGE = 2

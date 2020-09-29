@@ -8,7 +8,6 @@ from .reporting import diff_report
 
 
 class UnitTestSnapshotTest(SnapshotTest):
-
     def __init__(self, test_class, test_id, test_filepath, should_update, assertEqual):
         self.test_class = test_class
         self.test_id = test_id
@@ -31,12 +30,8 @@ class UnitTestSnapshotTest(SnapshotTest):
     @property
     def test_name(self):
         class_name = self.test_class.__name__
-        test_name = self.test_id.split('.')[-1]
-        return '{}::{} {}'.format(
-            class_name,
-            test_name,
-            self.curr_snapshot
-        )
+        test_name = self.test_id.split(".")[-1]
+        return "{}::{} {}".format(class_name, test_name, self.curr_snapshot)
 
 
 # Inspired by https://gist.github.com/twolfson/13f5f5784f67fd49b245
@@ -70,8 +65,8 @@ class TestCase(unittest.TestCase):
     def comparePrettyDifs(self, obj1, obj2, msg):
         # self
         # assert obj1 == obj2
-        if not(obj1 == obj2):
-            raise self.failureException('\n'.join(diff_report(obj1, obj2)))
+        if not (obj1 == obj2):
+            raise self.failureException("\n".join(diff_report(obj1, obj2)))
         #     raise self.failureException("DIFF")
 
     @classmethod
@@ -90,7 +85,7 @@ class TestCase(unittest.TestCase):
             test_id=self.id(),
             test_filepath=self._snapshot_file,
             should_update=self.snapshot_should_update,
-            assertEqual=self.assertEqual
+            assertEqual=self.assertEqual,
         )
         self._snapshot_tests.append(self._snapshot)
         SnapshotTest._current_tester = self._snapshot
@@ -101,7 +96,7 @@ class TestCase(unittest.TestCase):
         SnapshotTest._current_tester = None
         self._snapshot = None
 
-    def assert_match_snapshot(self, value, name=''):
+    def assert_match_snapshot(self, value, name=""):
         self._snapshot.assert_match(value, name=name)
 
     assertMatchSnapshot = assert_match_snapshot
