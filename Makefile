@@ -1,4 +1,4 @@
-all: install test README.rst
+all: install test
 
 .PHONY: install
 install:
@@ -23,8 +23,12 @@ test:
 lint:
 	flake8
 
-publish:
-	python setup.py sdist upload
+.PHONY: clean
+clean:
+	rm -rf dist/ build/
 
-%.rst: %.md
-	pandoc $^ --from markdown --to rst -s -o $@
+.PHONY: publish
+publish: clean
+	python3 setup.py sdist bdist_wheel
+	python2 setup.py bdist_wheel
+	twine upload dist/*

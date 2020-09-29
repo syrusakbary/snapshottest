@@ -1,5 +1,14 @@
 include LICENSE
-include README.rst
+include README.md
+include CHANGELOG.md
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
+recursive-exclude * .DS_Store
+
+include Makefile
+include tox.ini
+recursive-include examples *.html
+recursive-include examples *.py
+recursive-include examples *.txt
+recursive-include tests *.py
