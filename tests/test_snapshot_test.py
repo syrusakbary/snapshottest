@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import pytest
+from collections import OrderedDict
 
 from snapshottest.module import SnapshotModule, SnapshotTest
 
@@ -80,6 +81,11 @@ SNAPSHOTABLE_VALUES = [
     tuple(),
     0,
     0.0,
+
+    # dict subclasses:
+    # (Make sure snapshots don't just coerce to dict for comparison.)
+    OrderedDict([("a", 1), ("b", 2), ("c", 3)]),  # same items as earlier dict
+    OrderedDict([("c", 3), ("b", 2), ("a", 1)]),  # same items, different order
 ]
 
 
