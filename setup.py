@@ -9,8 +9,8 @@ tests_require = ['six', 'pytest>=4.6', 'pytest-cov', 'nose', 'django>=1.10.6']
 
 setup(
     name='snapshottest',
-    version='0.5.1',  # PEP 440 "local version identifier"
-    description='Snapshot Testing utils for Python',
+    version='0.6.0',
+    description='Snapshot testing for pytest, unittest, Django, and Nose',
     long_description=readme,
     long_description_content_type="text/markdown",
     author='Syrus Akbary',
@@ -36,7 +36,7 @@ setup(
         ],
     },
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 5 - Production/Stable',
         'Framework :: Pytest',
         'Intended Audience :: Developers',
         'Operating System :: OS Independent',
@@ -47,6 +47,8 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
         'Topic :: Software Development :: Libraries',
     ],
     license='MIT',
