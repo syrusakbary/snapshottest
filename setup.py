@@ -36,6 +36,7 @@ setup(
     },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
+        "Framework :: Django",
         "Framework :: Pytest",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
@@ -49,6 +50,8 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Topic :: Software Development :: Libraries",
+        "Topic :: Software Development :: Testing",
+        "Topic :: Software Development :: Testing :: Unit",
     ],
     license="MIT",
     packages=find_packages(exclude=("tests",)),
