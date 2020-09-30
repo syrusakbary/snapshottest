@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 with open("README.md") as f:
     readme = f.read()
 
-tests_require = ["six", "pytest>=4.6", "pytest-cov", "nose", "django>=1.10.6"]
+tests_require = ["pytest>=4.6", "pytest-cov", "nose", "django>=1.10.6"]
 
 setup(
     name="snapshottest",
@@ -23,7 +23,7 @@ setup(
         ],
         "nose.plugins.0.10": ["snapshottest = snapshottest.nose:SnapshotTestPlugin"],
     },
-    install_requires=["six>=1.10.0", "termcolor", "fastdiff>=0.1.4,<1"],
+    install_requires=["termcolor", "fastdiff>=0.1.4,<1"],
     tests_require=tests_require,
     extras_require={
         "test": tests_require,
@@ -34,21 +34,13 @@ setup(
             "nose",
         ],
     },
+    requires_python=">=3.5",
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Framework :: Django",
         "Framework :: Pytest",
         "Intended Audience :: Developers",
         "Operating System :: OS Independent",
-        "Programming Language :: Python",
-        "Programming Language :: Python :: 2",
-        "Programming Language :: Python :: 2.7",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.4",
-        "Programming Language :: Python :: 3.5",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Topic :: Software Development :: Libraries",
         "Topic :: Software Development :: Testing",
         "Topic :: Software Development :: Testing :: Unit",

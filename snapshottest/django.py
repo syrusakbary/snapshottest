@@ -1,4 +1,3 @@
-from __future__ import absolute_import
 from django.test import TestCase as dTestCase
 from django.test import SimpleTestCase as dSimpleTestCase
 from django.test.runner import DiscoverRunner
