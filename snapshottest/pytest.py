@@ -2,6 +2,7 @@ from __future__ import absolute_import
 import pytest
 import re
 
+from .parse_env import env_snapshot_update
 from .module import SnapshotModule, SnapshotTest
 from .diff import PrettyDiff
 from .reporting import reporting_lines, diff_report
@@ -27,7 +28,8 @@ def pytest_addoption(parser):
 class PyTestSnapshotTest(SnapshotTest):
     def __init__(self, request=None):
         self.request = request
-        super(PyTestSnapshotTest, self).__init__(request.config.option.snapshot_update)
+        should_update = request.config.option.snapshot_update or env_snapshot_update()
+        super(PyTestSnapshotTest, self).__init__(should_update)
 
     @property
     def module(self):
