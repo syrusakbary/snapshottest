@@ -1,8 +1,15 @@
 all: install test
 
+.PHONY: develop
+develop: install install-tools
+
 .PHONY: install
 install:
 	pip install -e ".[test]"
+
+.PHONY: install-tools
+install-tools:
+	pip install flake8 black==20.8b1
 
 .PHONY: test
 test:

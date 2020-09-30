@@ -84,15 +84,29 @@ Set the environment variable `ANSI_COLORS_DISABLED` (to any value), e.g.
 After cloning this repo and configuring a virtualenv for snapshottest (optional, but highly recommended), ensure dependencies are installed by running:
 
 ```sh
-make install
+make develop
 ```
 
-After developing, the full test suite can be evaluated by running:
+After developing, ensure your code is formatted properly by running:
+ 
+```sh
+make format-fix
+```
+
+and then run the full test suite with:
 
 ```sh
 make lint
 # and
 make test
+```
+
+To test locally on all supported Python versions, you can use 
+[tox](https://tox.readthedocs.io/):
+
+```sh
+pip install tox  # (if you haven't before)
+tox
 ```
 
 # Notes
