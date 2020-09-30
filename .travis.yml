@@ -13,10 +13,11 @@ after_success:
 matrix:
   fast_finish: true
   include:
-  - python: '3.8'
-    install: pip install flake8
+  - name: lint
+    python: '3.8'
+    install: make install-tools
     script: make lint
-  include:
-  - python: '3.8'
-    install: pip install black==20.8b1
+  - name: format
+    python: '3.8'
+    install: make install-tools
     script: make format
