@@ -84,7 +84,9 @@ def pytest_terminal_summary(terminalreporter):
     terminalreporter.config._snapshotsession.display(terminalreporter)
 
 
-@pytest.mark.trylast  # force the other plugins to initialise, fixes issue with capture not being properly initialised
+# force the other plugins to initialise first
+# (fixes issue with capture not being properly initialised)
+@pytest.mark.trylast
 def pytest_configure(config):
     config._snapshotsession = SnapshotSession(config)
     # config.pluginmanager.register(bs, "snapshottest")

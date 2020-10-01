@@ -9,9 +9,9 @@ from .formatters import BaseFormatter
 class FileSnapshot(object):
     def __init__(self, path):
         """
-        Create a file snapshot pointing to the specified `path`. In a snapshot, `path` is considered to be relative to
-        the test module's "snapshots" folder. (This is done to prevent ugly path manipulations inside the snapshot
-        file.)
+        Create a file snapshot pointing to the specified `path`. In a snapshot, `path`
+        is considered to be relative to the test module's "snapshots" folder. (This is
+        done to prevent ugly path manipulations inside the snapshot file.)
         """
         self.path = path
 
@@ -29,7 +29,9 @@ class FileSnapshotFormatter(BaseFormatter):
     def store(self, test, value):
         """
         Copy the file from the test location to the snapshot location.
-        If the original test file has an extension, the snapshot file will use the same extension.
+
+        If the original test file has an extension, the snapshot file will
+        use the same extension.
         """
 
         file_snapshot_dir = self.get_file_snapshot_dir(test)

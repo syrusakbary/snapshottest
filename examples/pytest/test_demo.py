@@ -32,8 +32,9 @@ class SomeObject(object):
 
 def test_object(snapshot):
     """
-    Test a snapshot with a custom object. The object will be represented in the snapshot using
-    `snapshottest.GenericRepr`. The snapshot will only match if the object's repr remains the same.
+    Test a snapshot with a custom object. The object will be represented in the
+    snapshot using `snapshottest.GenericRepr`. The snapshot will only match if the
+    object's repr remains the same.
     """
     test_value = SomeObject(3)
     snapshot.assert_match(test_value)
@@ -41,8 +42,9 @@ def test_object(snapshot):
 
 def test_file(snapshot, tmpdir):
     """
-    Test a file snapshot. The file contents will be saved in a sub-folder of the snapshots folder. Useful for large
-    files (e.g. media files) that aren't suitable for storage as text inside the snap_***.py file.
+    Test a file snapshot. The file contents will be saved in a sub-folder of the
+    snapshots folder. Useful for large files (e.g. media files) that aren't suitable
+    for storage as text inside the snap_***.py file.
     """
     temp_file = tmpdir.join("example.txt")
     temp_file.write("Hello, world!")
@@ -51,7 +53,8 @@ def test_file(snapshot, tmpdir):
 
 def test_multiple_files(snapshot, tmpdir):
     """
-    Each file is stored separately with the snapshot's name inside the module's file snapshots folder.
+    Each file is stored separately with the snapshot's name inside the module's file
+    snapshots folder.
     """
     temp_file1 = tmpdir.join("example1.txt")
     temp_file1.write("Hello, world 1!")
