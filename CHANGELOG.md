@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0b0
+
+### BREAKING CHANGES
+
+- Require Python 3.5+
+
+
 ## 0.6.0
 
 ### New features
