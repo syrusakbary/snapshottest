@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0b0
+## 1.0.0a0
 
 ### BREAKING CHANGES
 

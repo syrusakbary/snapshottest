@@ -9,7 +9,7 @@ tests_require = ["pytest>=4.6", "pytest-cov", "nose", "django>=1.10.6"]
 
 setup(
     name="snapshottest",
-    version="1.0.0b0",
+    version="1.0.0a0",
     description="Snapshot testing for pytest, unittest, Django, and Nose",
     long_description=readme,
     long_description_content_type="text/markdown",
