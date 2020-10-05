@@ -1,4 +1,3 @@
-import unittest
 import snapshottest
 
 
@@ -8,6 +7,12 @@ def api_client_get(url):
     }
 
 
+# Use snapshottest.TestCase in place of unittest.TestCase
+# where you want to run snapshot tests.
+#
+# (You can also mix it into any subclass of unittest.TestCase:
+#   class TestDemo(snapshottest.TestCase, MyCustomTestCase):
+# ...)
 class TestDemo(snapshottest.TestCase):
     def setUp(self):
         pass
@@ -18,4 +23,6 @@ class TestDemo(snapshottest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    # Replace unittest.main() with snapshottest's version:
+    # unittest.main()
+    snapshottest.main()

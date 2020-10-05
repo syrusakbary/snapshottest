@@ -33,9 +33,20 @@ class APITestCase(TestCase):
         self.assertMatchSnapshot(my_gpg_response, 'gpg_response')
 ```
 
-If you want to update the snapshots automatically you can use the `nosetests --snapshot-update`.
+You'll also need to let your test runner know about snapshottest,
+to summarize the snapshot results and handle removing unused snapshots:
+* If your code calls `unittest.main()`, replace that with `snapshottest.main()`
+* If you run `python -m unittest ...`, switch to `python -m snapshottest ...`
+* If you use nose, snapshottest automatically loads a nose plugin
+  that handles this for you 
+* Or if you have a custom unittest TestRunner, add 
+  `snapshottest.unittest.SnapshotTestRunnerMixin` (see its docstring for more info)
+
+To generate new snapshots, add `--snapshot-update` to your usual test command line 
+(e.g., `python -m snapshottest ... --snapshot-update` or `nosetests --snapshot-update`). 
 
 Check the [Unittest example](https://github.com/syrusakbary/snapshottest/tree/master/examples/unittest).
+
 
 ## Usage with pytest
 
