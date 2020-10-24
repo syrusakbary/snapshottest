@@ -150,20 +150,20 @@ class SnapshotModule(object):
 
         pretty = Formatter(self.imports)
 
-        with codecs.open(self.filepath, "w", encoding="utf-8") as snapshot_file:
-            snapshots_declarations = [
-                """snapshots['{}'] = {}""".format(key, pretty(self.snapshots[key]))
-                for key in sorted(self.snapshots.keys())
-            ]
+        snapshots_declarations = [
+            """snapshots['{}'] = {}""".format(key, pretty(self.snapshots[key]))
+            for key in sorted(self.snapshots.keys())
+        ]
 
-            imports = "\n".join(
-                [
-                    "from {} import {}".format(
-                        module, ", ".join(sorted(module_imports))
-                    )
-                    for module, module_imports in sorted(self.imports.items())
-                ]
-            )
+        imports = "\n".join(
+            [
+                "from {} import {}".format(
+                    module, ", ".join(sorted(module_imports))
+                )
+                for module, module_imports in sorted(self.imports.items())
+            ]
+        )
+        with codecs.open(self.filepath, "w", encoding="utf-8") as snapshot_file:
             snapshot_file.write(
                 """# -*- coding: utf-8 -*-
 # snapshottest: v1 - https://goo.gl/zC4yUc
