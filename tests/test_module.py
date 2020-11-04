@@ -25,3 +25,45 @@ class TestSnapshotModuleLoading(object):
         module = SnapshotModule("tests.snapshots.snap_error", str(filepath))
         with pytest.raises(SyntaxError):
             module.load_snapshots()
+
+
+class TestSnapshotModuleBeforeWriteCallback(object):
+    def test_callback_are_applied_to_data(self, tmpdir):
+        filepath = tmpdir.join("snap_module.py")
+
+        SnapshotModule.register_before_file_write_callback(
+            lambda data: f"# a comment \n{data}"
+        )
+        SnapshotModule.register_before_file_write_callback(
+            lambda data: f"# and another \n{data}"
+        )
+
+        module = SnapshotModule("tests.snapshots.snap_module", str(filepath))
+        module["my_test"] = "result"
+
+        module.save()
+
+        with open(filepath) as snap_file:
+            result = snap_file.read()
+
+        assert result.startswith("# and another \n# a comment")
+        assert "my_test" in result
+
+    def test_can_clear_callback(self, tmpdir):
+        filepath = tmpdir.join("snap_module.py")
+
+        SnapshotModule.register_before_file_write_callback(
+            lambda data: f"# a comment \n{data}"
+        )
+
+        module = SnapshotModule("tests.snapshots.snap_module", str(filepath))
+        module["my_test"] = "result"
+
+        SnapshotModule.clear_before_file_write_callbacks()
+        module.save()
+
+        with open(filepath) as snap_file:
+            result = snap_file.read()
+
+        assert "# a comment" not in result
+        assert "my_test" in result
