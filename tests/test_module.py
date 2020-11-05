@@ -32,10 +32,10 @@ class TestSnapshotModuleBeforeWriteCallback(object):
         filepath = tmpdir.join("snap_module.py")
 
         SnapshotModule.register_before_file_write_callback(
-            lambda data: f"# a comment \n{data}"
+            lambda data: "# a comment \n{}".format(data)
         )
         SnapshotModule.register_before_file_write_callback(
-            lambda data: f"# and another \n{data}"
+            lambda data: "# and another \n{}".format(data)
         )
 
         module = SnapshotModule("tests.snapshots.snap_module", str(filepath))
@@ -53,7 +53,7 @@ class TestSnapshotModuleBeforeWriteCallback(object):
         filepath = tmpdir.join("snap_module.py")
 
         SnapshotModule.register_before_file_write_callback(
-            lambda data: f"# a comment \n{data}"
+            lambda data: "# a comment \n{}".format(data)
         )
 
         module = SnapshotModule("tests.snapshots.snap_module", str(filepath))
