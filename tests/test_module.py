@@ -43,7 +43,7 @@ class TestSnapshotModuleBeforeWriteCallback(object):
 
         module.save()
 
-        with open(filepath) as snap_file:
+        with open(str(filepath)) as snap_file:
             result = snap_file.read()
 
         assert result.startswith("# and another \n# a comment")
@@ -62,7 +62,7 @@ class TestSnapshotModuleBeforeWriteCallback(object):
         SnapshotModule.clear_before_file_write_callbacks()
         module.save()
 
-        with open(filepath) as snap_file:
+        with open(str(filepath)) as snap_file:
             result = snap_file.read()
 
         assert "# a comment" not in result
