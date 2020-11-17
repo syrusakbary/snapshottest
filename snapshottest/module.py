@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 
 class SnapshotModule(object):
     _snapshot_modules = {}
+    _before_write_callbacks = []
 
     def __init__(self, module, filepath):
         self._original_snapshot = None
@@ -164,8 +165,7 @@ class SnapshotModule(object):
                     for module, module_imports in sorted(self.imports.items())
                 ]
             )
-            snapshot_file.write(
-                """# -*- coding: utf-8 -*-
+            file_data = """# -*- coding: utf-8 -*-
 # snapshottest: v1 - https://goo.gl/zC4yUc
 from __future__ import unicode_literals
 
@@ -176,9 +176,14 @@ snapshots = Snapshot()
 
 {}
 """.format(
-                    imports, "\n\n".join(snapshots_declarations)
-                )
+                imports, "\n\n".join(snapshots_declarations)
             )
+            snapshot_file.write(self._apply_callbacks(file_data))
+
+    def _apply_callbacks(self, data):
+        for callback in self._before_write_callbacks:
+            data = callback(data)
+        return data
 
     @classmethod
     def get_module_for_testpath(cls, test_filepath):
@@ -197,6 +202,14 @@ snapshots = Snapshot()
             )
 
         return cls._snapshot_modules[test_filepath]
+
+    @classmethod
+    def register_before_file_write_callback(cls, callback):
+        cls._before_write_callbacks.append(callback)
+
+    @classmethod
+    def clear_before_file_write_callbacks(cls):
+        cls._before_write_callbacks.clear()
 
 
 class SnapshotTest(object):
