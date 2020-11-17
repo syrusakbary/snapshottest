@@ -30,7 +30,31 @@
 
 ## 0.5.1
 
-Changelog not available. (Pull request welcome!)
+### New features
+
+- Add named snapshots #18
+- Add support for file snapshots #54
+- Hide empty output in the Django test runner #60
+
+### Bug fixes
+
+- Fix snapshot-update with nose #19
+- Fix comparisons again objects stored as GenericRepr #20
+- Fix setting snapshot_should_update on other TestCases #33
+- Fix using non-ASCII characters #31
+- Fix fail silently when snapshot files are invalid #45
+- Remove unused snapshots in the Django runner #43
+- Fix python3 multiline unicode snapshots #46
+- Fix checks against falsy snapshots #50
+- Various fixes in GenericFormatter and collection formatters #82
+- Fix pytest parameterize for multiline strings #87
+
+### Other changes
+
+- Documentation improvements.
+- Add wheel distribution #11
+- Combine build scripts into a Makemile #83
+- Update fastdiff version
 
 
 ## 0.5.0
