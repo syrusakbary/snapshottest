@@ -41,10 +41,7 @@ def test_sorted_dict_intenum():
         APPLE = 1
         ORANGE = 2
 
-    dic = {
-        Fruit.APPLE: 100,
-        Fruit.ORANGE: 400,
-    }
+    dic = {Fruit.APPLE: 100, Fruit.ORANGE: 400}
     assert SortedDict(dic)[Fruit.APPLE] == dic[Fruit.APPLE]
     assert SortedDict(dic)[Fruit.ORANGE] == dic[Fruit.ORANGE]
 
@@ -54,10 +51,7 @@ def test_sorted_dict_enum():
         APPLE = 1
         ORANGE = 2
 
-    dic = {
-        Fruit.APPLE: 100,
-        Fruit.ORANGE: 400,
-    }
+    dic = {Fruit.APPLE: 100, Fruit.ORANGE: 400}
     assert SortedDict(dic)[Fruit.APPLE] == dic[Fruit.APPLE]
     assert SortedDict(dic)[Fruit.ORANGE] == dic[Fruit.ORANGE]
 

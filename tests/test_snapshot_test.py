@@ -2,6 +2,7 @@ import pytest
 from collections import OrderedDict
 
 from snapshottest.module import SnapshotModule, SnapshotTest
+from snapshottest.error import SnapshotNotFound
 
 
 class GenericSnapshotTest(SnapshotTest):
@@ -13,7 +14,7 @@ class GenericSnapshotTest(SnapshotTest):
             "update": update,
             "current_test_id": current_test_id or "test_mocked",
         }
-        super(GenericSnapshotTest, self).__init__()
+        super(GenericSnapshotTest, self).__init__(update)
 
     @property
     def module(self):
@@ -31,7 +32,7 @@ class GenericSnapshotTest(SnapshotTest):
 
     def reinitialize(self):
         """Reset internal state, as though starting a new test run"""
-        super(GenericSnapshotTest, self).__init__()
+        super(GenericSnapshotTest, self).__init__(False)
 
 
 def assert_snapshot_test_ran(snapshot_test, test_name=None):
@@ -89,6 +90,7 @@ SNAPSHOTABLE_VALUES = [
 @pytest.mark.parametrize("value", SNAPSHOTABLE_VALUES, ids=repr)
 def test_snapshot_matches_itself(snapshot_test, value):
     # first run stores the value as the snapshot
+    snapshot_test.snapshot_should_update = True
     snapshot_test.assert_match(value)
     assert_snapshot_test_succeeded(snapshot_test)
 
@@ -113,6 +115,7 @@ def test_snapshot_matches_itself(snapshot_test, value):
 )
 def test_snapshot_does_not_match_other_values(snapshot_test, value, other_value):
     # first run stores the value as the snapshot
+    snapshot_test.snapshot_should_update = True
     snapshot_test.assert_match(value)
     assert_snapshot_test_succeeded(snapshot_test)
 
@@ -121,3 +124,11 @@ def test_snapshot_does_not_match_other_values(snapshot_test, value, other_value)
     with pytest.raises(AssertionError):
         snapshot_test.assert_match(other_value)
     assert_snapshot_test_failed(snapshot_test)
+
+
+def test_first_run_without_snapshots_fails(snapshot_test):
+    with pytest.raises(SnapshotNotFound):
+        snapshot_test.assert_match("foo", name="no_snapshot_exists_test")
+    assert snapshot_test.module.missing_snapshots == set(
+        ["test_mocked no_snapshot_exists_test"]
+    )

@@ -21,6 +21,7 @@ def pytest_snapshot_test(request, _apply_options):
 
 class TestPyTestSnapShotTest:
     def test_property_test_name(self, pytest_snapshot_test):
+        pytest_snapshot_test.snapshot_should_update = True
         pytest_snapshot_test.assert_match("counter")
         assert (
             pytest_snapshot_test.test_name
@@ -41,6 +42,7 @@ class TestPyTestSnapShotTest:
 
 
 def test_pytest_snapshottest_property_test_name(pytest_snapshot_test):
+    pytest_snapshot_test.snapshot_should_update = True
     pytest_snapshot_test.assert_match("counter")
     assert (
         pytest_snapshot_test.test_name
@@ -64,6 +66,7 @@ def test_pytest_snapshottest_property_test_name(pytest_snapshot_test):
 def test_pytest_snapshottest_property_test_name_parametrize_singleline(
     pytest_snapshot_test, arg
 ):
+    pytest_snapshot_test.snapshot_should_update = True
     pytest_snapshot_test.assert_match("counter")
     assert (
         pytest_snapshot_test.test_name
@@ -85,6 +88,7 @@ def test_pytest_snapshottest_property_test_name_parametrize_singleline(
 def test_pytest_snapshottest_property_test_name_parametrize_multiline(
     pytest_snapshot_test, arg
 ):
+    pytest_snapshot_test.snapshot_should_update = True
     pytest_snapshot_test.assert_match("counter")
     assert (
         pytest_snapshot_test.test_name
