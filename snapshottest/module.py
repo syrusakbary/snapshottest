@@ -8,6 +8,7 @@ import logging
 from .snapshot import Snapshot
 from .formatter import Formatter
 from .error import SnapshotNotFound
+from .ignore import clear_ignore_keys
 
 
 logger = logging.getLogger(__name__)
@@ -265,6 +266,61 @@ class SnapshotTest(object):
 
         if not name:
             self.snapshot_counter += 1
+
+    def assert_match_with_ignore(self, data, ignore_keys):
+        """Extension of assert_match to ignore data.
+        Args:
+            data (dict,list,tuple): Data to be asserted
+            ignored_keys (list): List of strings containing path to be ignored,
+            special character "[.]" can be used to ignore multiple elements in list.
+            (See Example 2)
+        Returns:
+            None: Asserts if the values are the same
+        Raises:
+            AssertionError: If the snapshot is different than the incoming data
+        Examples:
+            Test examples at: apps/tests/utils/test_asserts.py
+            Example 1:
+            >>> data={"dict1": {"dict2": {"dict3": {"id": "importantId"} } } }
+            >>> ignore_keys=["dict1.dict2.dict3.id"]
+            >>> assert_match_with_ignore(data,ignore_keys)
+                # Will create the following snapshot
+                snapshots['example_snapshot'] = {
+                    'dict1': {
+                        'dict2': {
+                            'dict3': {
+                                'id': None,
+                                'other': 'value'
+                            }
+                        }
+                    }
+                }
+            ---
+            Example 2:
+            >>> data=[
+                    {
+                    "name": "objectList",
+                    "children": [
+                        {"id": "random_string", "name": "child_1",},
+                        {"id": "random_string2", "name": "child_2",},
+                    ],
+                    }
+                ]
+            >>> ignore_keys=["[0].children[.].id"]
+            >>> assert_match_with_ignore(data,ignore_keys)
+                # Will create the following snapshot
+                snapshots['example2_snapshot'] = [
+                    {
+                    "name": "objectList",
+                    "children": [
+                        {"id": None, "name": "child_1",},
+                        {"id": None, "name": "child_2",},
+                    ],
+                    }
+                ]
+        """
+
+        self.assert_match(clear_ignore_keys(data, ignore_keys))
 
     def save_changes(self):
         self.module.save()

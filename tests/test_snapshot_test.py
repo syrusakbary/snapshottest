@@ -1,6 +1,6 @@
 import pytest
 from collections import OrderedDict
-
+from time import time
 from snapshottest.module import SnapshotModule, SnapshotTest
 
 
@@ -121,3 +121,76 @@ def test_snapshot_does_not_match_other_values(snapshot_test, value, other_value)
     with pytest.raises(AssertionError):
         snapshot_test.assert_match(other_value)
     assert_snapshot_test_failed(snapshot_test)
+
+
+SNAPSHOTABLE_VALUES_WITH_IGNORE = [
+    {
+        "data": {"dict1": {"dict2": {"dict3": {"id": time(), "other": "value"}}}},
+        "ignore_keys": ["dict1.dict2.dict3.id"],
+    },
+    {
+        "data": [
+            {
+                "A": {
+                    "id": time(),
+                    "B": 1,
+                    "C": 2,
+                    "D": [0, 1, {"A": 1}],
+                }
+            },
+            {
+                "A": {
+                    "id": time(),
+                    "B": 2,
+                    "C": 3,
+                    "D": [0, 1, {"id": time()}],
+                }
+            },
+        ],
+        "ignore_keys": ["[.].A.id", "[1].A.C[.].id"],
+    },
+    {
+        "data": {
+            "A": {
+                "id": [0, 1, 2, 3, time()],
+                "A": 1,
+                "B": 2,
+                "C": [
+                    {"id": time()},
+                    {"id": time(), "A": 0},
+                    {"id": time()},
+                ],
+            }
+        },
+        "ignore_keys": ["A.C[.].id", "A.id[4]"],
+    },
+    {
+        "data": {
+            "A": {
+                "A": {
+                    "id": time(),
+                    "A": 1,
+                    "B": 2,
+                    "C": 3,
+                    "D": [
+                        {"id": [0, time()]},
+                        {"id": {"A": [time()]}, "B": 0},
+                        {"id": time()},
+                    ],
+                }
+            }
+        },
+        "ignore_keys": ["A.A.id", "A.A.D.id[1]", "A.A.D.id.A[0"],
+    },
+]
+
+
+@pytest.mark.parametrize("values", SNAPSHOTABLE_VALUES_WITH_IGNORE, ids=repr)
+def test_snapshot_with_ignore(snapshot_test, values):
+    data = values["data"]
+    ignore_keys = values["ignore_keys"]
+    snapshot_test.assert_match_with_ignore(data, ignore_keys)
+
+    snapshot_test.reinitialize()
+    snapshot_test.assert_match_with_ignore(data, ignore_keys)
+    assert_snapshot_test_succeeded(snapshot_test)
