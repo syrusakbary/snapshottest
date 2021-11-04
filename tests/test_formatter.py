@@ -59,16 +59,7 @@ def test_can_normalize_iterator_objects():
 
 
 @pytest.mark.parametrize(
-    "value",
-    [
-        0,
-        12.7,
-        True,
-        False,
-        None,
-        float("-inf"),
-        float("inf"),
-    ],
+    "value", [0, 12.7, True, False, None, float("-inf"), float("inf")]
 )
 def test_basic_formatting_parsing(value):
     formatter = Formatter()

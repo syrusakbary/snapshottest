@@ -3,6 +3,7 @@ import os
 
 from nose.plugins import Plugin
 
+from .parse_env import env_snapshot_update
 from .module import SnapshotModule
 from .reporting import reporting_lines
 from .unittest import TestCase
@@ -36,7 +37,7 @@ class SnapshotTestPlugin(Plugin):
 
     def configure(self, options, conf):
         super(SnapshotTestPlugin, self).configure(options, conf)
-        self.snapshot_update = options.snapshot_update
+        self.snapshot_update = options.snapshot_update or env_snapshot_update()
         self.enabled = not options.snapshot_disable
 
     def wantClass(self, cls):

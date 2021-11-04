@@ -1,6 +1,7 @@
 import unittest
 import inspect
 
+from .parse_env import env_snapshot_update
 from .module import SnapshotModule, SnapshotTest
 from .diff import PrettyDiff
 from .reporting import diff_report
@@ -12,16 +13,11 @@ class UnitTestSnapshotTest(SnapshotTest):
         self.test_id = test_id
         self.test_filepath = test_filepath
         self.assertEqual = assertEqual
-        self.should_update = should_update
-        super(UnitTestSnapshotTest, self).__init__()
+        super(UnitTestSnapshotTest, self).__init__(should_update)
 
     @property
     def module(self):
         return SnapshotModule.get_module_for_testpath(self.test_filepath)
-
-    @property
-    def update(self):
-        return self.should_update
 
     def assert_equals(self, value, snapshot):
         self.assertEqual(value, snapshot)
@@ -77,13 +73,14 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         """Do some custom setup"""
+        should_update = self.snapshot_should_update or env_snapshot_update()
         # print dir(self.__module__)
         self.addTypeEqualityFunc(PrettyDiff, self.comparePrettyDifs)
         self._snapshot = UnitTestSnapshotTest(
             test_class=self.__class__,
             test_id=self.id(),
             test_filepath=self._snapshot_file,
-            should_update=self.snapshot_should_update,
+            should_update=should_update,
             assertEqual=self.assertEqual,
         )
         self._snapshot_tests.append(self._snapshot)
