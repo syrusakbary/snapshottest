@@ -13,6 +13,10 @@ from .error import SnapshotNotFound
 logger = logging.getLogger(__name__)
 
 
+def _escape_quotes(text):
+    return text.replace("'", "\\'")
+
+
 class SnapshotModule(object):
     _snapshot_modules = {}
     _before_write_callbacks = []
@@ -153,7 +157,9 @@ class SnapshotModule(object):
 
         with codecs.open(self.filepath, "w", encoding="utf-8") as snapshot_file:
             snapshots_declarations = [
-                """snapshots['{}'] = {}""".format(key, pretty(self.snapshots[key]))
+                """snapshots['{}'] = {}""".format(
+                    _escape_quotes(key), pretty(self.snapshots[key])
+                )
                 for key in sorted(self.snapshots.keys())
             ]
 

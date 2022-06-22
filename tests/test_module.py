@@ -25,6 +25,16 @@ class TestSnapshotModuleLoading(object):
         module = SnapshotModule("tests.snapshots.snap_error", str(filepath))
         with pytest.raises(SyntaxError):
             module.load_snapshots()
+            
+    def test_save_and_load_when_test_name_with_quotes(self, tmpdir):
+        filepath = tmpdir.join("snap_error.py")
+        module = SnapshotModule("tests.snapshots.snap_error", str(filepath))
+        module["quo'tes"] = "result"
+
+        module.save()
+        loaded = module.load_snapshots()
+
+        assert loaded["quo'tes"] == "result"
 
 
 class TestSnapshotModuleBeforeWriteCallback(object):
