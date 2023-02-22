@@ -266,6 +266,10 @@ class SnapshotTest(object):
                 try:
                     self.assert_value_matches_snapshot(value, prev_snapshot)
                 except AssertionError:
+                    # counter must be increased before the exception is raised
+                    # otherwise every next test case will be compared with the
+                    # last snapshot that raised the error
+                    self.snapshot_counter += 1
                     self.fail()
                     raise
 
