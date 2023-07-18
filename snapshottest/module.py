@@ -1,7 +1,8 @@
 import codecs
 import errno
 import os
-import imp
+import sys
+import importlib.util
 from collections import defaultdict
 import logging
 
@@ -15,6 +16,14 @@ logger = logging.getLogger(__name__)
 
 def _escape_quotes(text):
     return text.replace("'", "\\'")
+
+
+def _load_source(module_name, filepath):
+    spec = importlib.util.spec_from_file_location(module_name, filepath)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[module_name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
 class SnapshotModule(object):
@@ -33,7 +42,7 @@ class SnapshotModule(object):
 
     def load_snapshots(self):
         try:
-            source = imp.load_source(self.module, self.filepath)
+            source = _load_source(self.module, self.filepath)
         # except FileNotFoundError:  # Python 3
         except (IOError, OSError) as err:
             if err.errno == errno.ENOENT:
