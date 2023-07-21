@@ -77,6 +77,7 @@ class TestCase(unittest.TestCase):
 
     def setUp(self):
         """Do some custom setup"""
+        super().setUp()
         # print dir(self.__module__)
         self.addTypeEqualityFunc(PrettyDiff, self.comparePrettyDifs)
         self._snapshot = UnitTestSnapshotTest(
