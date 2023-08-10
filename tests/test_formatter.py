@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from enum import Enum
+
 import pytest
 from math import isnan
 
@@ -85,3 +87,19 @@ def test_formatting_parsing_nan():
     formatted = formatter(value)
     parsed = eval(formatted)
     assert isnan(parsed)
+
+
+class IntEnum(int, Enum):
+    ONE = 1
+    TWO = 2
+
+
+class StrEnum(str, Enum):
+    A = "aaa"
+    B = "bbb"
+
+
+@pytest.mark.parametrize("value", list(IntEnum) + list(StrEnum))
+def test_typed_enums(value):
+    formatter = Formatter()
+    assert formatter(value) == formatter(value.value)

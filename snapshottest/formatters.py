@@ -1,5 +1,6 @@
 import math
 from collections import defaultdict
+from enum import Enum
 
 from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
@@ -36,6 +37,8 @@ class TypeFormatter(BaseFormatter):
         return isinstance(value, self.types)
 
     def format(self, value, indent, formatter):
+        if isinstance(value, Enum):
+            value = value.value
         return self.format_func(value, indent, formatter)
 
 
