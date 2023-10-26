@@ -19,6 +19,18 @@ def _escape_quotes(text):
 
 
 def _load_source(module_name, filepath):
+    """
+    Replaces old imp.load_source() call.
+    
+    The imp module was dropped in Python 3.12 in favor of the importlib.
+    See: https://docs.python.org/3.11/library/imp.html#imp.load_module
+    
+    Following code was inspired by the importlib documentation example: 
+    https://docs.python.org/3.12/library/importlib.html#importing-a-source-file-directly
+    
+    This approach has been also encouraged in the official mailing lists:
+    https://discuss.python.org/t/how-do-i-migrate-from-imp/27885 
+    """
     spec = importlib.util.spec_from_file_location(module_name, filepath)
     module = importlib.util.module_from_spec(spec)
     sys.modules[module_name] = module
