@@ -33,6 +33,8 @@ def _load_source(module_name, filepath):
     """
     spec = importlib.util.spec_from_file_location(module_name, filepath)
     module = importlib.util.module_from_spec(spec)
+    # As a performance optimization, store loaded module for further use.
+    # https://docs.python.org/3.11/library/sys.html#sys.modules
     sys.modules[module_name] = module
     spec.loader.exec_module(module)
     return module
