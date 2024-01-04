@@ -75,7 +75,7 @@ def test_basic_formatting_parsing(value):
     formatted = formatter(value)
     parsed = eval(formatted)
     assert parsed == value
-    assert type(parsed) == type(value)
+    assert type(parsed) is type(value)
 
 
 def test_formatting_parsing_nan():

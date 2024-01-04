@@ -9,7 +9,7 @@ install:
 
 .PHONY: install-tools
 install-tools:
-	pip install flake8 black==20.8b1
+	pip install flake8 black==20.8b1 'click<8'
 
 .PHONY: test
 test:
