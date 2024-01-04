@@ -45,4 +45,3 @@ jobs:
           python-version: ${{ matrix.versions.python }}
       - run: make install
       - run: make test
-      - run: coveralls
