@@ -1,7 +1,7 @@
 import codecs
 import errno
 import os
-import imp
+from importlib.machinery import SourceFileLoader
 from collections import defaultdict
 import logging
 
@@ -33,7 +33,7 @@ class SnapshotModule(object):
 
     def load_snapshots(self):
         try:
-            source = imp.load_source(self.module, self.filepath)
+            source = SourceFileLoader(self.module, self.filepath).load_module()
         # except FileNotFoundError:  # Python 3
         except (IOError, OSError) as err:
             if err.errno == errno.ENOENT:
