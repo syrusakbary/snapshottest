@@ -20,7 +20,7 @@ test:
 	python examples/unittest/test_demo.py
 
 # Run nose
-	nosetests examples/unittest
+	nosetests examples/unittest/test_demo.py
 
 # Run Django Example
 	cd examples/django_project && python manage.py test
