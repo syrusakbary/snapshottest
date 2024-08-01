@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 with open("README.md") as f:
     readme = f.read()
 
-tests_require = ["pytest>=4.6", "pytest-cov", "nose", "django>=1.10.6"]
+tests_require = ["pytest>=4.6", "pytest-cov", "nose", "django>=1.10.6,<4"]
 
 setup(
     name="snapshottest",
