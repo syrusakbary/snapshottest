@@ -1,5 +1,6 @@
 import math
 from collections import defaultdict
+from enum import Enum
 
 from .sorted_dict import SortedDict
 from .generic_repr import GenericRepr
@@ -132,6 +133,10 @@ def format_frozenset(value, indent, formatter):
     return "frozenset([%s])" % format_sequence(value, indent, formatter)
 
 
+def format_enum(value, indent, formatter):
+    return formatter(value.value)
+
+
 class GenericFormatter(BaseFormatter):
     def can_format(self, value):
         return True
@@ -161,6 +166,7 @@ class GenericFormatter(BaseFormatter):
 def default_formatters():
     return [
         TypeFormatter(type(None), format_none),
+        TypeFormatter((Enum,), format_enum),
         DefaultDictFormatter(defaultdict, format_dict),
         CollectionFormatter(dict, format_dict),
         CollectionFormatter(tuple, format_tuple),
