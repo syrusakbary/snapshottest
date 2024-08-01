@@ -52,7 +52,7 @@ class SnapshotModule(object):
         self.visited_snapshots = set()
         self.new_snapshots = set()
         self.failed_snapshots = set()
-        self.imports["snapshottest"].add("Snapshot")
+        self.imports['snapshottest'].add('Snapshot')
 
     def load_snapshots(self):
         try:
@@ -102,7 +102,7 @@ class SnapshotModule(object):
             count_snapshots += length
             count_modules += min(length, 1)
 
-        return count_snapshots, count_modules
+        return count_snapshots, count_modules, module.new_snapshots, module.unvisited_snapshots
 
     @classmethod
     def stats_unvisited_snapshots(cls):
@@ -173,11 +173,11 @@ class SnapshotModule(object):
             pass
 
         # Create __init__.py in case doesn't exist
-        open(os.path.join(self.snapshot_dir, "__init__.py"), "a").close()
+        open(os.path.join(self.snapshot_dir, '__init__.py'), 'a').close()
 
         pretty = Formatter(self.imports)
 
-        with codecs.open(self.filepath, "w", encoding="utf-8") as snapshot_file:
+        with codecs.open(self.filepath, 'w', encoding="utf-8") as snapshot_file:
             snapshots_declarations = [
                 """snapshots['{}'] = {}""".format(
                     _escape_quotes(key), pretty(self.snapshots[key])
@@ -185,16 +185,11 @@ class SnapshotModule(object):
                 for key in sorted(self.snapshots.keys())
             ]
 
-            imports = "\n".join(
-                [
-                    "from {} import {}".format(
-                        module, ", ".join(sorted(module_imports))
-                    )
-                    for module, module_imports in sorted(self.imports.items())
-                ]
-            )
-            snapshot_file.write(
-                """# -*- coding: utf-8 -*-
+            imports = '\n'.join([
+                'from {} import {}'.format(module, ', '.join(sorted(module_imports)))
+                for module, module_imports in sorted(self.imports.items())
+            ])
+            snapshot_file.write('''# -*- coding: utf-8 -*-
 # snapshottest: v1 - https://goo.gl/zC4yUc
 from __future__ import unicode_literals
 
@@ -204,10 +199,7 @@ from __future__ import unicode_literals
 snapshots = Snapshot()
 
 {}
-""".format(
-                    imports, "\n\n".join(snapshots_declarations)
-                )
-            )
+'''.format(imports, '\n\n'.join(snapshots_declarations)))
 
     @classmethod
     def get_module_for_testpath(cls, test_filepath):
@@ -215,15 +207,11 @@ snapshots = Snapshot()
             dirname = os.path.dirname(test_filepath)
             snapshot_dir = os.path.join(dirname, "snapshots")
 
-            snapshot_basename = "snap_{}.py".format(
-                os.path.splitext(os.path.basename(test_filepath))[0]
-            )
+            snapshot_basename = 'snap_{}.py'.format(os.path.splitext(os.path.basename(test_filepath))[0])
             snapshot_filename = os.path.join(snapshot_dir, snapshot_basename)
-            snapshot_module = "{}".format(os.path.splitext(snapshot_basename)[0])
+            snapshot_module = '{}'.format(os.path.splitext(snapshot_basename)[0])
 
-            cls._snapshot_modules[test_filepath] = SnapshotModule(
-                snapshot_module, snapshot_filename
-            )
+            cls._snapshot_modules[test_filepath] = SnapshotModule(snapshot_module, snapshot_filename)
 
         return cls._snapshot_modules[test_filepath]
 
@@ -232,7 +220,7 @@ class SnapshotTest(object):
     _current_tester = None
 
     def __init__(self):
-        self.curr_snapshot = ""
+        self.curr_snapshot = ''
         self.snapshot_counter = 1
 
     @property
@@ -268,14 +256,12 @@ class SnapshotTest(object):
 
     def assert_value_matches_snapshot(self, test_value, snapshot_value):
         formatter = Formatter.get_formatter(test_value)
-        formatter.assert_value_matches_snapshot(
-            self, test_value, snapshot_value, Formatter()
-        )
+        formatter.assert_value_matches_snapshot(self, test_value, snapshot_value)
 
     def assert_equals(self, value, snapshot):
         assert value == snapshot
 
-    def assert_match(self, value, name=""):
+    def assert_match(self, value, name=''):
         self.curr_snapshot = name or self.snapshot_counter
         self.visit()
         if self.update:
@@ -299,10 +285,8 @@ class SnapshotTest(object):
         self.module.save()
 
 
-def assert_match_snapshot(value, name=""):
+def assert_match_snapshot(value, name=''):
     if not SnapshotTest._current_tester:
-        raise Exception(
-            "You need to use assert_match_snapshot in the SnapshotTest context."
-        )
+        raise Exception("You need to use assert_match_snapshot in the SnapshotTest context.")
 
     SnapshotTest._current_tester.assert_match(value, name)
