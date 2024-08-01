@@ -37,8 +37,6 @@ class TypeFormatter(BaseFormatter):
         return isinstance(value, self.types)
 
     def format(self, value, indent, formatter):
-        if isinstance(value, Enum):
-            value = value.value
         return self.format_func(value, indent, formatter)
 
 
@@ -135,6 +133,10 @@ def format_frozenset(value, indent, formatter):
     return "frozenset([%s])" % format_sequence(value, indent, formatter)
 
 
+def format_enum(value, indent, formatter):
+    return formatter(value.value)
+
+
 class GenericFormatter(BaseFormatter):
     def can_format(self, value):
         return True
@@ -164,6 +166,7 @@ class GenericFormatter(BaseFormatter):
 def default_formatters():
     return [
         TypeFormatter(type(None), format_none),
+        TypeFormatter((Enum,), format_enum),
         DefaultDictFormatter(defaultdict, format_dict),
         CollectionFormatter(dict, format_dict),
         CollectionFormatter(tuple, format_tuple),
