@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.0a1
+
+### New features
+
+- Allow snapshot files to be modified before being written #149
+- Add typed enums support for TypeFormatter #163
+- Add support for python 3.12 by using importlib instead of imp #168
+
+### Bug fixes
+
+- adding super().setUp() call to unittest.TestCase #169
+
 ## 1.0.0a0
 
 ### BREAKING CHANGES
