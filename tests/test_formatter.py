@@ -22,14 +22,29 @@ import unittest.mock
         ("""it's got "both quotes".""", """'it\\'s got "both quotes".'"""),
         # multiline gets formatted as triple-quoted
         ("one\ntwo\n", "'''one\ntwo\n'''"),
+        ("one\ntwo'", '"""one\ntwo\'"""'),
         ("three\n'''quotes", '"""three\n\'\'\'quotes"""'),
         ("so many\"\"\"\n'''quotes", "'''so many\"\"\"\n\\'\\'\\'quotes'''"),
+        ("so many\"\"\"\nquotes'", "'''so many\"\"\"\nquotes\\''''"),
     ],
 )
 def test_text_formatting(text_value, expected):
     formatter = Formatter()
     formatted = formatter(text_value)
     assert formatted == expected
+
+
+@pytest.mark.parametrize(
+    "text_value",
+    [
+        "one\ntwo'",
+        "so many\"\"\"\nquotes'",
+    ],
+)
+def test_multiline_text_formatting_parses_when_text_ends_with_quote(text_value):
+    formatter = Formatter()
+    formatted = formatter(text_value)
+    assert eval(formatted) == text_value
 
 
 @pytest.mark.parametrize(

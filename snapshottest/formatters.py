@@ -56,12 +56,27 @@ class DefaultDictFormatter(TypeFormatter):
         )
 
 
+def _ends_with_unescaped_single_quote(text):
+    if not text.endswith("'"):
+        return False
+
+    backslash_count = 0
+    for char in reversed(text[:-1]):
+        if char != "\\":
+            break
+        backslash_count += 1
+
+    return backslash_count % 2 == 0
+
+
 def trepr(s):
     text = "\n".join([repr(line).lstrip("u")[1:-1] for line in s.split("\n")])
     quotes, dquotes = "'''", '"""'
-    if quotes in text:
+    if quotes in text or _ends_with_unescaped_single_quote(text):
         if dquotes in text:
             text = text.replace(quotes, "\\'\\'\\'")
+            if _ends_with_unescaped_single_quote(text):
+                text = text[:-1] + "\\'"
         else:
             quotes = dquotes
     return "%s%s%s" % (quotes, text, quotes)
@@ -73,7 +88,7 @@ def format_none(value, indent, formatter):
 
 def format_str(value, indent, formatter):
     if "\n" in value:
-        # Is a multiline string, so we use '''{}''' for the repr
+        # Is a multiline string, so we use a triple-quoted repr
         return trepr(value)
 
     # Snapshots are saved with `from __future__ import unicode_literals`,
